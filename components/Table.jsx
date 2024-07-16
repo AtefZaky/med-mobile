@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
 	FlatList,
 	StyleSheet,
@@ -7,6 +7,7 @@ import {
 	View,
 } from "react-native";
 import ReportComponent from "../components/ReportComponent";
+import TableRow from "./tableRow";
 
 
 const Table = ({
@@ -39,51 +40,53 @@ const Table = ({
 					renderItem={({ item }) => {
 						if (assetsOperation) {
 							return (
-								<View className="flex flex-row justify-between py-2  px-3 items-center">
-									<View className="basis-1/4">
-										<Text className="text-center font-tmedium">
-											{item.Active_Start_In || 0}
-										</Text>
-									</View>
-									<View className="basis-1/4">
-										<TouchableOpacity
-											onPress={() => {
-												onCloseMachine(item.id);
-											}}
-											className={`${
-												item.IsActive == 2
-													? "text-[#F15555] bg-[#F9EAEB]										]"
-													: "bg-[#F15555] text-white "
-											} px-4 py-1 rounded-md max-w-[70px] ml-3`}>
-											<Text
-												className={`text-center font-tmedium
-													${item.IsActive == 2 ? "text-[#F15555] " : " text-white "}`}>
-												ايقاف
-											</Text>
-										</TouchableOpacity>
-									</View>
-									<View className="basis-1/4">
-										<TouchableOpacity
-											className={`${
-												item.IsActive == 1
-													? "text-[#019444] bg-[#E8F0EE]"
-													: "bg-[#019444] text-white "
-											}  px-6 py-1 rounded-md max-w-[70px] ml-3`}
-											onPress={() => {
-												onStartMachine(item.id);
-											}}>
-											<Text
-												className={`font-tmedium ${
-													item.IsActive == 1 ? "text-[#019444]" : " text-white"
-												}`}>
-												بدء
-											</Text>
-										</TouchableOpacity>
-									</View>
-									<View className="basis-1/5">
-										<Text className="font-tmedium">{item.AssetName}</Text>
-									</View>
-								</View>
+								<TableRow item={item} onStartMachine={onStartMachine} onCloseMachine={onCloseMachine} />
+								// <View className="flex flex-row justify-between py-2  px-3 items-center">
+								// 	<View className="basis-1/4">
+								// 		<Text className="text-center font-tmedium">
+								// 			{item.Active_Start_In || 0}
+								// 		</Text>
+								// 	</View>
+								// 	<View className="basis-1/4">
+								// 		<TouchableOpacity
+								// 			onPress={() => {
+								// 				onCloseMachine(item.AssetID);
+								// 			}}
+								// 			className={`${
+								// 				item.IsActive == 2
+								// 					? "text-[#F15555] bg-[#F9EAEB]										]"
+								// 					: "bg-[#F15555] text-white "
+								// 			} px-4 py-1 rounded-md max-w-[70px] ml-3`}>
+								// 			<Text
+								// 				className={`text-center font-tmedium
+								// 					${item.IsActive == 2 ? "text-[#F15555] " : " text-white "}`}>
+								// 				ايقاف
+								// 			</Text>
+								// 		</TouchableOpacity>
+								// 	</View>
+								// 	<View className="basis-1/4">
+								// 		<TouchableOpacity
+								// 			className={`${
+								// 				item.IsActive == 1
+								// 					? "text-[#019444] bg-[#E8F0EE]"
+								// 					: "bg-[#019444] text-white "
+								// 			}  px-6 py-1 rounded-md max-w-[70px] ml-3`}
+								// 			onPress={() => {
+								// 				onStartMachine(item.AssetID);
+								// 			}}>
+								// 			<Text
+								// 				className={`font-tmedium ${
+								// 					item.IsActive == 1 ? "text-[#019444]" : " text-white"
+								// 				}`}>
+								// 				بدء
+								// 			</Text>
+								// 		</TouchableOpacity>
+								// 	</View>
+								// 	<View className="basis-1/5">
+								// 		<Text className="font-tmedium">{item.AssetName}</Text>
+								// 	</View>
+								// </View>
+
 							);
 						} else if (reports) {
 							return (

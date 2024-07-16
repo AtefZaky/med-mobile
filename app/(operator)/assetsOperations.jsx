@@ -2,127 +2,73 @@ import { Text, View, ScrollView, Dimensions } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { useGlobalContext } from '../../context/GlobalProvider';
 import { Header, Table } from '../../components';
+import { formatDate } from '../../utils/dateFormater';
+import api from '../../utils/api';
 
 
 const AssetsOperations = () => {
     const {user} = useGlobalContext()
+    const [data, setData] = useState({})
     const assetsOperationHeader = [
         "عدد ساعات التشغيل من  بدء التشغيل",
         "ايقاف",
         "بدء",
         "اسم المعدة",
       ];
-    const assetsOperatinData = [
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-        {
-          AssetID: 435078,
-          AssetName: "طلمبه رقم1",
-          AssetClassID: 27,
-          IsActive: 1,
-          Active_Start_In: null,
-          StatusID: null,
-        },
-      ];
+
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const result = await getData();
+            console.log(result.data);
+            setData(result.data);
+          } catch (error) {
+            console.error('Error fetching data: ', error);
+          }
+        };
+        fetchData()
+      }, [])
+
+      const getData = async () => {
+        const response = await api.get("/assets");
+        return response;
+      };
+
+      const handleStart = async(id) => {
+        try {
+          const date = new Date
+          console.log(date)
+          const currentDate = formatDate(date)
+          console.log(currentDate)
+          api.put(`/assets/${id}`, {
+            StatusID: 1,
+            StatusDate: currentDate
+          })  
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      const handleEnd = async(id) => {
+        try {
+          const date = new Date
+          console.log(date)
+          const currentDate = formatDate(date)
+          console.log(currentDate)
+          api.put(`/assets/${id}`, {
+            StatusID: 2,
+            StatusDate: currentDate
+          })  
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      
       const date= new Date()
-      const formatDate = (date) => {
+
+      const formatDatee = (date) => {
         const day = date.getDate();
         const month = date.getMonth() + 1; // Months are zero-indexed
         const year = date.getFullYear();
@@ -133,10 +79,11 @@ const AssetsOperations = () => {
       
         return `${formattedDay}-${formattedMonth}-${year}`;
       };
-      const formatedDate = formatDate(date)
+      const formatedDate = formatDatee(date)
   return (
     <SafeAreaView className="bg-white h-full">
-      <ScrollView>
+    {data ? (
+        <ScrollView>
         <Header />
         <View className="flex justify-center p-4">
             <Text className="font-tregular text-base text-center">
@@ -149,10 +96,18 @@ const AssetsOperations = () => {
               minHeight: Dimensions.get("window").height,
             }}
             >
-            <Table assetsOperation={true} header={assetsOperationHeader} data={assetsOperatinData}/>
+            <Table assetsOperation={true} header={assetsOperationHeader} data={data.machines} onStartMachine={handleStart} onCloseMachine={handleEnd}/>
         </View>
         <Toast />
       </ScrollView>
+    ) : (
+      <View className="flex justify-center p-4">
+            <Text className="font-tregular text-base text-center">
+                لا يوجد معدات
+            </Text>
+        </View>
+    )}
+      
     </SafeAreaView>
   );
 };

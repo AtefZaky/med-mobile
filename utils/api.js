@@ -68,7 +68,7 @@ const saveTokens = async (accessToken, refreshToken, username, lastActive) => {
 
 export const login = async (email, password) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/signin`, {
+    const response = await api.post(`/auth/signin`, {
       emailOrUsername: email,
       password,
     });
