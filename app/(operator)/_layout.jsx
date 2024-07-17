@@ -49,12 +49,6 @@ const AuthLayout = () => {
 							headerShown: false,
 						}}
 					/>
-					<Stack.Screen
-						name="(Maintanance)"
-						options={{
-							headerShown: false,
-						}}
-					/>
 				</Stack>
 			</SafeAreaView>
 		</>

@@ -40,7 +40,7 @@ const RootLayout = () => {
 					options={{ headerShown: false }}
 				/>
 				<Stack.Screen
-					name="(Maintanance)"
+					name="(operator)"
 					options={{ headerShown: false }}
 				/>
 			</Stack>

@@ -1,4 +1,5 @@
-import { Text, View, ScrollView, Dimensions } from "react-native";
+import { Text, View, Dimensions } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import {
@@ -48,67 +49,66 @@ const ReportFailure = () => {
 	}, []);
 
 	return (
-			<ScrollView>
-				<View>
-					<Header title={"الابلاغ عن الاعطال"} />
-				</View>
+		<ScrollView>
+			<View>
+				<Header title={"الابلاغ عن الاعطال"} />
+			</View>
 
-				{loader || !options.length ? (
-					<Loader></Loader>
-				) : (
-					<View className=" flex  gap-6  p-4 pt-6 ">
-						<View>
-							<FormField
-								value={formdata.StatusDate}
-								onChange={(value) => {
-									setFormData({ ...formdata, StatusDate: value });
-								}}
-								title={"التاريخ"}
-								placeholder={"اختر التاريخ"}></FormField>
-						</View>
-						<View>
-							<Select
-								options={options}
-								title={"المعدة"}
-								placeHolder={"اختر المعدة"}
-								setOption={(optionid) => {
-									setFormData({
-										...formdata,
-										AssetID: optionid,
-									});
-								}}></Select>
-						</View>
-						<View>
-							<Select
-								options={assetsStatus}
-								title={"حالة المعدة"}
-								placeHolder={"اختر الحالة "}
-								setOption={(optionid) => {
-									setFormData({
-										...formdata,
-										StatusID: optionid,
-									});
-								}}></Select>
-						</View>
-						<View>
-							<FormField
-								value={formdata.StatusDate}
-								onChange={(value) => {
-									setFormData({ ...formdata, StatusDate: value });
-								}}
-								title={"الاجراء المتخذ قبل الابلاغ"}
-								placeholder={"ادخل الاجراء"}></FormField>
-						</View>
-
-						<View>
-							<MainButton title={"ارسال"}></MainButton>
-						</View>
+			{loader || !options.length ? (
+				<Loader></Loader>
+			) : (
+				<View className=" flex  gap-6  p-4 pt-6 ">
+					<View>
+						<FormField
+							value={formdata.StatusDate}
+							onChange={(value) => {
+								setFormData({ ...formdata, StatusDate: value });
+							}}
+							title={"التاريخ"}
+							placeholder={"اختر التاريخ"}></FormField>
 					</View>
-				)}
-				<Toast />
-			</ScrollView>
-	);
+					<View>
+						<Select
+							options={options}
+							title={"المعدة"}
+							placeHolder={"اختر المعدة"}
+							setOption={(optionid) => {
+								setFormData({
+									...formdata,
+									AssetID: optionid,
+								});
+							}}></Select>
+					</View>
+					<View>
+						<Select
+							options={assetsStatus}
+							title={"حالة المعدة"}
+							placeHolder={"اختر الحالة "}
+							setOption={(optionid) => {
+								setFormData({
+									...formdata,
+									StatusID: optionid,
+								});
+							}}></Select>
+					</View>
+					<View>
+						<FormField
+							value={formdata.StatusDate}
+							onChange={(value) => {
+								setFormData({ ...formdata, StatusDate: value });
+							}}
+							title={"الاجراء المتخذ قبل الابلاغ"}
+							placeholder={"ادخل الاجراء"}></FormField>
+					</View>
 
+					<View>
+						<MainButton title={"ارسال"}></MainButton>
+					</View>
+				</View>
+			)}
+			<Toast />
+		</ScrollView>
+	);
 };
 
 export default ReportFailure;

@@ -13,9 +13,15 @@ export function formatDate(date) {
 	return `${formattedDate} ${formattedTime}`;
 }
 
-export function getTimeDifference(startDate) {
-	const date1 = new Date();
-	date1.setHours(date1.getHours() + 3);
+export function getTimeDifference(startDate, endDate) {
+	let date1;
+	if (endDate == null) {
+		date1 = new Date();
+		date1.setHours(date1.getHours() + 3);
+	} else {
+		date1 = new Date(endDate);
+	}
+
 	const date2 = new Date(startDate);
 
 	// Calculate the difference in milliseconds

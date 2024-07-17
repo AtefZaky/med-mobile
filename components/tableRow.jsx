@@ -4,21 +4,33 @@ import { getTimeDifference } from "../utils/dateFormater";
 import { ActivityIndicator } from "react-native";
 
 const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
-	const [date, setDate] = useState({ counter: "", startDate: item.UpdateDate });
+	const [date, setDate] = useState({
+		counter: "",
+		startDate: item.StartInTime,
+		endDate: item.EndInTime,
+	});
 	const [active, setActive] = useState(item.StatusID);
 	const [loader, setLoader] = useState({ open: false, close: false });
 
 	useEffect(() => {
 		if (active == 1) {
 			const intervalId = setInterval(() => {
+				console.log(date.startDate);
 				const time = getTimeDifference(date.startDate);
 				setDate({ ...date, counter: time });
 			}, 1000);
 			return () => clearInterval(intervalId);
+		} else if (active == 2) {
+			if (date.startDate && date.endDate) {
+				console.log(date.startDate, date.endDate);
+				const time = getTimeDifference(date.startDate, date.endDate);
+				setDate({ ...date, counter: time });
+			} else {
+				console.log(date.startDate, date.endDate);
+				setDate({ ...date, counter: 0 });
+			}
 		}
-		if (active == 2) {
-			setDate({ ...date, counter: 0 });
-		}
+
 		// Cleanup on unmount or time change
 	}, [active]);
 
@@ -34,6 +46,9 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 						setLoader({ ...loader, close: true });
 						const res = await onCloseMachine(item.AssetID);
 						if (res) {
+							const nowDate = new Date();
+							nowDate.setHours(nowDate.getHours() + 3);
+							setDate({ ...date, endDate: nowDate });
 							setActive(2);
 							setLoader({ ...loader, close: false });
 						}
@@ -72,10 +87,9 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 						const res = await onStartMachine(item.AssetID);
 						if (res) {
 							setLoader(false);
-
 							const nowDate = new Date();
 							nowDate.setHours(nowDate.getHours() + 3);
-							setDate({ counter: 0, startDate: nowDate });
+							setDate({ ...date, counter: 0, startDate: nowDate });
 							setActive(1);
 							setLoader({ ...loader, open: false });
 						}

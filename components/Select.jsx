@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { colors } from "../constants";
+import { ScrollView } from "react-native-virtualized-view";
 
 const Select = ({ setOption, options, placeHolder, title }) => {
 	const [selectedOption, setSelectedOption] = useState(null);
@@ -44,8 +45,13 @@ const Select = ({ setOption, options, placeHolder, title }) => {
 				</TouchableOpacity>
 
 				{showOptions && (
-					<View style={styles.optionsContainer}>
+					<View
+						className=""
+						style={styles.optionsContainer}>
 						<FlatList
+							className=""
+							scrollEnabled={true}
+							style={{ maxHeight: 100 }}
 							data={options}
 							keyExtractor={(item, index) => index.toString()}
 							renderItem={({ item }) => (
@@ -75,7 +81,7 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		paddingVertical: 4,
 		paddingHorizontal: 8,
-		backgroundColor: "white",
+
 		borderRadius: 5,
 		borderColor: colors.primary,
 		borderWidth: 0.5,
