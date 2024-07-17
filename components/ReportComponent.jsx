@@ -1,13 +1,15 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import tw from "twrnc";
-export default function ReportComponent({ data, onPress }) {
+export default function ReportComponent({ data, routing }) {
 	console.log(data);
 	return (
 		<View
 			className={`${data.AssetStatus == 1 ? "bg-[#E8F0EE]" : "bg-[#F9EAEB]"}`}>
 			<TouchableOpacity
-				onPress={onPress}
+				onPress={() => {
+					routing(data.AssetID);
+				}}
 				className=" font-tmedium flex flex-row items-center px-4 gap-2 justify-center"
 				style={[
 					tw`   flex-1 flex justify-between items-center  flex-row-reverse  items-center p-[16px]   `,

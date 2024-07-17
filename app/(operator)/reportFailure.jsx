@@ -1,4 +1,5 @@
-import { Text, View, ScrollView, Dimensions } from "react-native";
+import { Text, View, Dimensions } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { useNavigation } from '@react-navigation/native';
@@ -79,10 +80,11 @@ const ReportFailure = () => {
   };
 
 	return (
-			<ScrollView>
-				<View>
-					<Header title={"الابلاغ عن الاعطال"} />
-				</View>
+		<ScrollView>
+			<View>
+				<Header title={"الابلاغ عن الاعطال"} />
+			</View>
+
 
 				{loader || !options.length ? (
 					<Loader></Loader>
@@ -134,12 +136,13 @@ const ReportFailure = () => {
 						<View>
 							<MainButton title={"ارسال"} handlePress={submitData}></MainButton>
 						</View>
-					</View>
-				)}
-				<Toast />
-			</ScrollView>
-	);
 
+					</View>
+				</View>
+			)}
+			<Toast />
+		</ScrollView>
+	);
 };
 
 export default ReportFailure;

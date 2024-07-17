@@ -1,68 +1,121 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { getTimeDifference } from '../utils/dateFormater'
+import { View, Text, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { getTimeDifference } from "../utils/dateFormater";
+import { ActivityIndicator } from "react-native";
 
-const TableRow = ({item, onStartMachine, onCloseMachine}) => {
-    const [time, setTime] = useState(0)
-    console.log(item)
-    useEffect(() => {
-        const date = new Date
-        console.log(date)
-        setTimeout(() => {
-            const time = getTimeDifference(item.UpdateDate, date)
-            console.log(time)
-            setTime(time)
-        }, 1000);
-    }, [time])
-    console.log(time)
-    
-  return (
-    <View className="flex flex-row justify-between py-2  px-3 items-center">
-    <View className="basis-1/4">
-        <Text className="text-center font-tmedium">
-            {time}
-        </Text>
-    </View>
-    <View className="basis-1/4">
-        <TouchableOpacity
-            onPress={() => {
-                onCloseMachine(item.AssetID);
-            }}
-            className={`${
-                item.IsActive == 2
-                    ? "text-[#F15555] bg-[#F9EAEB]										]"
-                    : "bg-[#F15555] text-white "
-            } px-4 py-1 rounded-md max-w-[70px] ml-3`}>
-            <Text
-                className={`text-center font-tmedium
-                    ${item.IsActive == 2 ? "text-[#F15555] " : " text-white "}`}>
-                ايقاف
-            </Text>
-        </TouchableOpacity>
-    </View>
-    <View className="basis-1/4">
-        <TouchableOpacity
-            className={`${
-                item.IsActive == 1
-                    ? "text-[#019444] bg-[#E8F0EE]"
-                    : "bg-[#019444] text-white "
-            }  px-6 py-1 rounded-md max-w-[70px] ml-3`}
-            onPress={() => {
-                onStartMachine(item.AssetID);
-            }}>
-            <Text
-                className={`font-tmedium ${
-                    item.IsActive == 1 ? "text-[#019444]" : " text-white"
-                }`}>
-                بدء
-            </Text>
-        </TouchableOpacity>
-    </View>
-    <View className="basis-1/5">
-        <Text className="font-tmedium">{item.AssetName}</Text>
-    </View>
-</View>
-  )
-}
+const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
+	const [date, setDate] = useState({
+		counter: "",
+		startDate: item.StartInTime,
+		endDate: item.EndInTime,
+	});
+	const [active, setActive] = useState(item.StatusID);
+	const [loader, setLoader] = useState({ open: false, close: false });
 
-export default TableRow
+	useEffect(() => {
+		if (active == 1) {
+			const intervalId = setInterval(() => {
+				console.log(date.startDate);
+				const time = getTimeDifference(date.startDate);
+				setDate({ ...date, counter: time });
+			}, 1000);
+			return () => clearInterval(intervalId);
+		} else if (active == 2) {
+			if (date.startDate && date.endDate) {
+				console.log(date.startDate, date.endDate);
+				const time = getTimeDifference(date.startDate, date.endDate);
+				setDate({ ...date, counter: time });
+			} else {
+				console.log(date.startDate, date.endDate);
+				setDate({ ...date, counter: 0 });
+			}
+		}
+
+		// Cleanup on unmount or time change
+	}, [active]);
+
+	return (
+		<View className="flex flex-row justify-between py-2  px-3 items-center">
+			<View className="basis-1/4">
+				<Text className="text-center font-tmedium">{date.counter}</Text>
+			</View>
+			<View className="basis-1/4">
+				<TouchableOpacity
+					disabled={active == 2}
+					onPress={async () => {
+						setLoader({ ...loader, close: true });
+						const res = await onCloseMachine(item.AssetID);
+						if (res) {
+							const nowDate = new Date();
+							nowDate.setHours(nowDate.getHours() + 3);
+							setDate({ ...date, endDate: nowDate });
+							setActive(2);
+							setLoader({ ...loader, close: false });
+						}
+					}}
+					className={`${
+						active == 2
+							? "text-[#F15555] bg-[#F9EAEB]										]"
+							: "bg-[#F15555] text-white "
+					} px-4 py-1 rounded-md max-w-[70px] ml-3`}>
+					{loader.close ? (
+						<ActivityIndicator
+							animating={loader.close}
+							color="#fff"
+							size="small"
+							className="ml-2"
+						/>
+					) : (
+						<Text
+							className={`text-center font-tmedium
+                    ${active == 2 ? "text-[#F15555] " : " text-white "}`}>
+							ايقاف
+						</Text>
+					)}
+				</TouchableOpacity>
+			</View>
+			<View className="basis-1/4">
+				<TouchableOpacity
+					className={`${
+						active == 1
+							? "text-[#019444] bg-[#E8F0EE]"
+							: "bg-[#019444] text-white "
+					}  px-6 py-1 rounded-md max-w-[70px] ml-3`}
+					disabled={active == 1}
+					onPress={async () => {
+						setLoader({ ...loader, open: true });
+						const res = await onStartMachine(item.AssetID);
+						if (res) {
+							setLoader(false);
+							const nowDate = new Date();
+							nowDate.setHours(nowDate.getHours() + 3);
+							setDate({ ...date, counter: 0, startDate: nowDate });
+							setActive(1);
+							setLoader({ ...loader, open: false });
+						}
+					}}>
+					{loader.open ? (
+						<ActivityIndicator
+							animating={loader.open}
+							color="#fff"
+							size="small"
+							className="ml-2"
+						/>
+					) : (
+						<Text
+							className={`font-tmedium ${
+								active == 1 ? "text-[#019444]" : " text-white"
+							}`}>
+							بدء
+						</Text>
+					)}
+				</TouchableOpacity>
+			</View>
+			<View className="basis-1/5">
+				<Text className="font-tmedium">{item.AssetName}</Text>
+			</View>
+		</View>
+	);
+};
+
+export default TableRow;
