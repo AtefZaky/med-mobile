@@ -8,7 +8,6 @@ import { useGlobalContext } from '../../context/GlobalProvider';
 const ReportFailure = () => {
   const {user} = useGlobalContext()
   return (
-    <SafeAreaView className="bg-white h-full">
       <ScrollView>
         <View
           className="w-full flex justify-center h-full px-4 my-6"
@@ -24,7 +23,6 @@ const ReportFailure = () => {
         </View>
         <Toast />
       </ScrollView>
-    </SafeAreaView>
   );
 };
 

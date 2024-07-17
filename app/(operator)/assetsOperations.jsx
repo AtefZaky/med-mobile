@@ -81,10 +81,9 @@ const AssetsOperations = () => {
       };
       const formatedDate = formatDatee(date)
   return (
-    <SafeAreaView className="bg-white h-full">
+    <>
     {data ? (
         <ScrollView>
-        <Header />
         <View className="flex justify-center p-4">
             <Text className="font-tregular text-base text-center">
                 {formatedDate}
@@ -107,8 +106,7 @@ const AssetsOperations = () => {
             </Text>
         </View>
     )}
-      
-    </SafeAreaView>
+      </>
   );
 };
 
