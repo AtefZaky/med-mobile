@@ -7,7 +7,7 @@ import {
 	Loader,
 	MainButton,
 	Select,
-} from "../../components/index";
+} from "../../components";
 import React, { Component, useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import api from "../../utils/api";
@@ -48,7 +48,6 @@ const ReportFailure = () => {
 	}, []);
 
 	return (
-		<SafeAreaView className="bg-white h-full">
 			<ScrollView>
 				<View>
 					<Header title={"الابلاغ عن الاعطال"} />
@@ -108,7 +107,6 @@ const ReportFailure = () => {
 				)}
 				<Toast />
 			</ScrollView>
-		</SafeAreaView>
 	);
 
 };

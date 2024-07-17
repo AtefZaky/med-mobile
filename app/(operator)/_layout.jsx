@@ -1,6 +1,6 @@
 import { Redirect, Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
-import { Loader, Header } from "../../components";
+import { Loader } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -16,7 +16,6 @@ const AuthLayout = () => {
   return (
     <>
     <SafeAreaView className="bg-white h-full">
-    <Header />
       <Stack>
         <Stack.Screen
           name="home"

@@ -30,7 +30,7 @@ const Header = ({ title, hasLeftComponent = false, onDrawerPress }) => {
             <Icon name="menu" size={24} color="#fff" style={styles.leftComponentIcon} />
           </TouchableOpacity>
         )}
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title} className="font-tregular">{title}</Text>
         <View style={styles.rightComponent}>
           <TouchableOpacity onPress={()=> router.replace("/home")}>
             <Image source={icons.ArrowRight} style={styles.rightComponentIcon} resizeMode='contain' />

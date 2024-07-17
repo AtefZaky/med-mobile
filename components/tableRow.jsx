@@ -8,11 +8,11 @@ const TableRow = ({item, onStartMachine, onCloseMachine}) => {
     useEffect(() => {
         const date = new Date
         console.log(date)
-        // setTimeout(() => {
+        setTimeout(() => {
             const time = getTimeDifference(item.UpdateDate, date)
             console.log(time)
             setTime(time)
-        // }, 10000);
+        }, 1000);
     }, [time])
     console.log(time)
     

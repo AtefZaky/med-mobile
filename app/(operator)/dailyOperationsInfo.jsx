@@ -1,15 +1,14 @@
 import { Text, View, ScrollView, Dimensions } from 'react-native'
-import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
-
+import { Header } from '../../components';
 import React, { Component } from 'react'
 import { useGlobalContext } from '../../context/GlobalProvider';
-import SelectComponenet from '../../components/SelectComponeent';
 
 const DailyOperationsInfo = () => {
   const {user} = useGlobalContext()
   return (
       <ScrollView>
+        <Header title="المناسيب اليومية" />
         <View
           className="w-full flex justify-center h-full px-4 my-6"
           style={{
@@ -21,7 +20,6 @@ const DailyOperationsInfo = () => {
                 <Text className="text-right font-tbold text-base text-primary mb-4">{user.username}</Text>
                 <Text className="text-base text-primary font-tregular">اخر ظهور : <Text className="text-sm font-tlight">{user.lastActive}</Text></Text>
             </View>
-            <SelectComponenet title="dfsf"/>
         </View>
         <Toast />
       </ScrollView>

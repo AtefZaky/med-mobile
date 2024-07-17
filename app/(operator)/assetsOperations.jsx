@@ -84,6 +84,7 @@ const AssetsOperations = () => {
     <>
     {data ? (
         <ScrollView>
+          <Header title="تشغيل و ايقاف الوحدات" />
         <View className="flex justify-center p-4">
             <Text className="font-tregular text-base text-center">
                 {formatedDate}

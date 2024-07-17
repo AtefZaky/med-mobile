@@ -17,6 +17,7 @@ const Home = () => {
     
   return (
       <ScrollView>
+        <Header />
         <View
           className="flex px-4 my-6"
           style={{
