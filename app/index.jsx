@@ -38,7 +38,7 @@ const Welcome = () => {
     try {
       const result = await login(form.username, form.password);
     //   const result = await getCurrentUser();
-      setUser({username: result.username, lastActive: result.lastActive});
+      setUser({username: result.username, lastActive: result.lastActive, type: result.UserTypeID, DepartmentID: result.UserDepartmentID });
       setIsLogged(true);
       // Toast.show({
       //   type: "success",
