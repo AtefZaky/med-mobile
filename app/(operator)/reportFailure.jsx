@@ -1,6 +1,7 @@
 import { Text, View, ScrollView, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
+import { useNavigation } from '@react-navigation/native';
 import {
 	FormField,
 	Header,
@@ -16,20 +17,20 @@ const ReportFailure = () => {
 	const [options, setOptions] = useState([]);
 	const [loader, setloader] = useState(true);
 	const [formdata, setFormData] = useState({
-		DepartmentID: "",
 		StatusDate: "",
 		AssetID: "",
-		FailureِAction: " ",
+		FailureِAction: "",
 		StatusID: "",
 	});
 	const assetsStatus = [
 		{ option: "يعمل", id: "1" },
 		{ option: "متوقف", id: "2" },
-		{ option: "بلاغ", id: "3" },
-		{ option: "عاطل", id: "4" },
-		{ option: "عمرة", id: "5" },
-		{ option: "لا يوجد", id: "6" },
+		// { option: "بلاغ", id: "3" },
+		// { option: "عاطل", id: "4" },
+		// { option: "عمرة", id: "5" },
+		// { option: "لا يوجد", id: "6" },
 	];
+  const navigation = useNavigation();
 	const getAssets = async () => {
 		const { data } = await api.get("/assets");
 		if (data.success) {
@@ -47,6 +48,36 @@ const ReportFailure = () => {
 		getAssets();
 	}, []);
 
+  const submitData = async () => {
+    console.log(formdata.StatusID)
+    console.log(formdata)
+    console.log(user)
+    try {
+      const data = {
+        DepartmentID: user.DepartmentID,
+        StatusDate: formdata.StatusDate,
+        AssetID: formdata.AssetID,
+        FailureِAction: formdata.FailureِAction,
+        StatusID: formdata.StatusID
+      }
+      const res = await api.post('/failure/report', data);
+      console.log('Response:', res);
+      navigation.navigate('home')
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error('Response Error:', error.response.data);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('Request Error:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error:', error.message);
+      }
+    }
+  };
+
 	return (
 			<ScrollView>
 				<View>
@@ -56,11 +87,11 @@ const ReportFailure = () => {
 				{loader || !options.length ? (
 					<Loader></Loader>
 				) : (
-					<View className=" flex  gap-6  p-4 pt-6 ">
+					<View className=" flex  gap-6  p-4 pt-6">
 						<View>
 							<FormField
 								value={formdata.StatusDate}
-								onChange={(value) => {
+								handleChangeText={(value) => {
 									setFormData({ ...formdata, StatusDate: value });
 								}}
 								title={"التاريخ"}
@@ -92,16 +123,16 @@ const ReportFailure = () => {
 						</View>
 						<View>
 							<FormField
-								value={formdata.StatusDate}
-								onChange={(value) => {
-									setFormData({ ...formdata, StatusDate: value });
+								value={formdata.FailureِAction}
+								handleChangeText={(value) => {
+									setFormData({ ...formdata, FailureِAction: value });
 								}}
 								title={"الاجراء المتخذ قبل الابلاغ"}
 								placeholder={"ادخل الاجراء"}></FormField>
 						</View>
 
 						<View>
-							<MainButton title={"ارسال"}></MainButton>
+							<MainButton title={"ارسال"} handlePress={submitData}></MainButton>
 						</View>
 					</View>
 				)}

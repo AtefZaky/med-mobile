@@ -24,7 +24,7 @@ const Select = ({ setOption, options, placeHolder, title }) => {
 	};
 
 	return (
-		<View className="gap-2">
+		<View className="gap-2 mr-2">
 			<View>
 				<Text className="font-tbold">{title}</Text>
 			</View>
@@ -38,7 +38,7 @@ const Select = ({ setOption, options, placeHolder, title }) => {
 						color="#2B2B2B"
 					/>
 
-					<Text style={styles.selectButtonText}>
+					<Text style={styles.selectButtonText} className=" font-tregular p-2">
 						{selectedOption ? selectedOption : placeHolder}
 					</Text>
 				</TouchableOpacity>
@@ -51,7 +51,8 @@ const Select = ({ setOption, options, placeHolder, title }) => {
 							renderItem={({ item }) => (
 								<TouchableOpacity
 									style={styles.optionItem}
-									onPress={() => handleOptionSelect(item.option, item.id)}>
+									onPress={() => handleOptionSelect(item.option, item.id)}
+								>
 									<Text style={styles.optionText}>{item.option}</Text>
 								</TouchableOpacity>
 							)}

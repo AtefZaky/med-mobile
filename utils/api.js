@@ -74,12 +74,12 @@ export const login = async (email, password) => {
     });
 
     const { accessToken, refreshToken, user, success } = response.data;
-    const {username, lastActive} = user
+    const {username, lastActive, UserTypeID, UserDepartmentID} = user
 
     if (success) {
       await saveTokens(accessToken, refreshToken, username, lastActive);
       console.log('Login successful:', username)
-      return { accessToken, refreshToken, username, lastActive };
+      return { accessToken, refreshToken, username, lastActive, UserTypeID, UserDepartmentID};
     } else {
       console.error('Login failed:', response.data);
       throw new Error('Login failed');
