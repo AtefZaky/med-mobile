@@ -40,6 +40,7 @@
     "react-native-screens": "3.31.1",
     "react-native-toast-message": "^2.2.0",
     "react-native-url-polyfill": "^2.0.0",
+    "react-native-virtualized-view": "^1.0.0",
     "react-native-web": "~0.19.10",
     "twrnc": "^4.4.0"
   },
