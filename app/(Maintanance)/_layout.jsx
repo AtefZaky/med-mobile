@@ -25,32 +25,31 @@ const AuthLayout = () => {
 					/>
 
 					<Stack.Screen
-						name="assetsOperations"
+						name="chatbot"
 						options={{
 							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
-						name="dailyPercentage"
+						name="dailyExamination"
 						options={{
 							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
-						name="dailyOperationsInfo"
-						options={{
-							headerShown: false,
-						}}
-					/>
-
-					<Stack.Screen
-						name="reportFailure"
+						name="failureDetails/[id]"
 						options={{
 							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
-						name="(Maintanance)"
+						name="maintanaceHelper"
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="reports"
 						options={{
 							headerShown: false,
 						}}

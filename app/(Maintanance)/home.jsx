@@ -36,25 +36,20 @@ const Home = () => {
 					</Text>
 				</View>
 				<MainButton
-					title="تشغيل و ايقاف الوحدات"
+					title="بينات الفحص اليومي"
 					containerStyles="mt-7"
-					handlePress={() => navigation.navigate("assetsOperations")}
-				/>
-				<MainButton
-					title="المناسيب اليومية"
-					containerStyles="mt-7"
-					handlePress={() => navigation.navigate("dailyPercentage")}
+					handlePress={() => navigation.navigate("dailyExamination")}
 				/>
 
 				<MainButton
-					title="بيانات التشغيل اليومية"
+					title="المساعدة في الصيانة"
 					containerStyles="mt-7"
-					handlePress={() => navigation.navigate("dailyOperationsInfo")}
+					handlePress={() => navigation.navigate("maintanaceHelper")}
 				/>
 				<MainButton
-					title="الابلاغ عن العطال"
+					title="البلاغات"
 					containerStyles="mt-7"
-					handlePress={() => navigation.navigate("reportFailure")}
+					handlePress={() => navigation.navigate("reports")}
 				/>
 			</View>
 			<Toast />

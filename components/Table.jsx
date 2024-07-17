@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
 	FlatList,
 	StyleSheet,
@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import ReportComponent from "../components/ReportComponent";
 import TableRow from "./tableRow";
-
 
 const Table = ({
 	header,
@@ -40,7 +39,11 @@ const Table = ({
 					renderItem={({ item }) => {
 						if (assetsOperation) {
 							return (
-								<TableRow item={item} onStartMachine={onStartMachine} onCloseMachine={onCloseMachine} />
+								<TableRow
+									item={item}
+									onStartMachine={onStartMachine}
+									onCloseMachine={onCloseMachine}
+								/>
 								// <View className="flex flex-row justify-between py-2  px-3 items-center">
 								// 	<View className="basis-1/4">
 								// 		<Text className="text-center font-tmedium">
@@ -86,14 +89,13 @@ const Table = ({
 								// 		<Text className="font-tmedium">{item.AssetName}</Text>
 								// 	</View>
 								// </View>
-
 							);
 						} else if (reports) {
 							return (
 								<ReportComponent
 									data={item}
-									onPress={() => {
-										routingfunction;
+									routing={(AssetID) => {
+										routingfunction(AssetID);
 									}}
 								/>
 							);
