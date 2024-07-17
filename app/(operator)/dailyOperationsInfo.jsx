@@ -9,7 +9,6 @@ import SelectComponenet from '../../components/SelectComponeent';
 const DailyOperationsInfo = () => {
   const {user} = useGlobalContext()
   return (
-    <SafeAreaView className="bg-white h-full">
       <ScrollView>
         <View
           className="w-full flex justify-center h-full px-4 my-6"
@@ -26,7 +25,6 @@ const DailyOperationsInfo = () => {
         </View>
         <Toast />
       </ScrollView>
-    </SafeAreaView>
   );
 };
 

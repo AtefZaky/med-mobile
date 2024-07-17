@@ -110,6 +110,7 @@ const ReportFailure = () => {
 			</ScrollView>
 		</SafeAreaView>
 	);
+
 };
 
 export default ReportFailure;

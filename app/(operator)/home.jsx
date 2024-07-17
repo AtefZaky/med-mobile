@@ -16,8 +16,6 @@ const Home = () => {
     // }, [third])
     
   return (
-    <SafeAreaView className="bg-white h-full">
-        <Header />
       <ScrollView>
         <View
           className="flex px-4 my-6"
@@ -53,7 +51,6 @@ const Home = () => {
         </View>
         <Toast />
       </ScrollView>
-    </SafeAreaView>
   );
 };
 

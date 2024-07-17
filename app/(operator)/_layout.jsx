@@ -1,7 +1,8 @@
 import { Redirect, Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
-import { Loader } from "../../components";
+import { Loader, Header } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const AuthLayout = () => {
   const { loading, isLogged } = useGlobalContext();
@@ -14,6 +15,8 @@ const AuthLayout = () => {
 
   return (
     <>
+    <SafeAreaView className="bg-white h-full">
+    <Header />
       <Stack>
         <Stack.Screen
           name="home"
@@ -46,6 +49,7 @@ const AuthLayout = () => {
           }}
         />
       </Stack>
+      </SafeAreaView>
     </>
   );
 };
