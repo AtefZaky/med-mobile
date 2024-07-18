@@ -34,7 +34,7 @@ export default function reports() {
 	const issueHeader = ["الحالة", "التاريخ", "المعدة", "الاعطال"];
 
 	return (
-		<SafeAreaView>
+		<>
 			<Header title={"البلاغات"}></Header>
 			<ScrollView className="h-[70vh]">
 				{loader ? (
@@ -51,6 +51,6 @@ export default function reports() {
 			<View className="px-4">
 				<MainButton title={"انشاء بلاغ"}></MainButton>
 			</View>
-		</SafeAreaView>
+			</>
 	);
 }

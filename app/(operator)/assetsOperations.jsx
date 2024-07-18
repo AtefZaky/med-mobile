@@ -101,7 +101,6 @@ const AssetsOperations = () => {
 							<View
 								className="w-full flex py-4"
 								style={{
-									minHeight: Dimensions.get("window").height,
 									flexGrow: 1,
 								}}>
 								<Table

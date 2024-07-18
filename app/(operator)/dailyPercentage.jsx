@@ -27,10 +27,7 @@ const DailyPercentage = () => {
 				</View>
 
 				<View
-					className="w-full flex mt-4"
-					style={{
-						minHeight: Dimensions.get("window").height - 100,
-					}}>
+					className="w-full flex mt-4">
 					<Table
 						header={header}
 						dailyPrecentageData={true}

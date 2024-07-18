@@ -2,7 +2,7 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
 // Define your API base URL
-const API_BASE_URL = "http://192.168.1.11:5000/api";
+const API_BASE_URL = "http://192.168.1.13:5000/api";
 
 // Create an Axios instance
 const api = axios.create({
@@ -58,11 +58,13 @@ api.interceptors.response.use(
 	}
 );
 
-const saveTokens = async (accessToken, refreshToken, username, lastActive) => {
+const saveTokens = async (accessToken, refreshToken, username, lastActive, UserTypeID, UserDepartmentID) => {
 	await SecureStore.setItemAsync("accessToken", accessToken);
 	await SecureStore.setItemAsync("refreshToken", refreshToken);
-	await SecureStore.setItemAsync("username", username);
-	await SecureStore.setItemAsync("lastActive", lastActive);
+	await SecureStore.setItemAsync("username", JSON.stringify(username));
+	await SecureStore.setItemAsync("lastActive", JSON.stringify(lastActive));
+	await SecureStore.setItemAsync("UserTypeID", JSON.stringify(UserTypeID));
+	await SecureStore.setItemAsync("UserDepartmentID", JSON.stringify(UserDepartmentID));
 };
 
 // Usage in your login function
@@ -78,7 +80,7 @@ export const login = async (email, password) => {
 		const { username, lastActive, UserTypeID, UserDepartmentID } = user;
 
 		if (success) {
-			await saveTokens(accessToken, refreshToken, username, lastActive);
+			await saveTokens(accessToken, refreshToken, username, lastActive, UserTypeID, UserDepartmentID);
 			console.log("Login successful:", username);
 			return {
 				accessToken,

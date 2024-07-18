@@ -3,13 +3,18 @@ import { useEffect } from "react";
 import { Loader } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { roles } from "../../constants";
 
 const AuthLayout = () => {
-	const { loading, isLogged } = useGlobalContext();
+	const { loading, isLogged, user } = useGlobalContext();
 	const router = useRouter();
 	useEffect(() => {
 		if (isLogged) {
-			return <Redirect href="/home" />;
+			if (user.type === roles.operator) {
+				router.replace("/home");
+			  } else if (user.type === roles.maintenar) {
+				router.replace("/Maintanacehome");
+			  }
 		}
 	}, [isLogged, router]);
 

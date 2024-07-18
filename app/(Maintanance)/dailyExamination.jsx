@@ -58,7 +58,7 @@ export default function dailyExamination() {
 			};
 			const res = await api.post("/failure/report", data);
 			console.log("Response:", res);
-			navigation.navigate("home");
+			navigation.navigate("/Maintanacehome");
 		} catch (error) {
 			if (error.response) {
 				// The request was made and the server responded with a status code
