@@ -58,7 +58,7 @@ const Welcome = () => {
 			//     textAlign: 'right',
 			//   },
 			// })
-			router.push("/Maintanacehome");
+			router.replace("/Maintanacehome");
 		} catch (error) {
 			// Toast.show({
 			//   type: "error",
@@ -80,7 +80,7 @@ const Welcome = () => {
 
 	useEffect(() => {
 		if (isLogged) {
-			router.push("/Maintanacehome");
+			router.replace("/Maintanacehome");
 		}
 	}, [isLogged, router]);
 
@@ -88,11 +88,7 @@ const Welcome = () => {
 		<SafeAreaView className="bg-white h-full">
 			<ScrollView>
 				<LogoBar />
-				<View
-					className="h-full px-4 my-6 mt-20"
-					style={{
-						minHeight: Dimensions.get("window").height,
-					}}>
+				<View className="h-full px-4 my-6 mt-20">
 					{/* <Image
             // source={.logo}
             resizeMode="contain"

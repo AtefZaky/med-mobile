@@ -9,6 +9,7 @@ import GlobalProvider from "../context/GlobalProvider";
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
+
   const [fontsLoaded, error] = useFonts({
     "Tajawal-Bold": require("../assets/fonts/Tajawal-Bold.ttf"),
     "Tajawal-Light": require("../assets/fonts/Tajawal-Light.ttf"),
@@ -41,6 +42,7 @@ const RootLayout = () => {
       </Stack>
     </GlobalProvider>
   );
+
 };
 
 export default RootLayout;

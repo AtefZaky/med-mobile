@@ -18,11 +18,7 @@ const Home = () => {
 	return (
 		<ScrollView>
 			<Header />
-			<View
-				className="flex px-4 my-6"
-				style={{
-					minHeight: Dimensions.get("window").height,
-				}}>
+			<View className="flex px-4 my-6">
 				<View className=" mb-20">
 					<Text className="text-right font-tregular text-base text-primary">
 						مرحبا بك

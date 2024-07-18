@@ -9,7 +9,7 @@ const AuthLayout = () => {
 	const router = useRouter();
 	useEffect(() => {
 		if (isLogged) {
-			return <Redirect href="/home" />;
+			router.replace("/Maintanacehome");
 		}
 	}, [isLogged, router]);
 

@@ -57,7 +57,7 @@ export default function dailyExamination() {
 				Notes: formdata.Notes,
 			};
 			const res = await api.post("/failure/report", data);
-			console.log("Response:", res);
+
 			navigation.navigate("home");
 		} catch (error) {
 			if (error.response) {
