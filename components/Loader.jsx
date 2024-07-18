@@ -7,31 +7,31 @@ const Loader = ({ isLoading }) => {
 
   return (
     <View
-      className="absolute flex justify-center items-center w-full h-full bg-primary/60 z-10"
+      className="absolute flex justify-center items-center w-full h-full bg-white z-10"
       style={{
         height: screenHeight,
       }}
     >
       <ActivityIndicator
         animating={isLoading}
-        color="#fff"
+        color="#227099"
       />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-    loaderContainer: {
-        position: "absolute",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "full",
-        height: "full",
-        backgroundColor: "white",
-        zIndex: "10"
-    }
-}
+// const styles = StyleSheet.create({
+//     loaderContainer: {
+//         position: "absolute",
+//         justifyContent: "center",
+//         alignItems: "center",
+//         width: "full",
+//         height: "full",
+//         backgroundColor: "white",
+//         zIndex: "10"
+//     }
+// }
     
-);
+// );
 
 export default Loader;
