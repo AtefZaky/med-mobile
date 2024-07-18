@@ -9,7 +9,7 @@ const AuthLayout = () => {
 	const router = useRouter();
 	useEffect(() => {
 		if (isLogged) {
-			router.replace("/home");
+			router.replace("/Maintanacehome");
 		}
 	}, [isLogged, router]);
 

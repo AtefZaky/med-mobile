@@ -18,11 +18,7 @@ const Maintanacehome = () => {
 	return (
 		<ScrollView>
 			<Header />
-			<View
-				className="flex px-4 my-6"
-				style={{
-					minHeight: Dimensions.get("window").height,
-				}}>
+			<View className="flex px-4 my-6">
 				<View className=" mb-20">
 					<Text className="text-right font-tregular text-base text-primary">
 						مرحبا بك
@@ -48,7 +44,7 @@ const Maintanacehome = () => {
 				/>
 				<MainButton
 					title="البلاغات"
-					containerSt0yles="mt-7"
+					containerStyles="mt-7"
 					handlePress={() => navigation.navigate("reports")}
 				/>
 			</View>

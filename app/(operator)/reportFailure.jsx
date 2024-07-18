@@ -109,17 +109,6 @@ const ReportFailure = () => {
 							onChange={(key) => {
 								setFormData({ ...formdata, AssetID: key });
 							}}></Dropdown>
-
-						{/* <Select
-							options={options}
-							title={"المعدة"}
-							placeHolder={"اختر المعدة"}
-							setOption={(optionid) => {
-								setFormData({
-									...formdata,
-									AssetID: optionid,
-								});
-							}}></Select> */}
 					</View>
 					<View>
 						<Dropdown
@@ -132,17 +121,6 @@ const ReportFailure = () => {
 									StatusID: optionid,
 								});
 							}}></Dropdown>
-
-						{/* <Select
-							options={assetsStatus}
-							title={"حالة المعدة"}
-							placeHolder={"اختر الحالة "}
-							setOption={(optionid) => {
-								setFormData({
-									...formdata,
-									StatusID: optionid,
-								});
-							}}></Select> */}
 					</View>
 					<View>
 						<FormField
