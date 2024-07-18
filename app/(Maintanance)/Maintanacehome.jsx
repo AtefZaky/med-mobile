@@ -11,10 +11,6 @@ const Maintanacehome = () => {
 	const { user } = useGlobalContext();
 	const navigation = useNavigation();
 	const [data, setData] = useState(null);
-	// useEffect(() => {
-
-	// }, [third])
-
 	return (
 		<ScrollView>
 			<Header />
