@@ -15,18 +15,15 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 	useEffect(() => {
 		if (active == 1) {
 			const intervalId = setInterval(() => {
-				console.log(date.startDate);
 				const time = getTimeDifference(date.startDate);
 				setDate({ ...date, counter: time });
 			}, 1000);
 			return () => clearInterval(intervalId);
 		} else if (active == 2) {
 			if (date.startDate && date.endDate) {
-				console.log(date.startDate, date.endDate);
 				const time = getTimeDifference(date.startDate, date.endDate);
 				setDate({ ...date, counter: time });
 			} else {
-				console.log(date.startDate, date.endDate);
 				setDate({ ...date, counter: 0 });
 			}
 		}
