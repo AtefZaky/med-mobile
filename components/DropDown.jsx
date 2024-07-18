@@ -1,28 +1,44 @@
-import DropDownPicker from "react-native-dropdown-picker";
-import { useState } from "react";
-import primary from "../constants";
-export default function DropDown({ items, setOption, setItems, value }) {
-	const [open, setOpen] = useState(false);
+import { StyleSheet, View, Text } from "react-native";
+import React, { useState } from "react";
+import { SelectList } from "react-native-dropdown-select-list";
 
-	// const [value, setValue] = useState(null);
-
-	// const [items, setItems] = useState([
-	// 	{ label: "Apple", value: "apple" },
-	// 	{ label: "Banana", value: "banana" },
-	// ]);
-
+export default function Dropdown({ data, onChange, placeholder, title }) {
+	function getValueById(array, id) {
+		const item = array.find((element) => element.key === id);
+		return item ? item.value : null; // Return null or a default value if the item is not found
+	}
+	const changeDropDown = (key) => {
+		onChange(key);
+	};
 	return (
-		<DropDownPicker
-			autoScroll={true}
-			style={{ borderColor: "#1C5B7D" }}
-			open={open}
-			value={value}
-			items={items}
-			setOpen={setOpen}
-			setValue={(value) => {
-				setOption(value);
-			}}
-			setItems={setItems}
-		/>
+		<View>
+			<View className="mb-2">
+				<Text className="font-tbold">{title}</Text>
+			</View>
+			<SelectList
+				data={data}
+				placeholder={placeholder}
+				boxStyles={{
+					alignItems: "center",
+					justifyContent: "space-between",
+					padding: 12,
+					display: "flex",
+					flexDirection: "row-reverse",
+					borderColor: "#1C5B7D",
+					opacity: 0.65,
+					borderWidth: 0.5,
+					minHeight: 65,
+				}}
+				fontFamily="Tajawal-Medium"
+				dropdownStyles={{
+					borderColor: "#1C5B7D",
+					borderWidth: 0.5,
+				}}
+				searchPlaceholder="بحث"
+				setSelected={changeDropDown}
+			/>
+		</View>
 	);
 }
+
+const styles = StyleSheet.create({});

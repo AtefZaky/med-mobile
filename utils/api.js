@@ -2,7 +2,7 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
 // Define your API base URL
-const API_BASE_URL = "http://192.168.1.19:5000/api";
+const API_BASE_URL = "http://192.168.1.13:5000/api";
 
 // Create an Axios instance
 const api = axios.create({
@@ -67,29 +67,34 @@ const saveTokens = async (accessToken, refreshToken, username, lastActive) => {
 // Usage in your login function
 
 export const login = async (email, password) => {
+	try {
+		const response = await api.post(`/auth/signin`, {
+			emailOrUsername: email,
+			password,
+		});
 
-  try {
-    const response = await api.post(`/auth/signin`, {
-      emailOrUsername: email,
-      password,
-    });
+		const { accessToken, refreshToken, user, success } = response.data;
+		const { username, lastActive, UserTypeID, UserDepartmentID } = user;
 
-    const { accessToken, refreshToken, user, success } = response.data;
-    const {username, lastActive, UserTypeID, UserDepartmentID} = user
-
-    if (success) {
-      await saveTokens(accessToken, refreshToken, username, lastActive);
-      console.log('Login successful:', username)
-      return { accessToken, refreshToken, username, lastActive, UserTypeID, UserDepartmentID};
-    } else {
-      console.error('Login failed:', response.data);
-      throw new Error('Login failed');
-    }
-  } catch (error) {
-    console.error('Login error:', error.message);
-    throw error;
-  }
-
+		if (success) {
+			await saveTokens(accessToken, refreshToken, username, lastActive);
+			console.log("Login successful:", username);
+			return {
+				accessToken,
+				refreshToken,
+				username,
+				lastActive,
+				UserTypeID,
+				UserDepartmentID,
+			};
+		} else {
+			console.error("Login failed:", response.data);
+			throw new Error("Login failed");
+		}
+	} catch (error) {
+		console.error("Login error:", error.message);
+		throw error;
+	}
 };
 
 export default api;

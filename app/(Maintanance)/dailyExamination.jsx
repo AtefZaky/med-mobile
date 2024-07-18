@@ -1,44 +1,33 @@
-import { Text, View, Dimensions } from "react-native";
-
-import { ScrollView } from "react-native-virtualized-view";
-
-import Toast from "react-native-toast-message";
-import { useNavigation } from "@react-navigation/native";
-import { SelectList } from "react-native-dropdown-select-list";
-
 import {
 	FormField,
 	Header,
 	Loader,
 	MainButton,
 	Dropdown,
-	Select,
 } from "../../components";
-import React, { Component, useEffect, useState } from "react";
+import { ScrollView } from "react-native-virtualized-view";
+import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import api from "../../utils/api";
-
-const ReportFailure = () => {
+import { useNavigation } from "@react-navigation/native";
+import { View } from "react-native";
+export default function dailyExamination() {
 	const { user } = useGlobalContext();
 	const [options, setOptions] = useState([]);
 	const [loader, setloader] = useState(true);
 	const [formdata, setFormData] = useState({
-		StatusDate: "",
+		Date: "",
 		AssetID: "",
-		FailureِAction: "",
-		StatusID: "",
+
+		WorkDone: "",
+
+		Notes: "",
 	});
 
 	console.log(formdata);
-	const assetsStatus = [
-		{ value: "يعمل", key: "1" },
-		{ value: "متوقف", key: "2" },
-		// { option: "بلاغ", id: "3" },
-		// { option: "عاطل", id: "4" },
-		// { option: "عمرة", id: "5" },
-		// { option: "لا يوجد", id: "6" },
-	];
+
 	const navigation = useNavigation();
+
 	const getAssets = async () => {
 		const { data } = await api.get("/assets");
 		if (data.success) {
@@ -63,10 +52,9 @@ const ReportFailure = () => {
 		try {
 			const data = {
 				DepartmentID: user.DepartmentID,
-				StatusDate: formdata.StatusDate,
 				AssetID: formdata.AssetID,
-				FailureِAction: formdata.FailureِAction,
-				StatusID: formdata.StatusID,
+				WorkDone: formdata.WorkDone,
+				Notes: formdata.Notes,
 			};
 			const res = await api.post("/failure/report", data);
 			console.log("Response:", res);
@@ -88,9 +76,7 @@ const ReportFailure = () => {
 
 	return (
 		<ScrollView>
-			<View>
-				<Header title={"الابلاغ عن الاعطال"} />
-			</View>
+			<Header title={"بيانات الفحص اليومي"}></Header>
 
 			{loader || !options.length ? (
 				<Loader></Loader>
@@ -98,9 +84,9 @@ const ReportFailure = () => {
 				<View className=" flex  gap-6  p-4 pt-6">
 					<View>
 						<FormField
-							value={formdata.StatusDate}
+							value={formdata.Date}
 							handleChangeText={(value) => {
-								setFormData({ ...formdata, StatusDate: value });
+								setFormData({ ...formdata, Date: value });
 							}}
 							title={"التاريخ"}
 							placeholder={"اختر التاريخ"}></FormField>
@@ -113,61 +99,34 @@ const ReportFailure = () => {
 							onChange={(key) => {
 								setFormData({ ...formdata, AssetID: key });
 							}}></Dropdown>
-
-						{/* <Select
-							options={options}
-							title={"المعدة"}
-							placeHolder={"اختر المعدة"}
-							setOption={(optionid) => {
-								setFormData({
-									...formdata,
-									AssetID: optionid,
-								});
-							}}></Select> */}
-					</View>
-					<View>
-						<Dropdown
-							title={"حالة المعدة"}
-							data={assetsStatus}
-							placeholder={"اختر الحالة  "}
-							onChange={(optionid) => {
-								setFormData({
-									...formdata,
-									StatusID: optionid,
-								});
-							}}></Dropdown>
-
-						{/* <Select
-							options={assetsStatus}
-							title={"حالة المعدة"}
-							placeHolder={"اختر الحالة "}
-							setOption={(optionid) => {
-								setFormData({
-									...formdata,
-									StatusID: optionid,
-								});
-							}}></Select> */}
 					</View>
 					<View>
 						<FormField
-							value={formdata.FailureِAction}
+							value={formdata.WorkDone}
 							handleChangeText={(value) => {
-								setFormData({ ...formdata, FailureِAction: value });
+								setFormData({ ...formdata, WorkDone: value });
 							}}
-							title={"الاجراء المتخذ قبل الابلاغ"}
-							placeholder={"ادخل الاجراء"}></FormField>
+							title={"الاعمال التي تمت"}
+							placeholder={"ادخل الاعمال التي تمت"}></FormField>
+					</View>
+					<View>
+						<FormField
+							value={formdata.Notes}
+							handleChangeText={(value) => {
+								setFormData({ ...formdata, Notes: value });
+							}}
+							title={"الملاحظات"}
+							placeholder={"ادخل الملاحظات"}></FormField>
 					</View>
 
 					<View>
 						<MainButton
-							title={"ارسال"}
+							className="mt-3"
+							title={"حفظ"}
 							handlePress={submitData}></MainButton>
 					</View>
 				</View>
 			)}
-			<Toast />
 		</ScrollView>
 	);
-};
-
-export default ReportFailure;
+}

@@ -36,11 +36,11 @@ const RootLayout = () => {
 		<GlobalProvider>
 			<Stack>
 				<Stack.Screen
-					name="index"
+					name="(Maintanance)"
 					options={{ headerShown: false }}
 				/>
 				<Stack.Screen
-					name="(operator)"
+					name="index"
 					options={{ headerShown: false }}
 				/>
 			</Stack>
