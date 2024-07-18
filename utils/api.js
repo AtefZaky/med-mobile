@@ -2,7 +2,7 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
 // Define your API base URL
-const API_BASE_URL = "http://192.168.1.13:5000/api";
+const API_BASE_URL = "http://192.168.1.11:5000/api";
 
 // Create an Axios instance
 const api = axios.create({
@@ -30,6 +30,7 @@ api.interceptors.response.use(
 	(response) => response,
 	async (error) => {
 		const originalRequest = error.config;
+    console.log(error)
 		if (error.response.status === 401 && !originalRequest._retry) {
 			originalRequest._retry = true;
 			try {
