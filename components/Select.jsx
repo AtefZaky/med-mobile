@@ -24,9 +24,9 @@ const Select = ({ setOption, options, placeHolder, title }) => {
 	};
 
 	return (
-		<View style={styles.wrapper}>
+		<View className="gap-2">
 			<View>
-				<Text style={styles.title}>{title}</Text>
+				<Text className="font-tbold">{title}</Text>
 			</View>
 			<View style={styles.container}>
 				<TouchableOpacity
@@ -37,6 +37,7 @@ const Select = ({ setOption, options, placeHolder, title }) => {
 						size={24}
 						color="#2B2B2B"
 					/>
+
 					<Text style={styles.selectButtonText}>
 						{selectedOption ? selectedOption : placeHolder}
 					</Text>
@@ -54,9 +55,6 @@ const Select = ({ setOption, options, placeHolder, title }) => {
 									<Text style={styles.optionText}>{item.option}</Text>
 								</TouchableOpacity>
 							)}
-							style={{ width: "100%" }}
-							contentContainerStyle={{ flexGrow: 1 }}
-							keyboardShouldPersistTaps="handled"
 						/>
 					</View>
 				)}
@@ -66,13 +64,6 @@ const Select = ({ setOption, options, placeHolder, title }) => {
 };
 
 const styles = StyleSheet.create({
-	wrapper: {
-		margin: 8,
-	},
-	title: {
-		fontWeight: "bold",
-		marginBottom: 4,
-	},
 	container: {
 		width: "100%",
 		justifyContent: "center",
@@ -82,18 +73,18 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
-		paddingVertical: 12,
-		paddingHorizontal: 16,
+		paddingVertical: 4,
+		paddingHorizontal: 8,
+		backgroundColor: "white",
 		borderRadius: 5,
 		borderColor: colors.primary,
-		borderWidth: 1,
-		height: 48,
+		borderWidth: 0.5,
+		height: 64,
 	},
 	selectButtonText: {
-		fontSize: 16,
+		fontSize: 14,
 		color: colors.dark,
-		opacity: 0.7,
-		flex: 1,
+		opacity: 0.5,
 	},
 	optionsContainer: {
 		backgroundColor: "#fff",
@@ -102,18 +93,20 @@ const styles = StyleSheet.create({
 		borderRadius: 4,
 		marginTop: 8,
 		maxHeight: 200,
+		overflow: "scroll",
 		zIndex: 10,
-		overflow: "hidden", // Ensures proper handling of overflow
+		borderRadius: 5,
+		padding: 4,
 	},
 	optionItem: {
-		padding: 12,
+		padding: 8,
 		borderBottomWidth: 0.5,
 		borderBottomColor: colors.gray,
 	},
 	optionText: {
-		fontSize: 16,
+		fontSize: 14,
 		color: "#333",
-		textAlign: "left",
+		textAlign: "right",
 	},
 });
 
