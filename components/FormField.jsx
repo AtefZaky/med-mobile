@@ -41,11 +41,14 @@ const FormField = ({
 					</TouchableOpacity>
 				)}
 				<TextInput
+					multiline={title !== "كلمة المرور"}
 					className="flex-1 text-base text-dark font-tregular text-right"
 					value={value}
 					placeholder={placeholder}
 					placeholderTextColor="#2B2B2B80"
-					onChangeText={(e)=>{handleChangeText(e)}}
+					onChangeText={(e) => {
+						handleChangeText(e);
+					}}
 					secureTextEntry={title === "كلمة المرور" && !showPassword}
 					{...props}
 				/>

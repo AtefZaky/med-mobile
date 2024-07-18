@@ -1,10 +1,9 @@
-import { Text, View, Dimensions } from "react-native";
+import { View } from "react-native";
 
 import { ScrollView } from "react-native-virtualized-view";
 
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
-import { SelectList } from "react-native-dropdown-select-list";
 
 import {
 	FormField,
@@ -14,7 +13,7 @@ import {
 	Dropdown,
 	Select,
 } from "../../components";
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import api from "../../utils/api";
 
@@ -83,7 +82,7 @@ const ReportFailure = () => {
 	};
 
 	return (
-		<ScrollView>
+		<View>
 			<View>
 				<Header title={"الابلاغ عن الاعطال"} />
 			</View>
@@ -91,7 +90,7 @@ const ReportFailure = () => {
 			{loader || !options.length ? (
 				<Loader></Loader>
 			) : (
-				<View className=" flex  gap-6  p-4 pt-6">
+				<View className=" flex  gap-6  p-4 pt-6 ">
 					<View>
 						<FormField
 							value={formdata.StatusDate}
@@ -140,7 +139,7 @@ const ReportFailure = () => {
 				</View>
 			)}
 			<Toast />
-		</ScrollView>
+		</View>
 	);
 };
 

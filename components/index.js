@@ -8,6 +8,7 @@ import Table from "./Table";
 import ChatContent from "./chatContent";
 import Select from "./Select";
 import Dropdown from "./DropDown";
+import FailureDetailsHeaderItem from "./FailureDetailsHeaderItem";
 import DailyPrecentageRow from "./DailyPrecentageRow";
 export {
 	Loader,
@@ -21,4 +22,5 @@ export {
 	Select,
 	Dropdown,
 	DailyPrecentageRow,
+	FailureDetailsHeaderItem,
 };
