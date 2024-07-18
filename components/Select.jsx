@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { colors } from "../constants";
-import { ScrollView } from "react-native-virtualized-view";
 
 const Select = ({ setOption, options, placeHolder, title }) => {
 	const [selectedOption, setSelectedOption] = useState(null);
@@ -25,9 +24,9 @@ const Select = ({ setOption, options, placeHolder, title }) => {
 	};
 
 	return (
-		<View className="gap-2 mr-2">
+		<View style={styles.wrapper}>
 			<View>
-				<Text className="font-tbold">{title}</Text>
+				<Text style={styles.title}>{title}</Text>
 			</View>
 			<View style={styles.container}>
 				<TouchableOpacity
@@ -38,30 +37,26 @@ const Select = ({ setOption, options, placeHolder, title }) => {
 						size={24}
 						color="#2B2B2B"
 					/>
-
-					<Text style={styles.selectButtonText} className=" font-tregular p-2">
+					<Text style={styles.selectButtonText}>
 						{selectedOption ? selectedOption : placeHolder}
 					</Text>
 				</TouchableOpacity>
 
 				{showOptions && (
-					<View
-						className=""
-						style={styles.optionsContainer}>
+					<View style={styles.optionsContainer}>
 						<FlatList
-							className=""
-							scrollEnabled={true}
-							style={{ maxHeight: 100 }}
 							data={options}
 							keyExtractor={(item, index) => index.toString()}
 							renderItem={({ item }) => (
 								<TouchableOpacity
 									style={styles.optionItem}
-									onPress={() => handleOptionSelect(item.option, item.id)}
-								>
+									onPress={() => handleOptionSelect(item.option, item.id)}>
 									<Text style={styles.optionText}>{item.option}</Text>
 								</TouchableOpacity>
 							)}
+							style={{ width: "100%" }}
+							contentContainerStyle={{ flexGrow: 1 }}
+							keyboardShouldPersistTaps="handled"
 						/>
 					</View>
 				)}
@@ -71,6 +66,13 @@ const Select = ({ setOption, options, placeHolder, title }) => {
 };
 
 const styles = StyleSheet.create({
+	wrapper: {
+		margin: 8,
+	},
+	title: {
+		fontWeight: "bold",
+		marginBottom: 4,
+	},
 	container: {
 		width: "100%",
 		justifyContent: "center",
@@ -80,18 +82,18 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
-		paddingVertical: 4,
-		paddingHorizontal: 8,
-
+		paddingVertical: 12,
+		paddingHorizontal: 16,
 		borderRadius: 5,
 		borderColor: colors.primary,
-		borderWidth: 0.5,
-		height: 64,
+		borderWidth: 1,
+		height: 48,
 	},
 	selectButtonText: {
-		fontSize: 14,
+		fontSize: 16,
 		color: colors.dark,
-		opacity: 0.5,
+		opacity: 0.7,
+		flex: 1,
 	},
 	optionsContainer: {
 		backgroundColor: "#fff",
@@ -100,20 +102,18 @@ const styles = StyleSheet.create({
 		borderRadius: 4,
 		marginTop: 8,
 		maxHeight: 200,
-		overflow: "scroll",
 		zIndex: 10,
-		borderRadius: 5,
-		padding: 4,
+		overflow: "hidden", // Ensures proper handling of overflow
 	},
 	optionItem: {
-		padding: 8,
+		padding: 12,
 		borderBottomWidth: 0.5,
 		borderBottomColor: colors.gray,
 	},
 	optionText: {
-		fontSize: 14,
+		fontSize: 16,
 		color: "#333",
-		textAlign: "right",
+		textAlign: "left",
 	},
 });
 
