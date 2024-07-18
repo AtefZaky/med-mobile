@@ -25,7 +25,6 @@ const DailyPercentage = () => {
 				<View className="p-4 w-full">
 					<PopUp />
 				</View>
-
 				<View
 					className="w-full flex mt-4">
 					<Table

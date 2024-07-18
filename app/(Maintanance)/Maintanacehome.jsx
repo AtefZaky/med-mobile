@@ -7,7 +7,7 @@ import React, { Component, useState, useEffect } from "react";
 import { Header, MainButton } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
-const Home = () => {
+const Maintanacehome = () => {
 	const { user } = useGlobalContext();
 	const navigation = useNavigation();
 	const [data, setData] = useState(null);
@@ -18,8 +18,7 @@ const Home = () => {
 	return (
 		<ScrollView>
 			<Header />
-			<View
-				className="flex px-4 my-6">
+			<View className="flex px-4 my-6">
 				<View className=" mb-20">
 					<Text className="text-right font-tregular text-base text-primary">
 						مرحبا بك
@@ -54,4 +53,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default Maintanacehome;

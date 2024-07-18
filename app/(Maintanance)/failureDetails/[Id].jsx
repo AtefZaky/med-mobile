@@ -18,12 +18,15 @@ const failureDetails = () => {
 	const getFailureData = async () => {
 		try {
 			const res = await api.get(`failure/${Id}`);
-			setFailureData(res.data.report);
+
+			setFailureData(res.data.report[0]);
+			console.log(res.data.report[0]);
 			setLoader(false);
 		} catch (error) {
 			console.log(error);
 		}
 	};
+
 	useEffect(() => {
 		getFailureData();
 	}, []);
@@ -36,41 +39,52 @@ const failureDetails = () => {
 				) : (
 					<View>
 						<View>
-							<View className="flex felx-row items-center">
-								<Text
-									className="font-tregular w-[114]
-									">
-									المعدة
-								</Text>
-								<Text className="font-tmedium"> {FailureData.AssetName}</Text>
+							<View className="flex flex-row  items-center">
+								<View className="flex items-center flex-row gap-2">
+									<Text className="font-tregular w-[114] block">المعدة</Text>
+								</View>
+								<View>
+									<Text className="font-tmedium"> {FailureData.AssetName}</Text>
+								</View>
+							</View>
+							<View className="flex felx-row items-center justify-between">
+								<View>
+									<Text className="font-tregular w-[114]">الحالة</Text>
+								</View>
+
+								<View>
+									<Text className="font-tmedium">
+										{FailureData.AssetStatus == 1 ? "يعمل" : "لا يعمل"}{" "}
+									</Text>
+								</View>
 							</View>
 							<View className="flex felx-row items-center">
-								<Text className="font-tregular w-[114]">
-									{FailureData.AssetStatus}
-								</Text>
-								<Text className="font-tmedium">
-									{FailureData.AssetStatus == 1 ? "يعمل" : "لا يعمل"}{" "}
-								</Text>
+								<View>
+									<Text
+										className="font-tregular w-[114]
+									">
+										{" "}
+										التاريخ
+									</Text>
+								</View>
+								<View>
+									<Text className="font-tmedium">
+										{FailureData?.FailureDate?.split("T")[0] ||
+											"لا توجد معلومات"}
+									</Text>
+								</View>
 							</View>
 							<View className="flex felx-row items-center">
-								<Text
-									className="font-tregular w-[114]
+								<View>
+									<Text
+										className="font-tregular w-[114]
 									">
-									{" "}
-									التاريخ
-								</Text>
-								<Text className="font-tmedium">
-									{FailureData.FailureDate.split("T")[0]}
-								</Text>
-							</View>
-							<View className="flex felx-row items-center">
-								<Text
-									className="font-tregular w-[114]
-									">
-									{" "}
-									العطل
-								</Text>
-								<Text className="font-tmedium"> {FailureData.FailureID}</Text>
+										العطل
+									</Text>
+								</View>
+								<View>
+									<Text className="font-tmedium"> {FailureData.FailureID}</Text>
+								</View>
 							</View>
 						</View>
 					</View>

@@ -98,11 +98,7 @@ const AssetsOperations = () => {
 									{formatedDate}
 								</Text>
 							</View>
-							<View
-								className="w-full flex py-4"
-								style={{
-									flexGrow: 1,
-								}}>
+							<View className="w-full flex py-4">
 								<Table
 									assetsOperation={true}
 									header={assetsOperationHeader}

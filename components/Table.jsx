@@ -51,8 +51,8 @@ const Table = ({
 							return (
 								<ReportComponent
 									data={item}
-									routing={(AssetID) => {
-										routingfunction(AssetID);
+									routing={(failureID) => {
+										routingfunction(failureID);
 									}}
 								/>
 							);
