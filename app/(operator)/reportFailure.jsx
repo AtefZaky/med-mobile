@@ -29,7 +29,6 @@ const ReportFailure = () => {
 		StatusID: "",
 	});
 
-	console.log(formdata);
 	const assetsStatus = [
 		{ value: "يعمل", key: "1" },
 		{ value: "متوقف", key: "2" },
@@ -57,9 +56,6 @@ const ReportFailure = () => {
 	}, []);
 
 	const submitData = async () => {
-		console.log(formdata.StatusID);
-		console.log(formdata);
-		console.log(user);
 		try {
 			const data = {
 				DepartmentID: user.DepartmentID,
@@ -69,7 +65,7 @@ const ReportFailure = () => {
 				StatusID: formdata.StatusID,
 			};
 			const res = await api.post("/failure/report", data);
-			console.log("Response:", res);
+
 			navigation.navigate("home");
 		} catch (error) {
 			if (error.response) {

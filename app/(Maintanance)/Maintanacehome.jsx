@@ -7,7 +7,7 @@ import React, { Component, useState, useEffect } from "react";
 import { Header, MainButton } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
-const Home = () => {
+const Maintanacehome = () => {
 	const { user } = useGlobalContext();
 	const navigation = useNavigation();
 	const [data, setData] = useState(null);
@@ -48,7 +48,7 @@ const Home = () => {
 				/>
 				<MainButton
 					title="البلاغات"
-					containerStyles="mt-7"
+					containerSt0yles="mt-7"
 					handlePress={() => navigation.navigate("reports")}
 				/>
 			</View>
@@ -57,4 +57,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default Maintanacehome;

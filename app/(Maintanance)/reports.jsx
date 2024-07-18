@@ -15,7 +15,6 @@ export default function reports() {
 		const fetchData = async () => {
 			try {
 				const { data } = await getData();
-				console.log(data.reports);
 
 				setData(data.reports);
 
