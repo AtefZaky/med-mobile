@@ -23,6 +23,7 @@ const Table = ({
 	addingDailyPrecentageFunction,
 	reports,
 }) => {
+	console.log(data);
 	return (
 		<View>
 			<View className="flex flex-row p-4 justify-center bg-[#E4E7EC] items-center">
@@ -41,6 +42,7 @@ const Table = ({
 					data={data}
 					keyExtractor={(item, index) => index.toString()}
 					renderItem={({ item }) => {
+						console.log(item);
 						if (assetsOperation) {
 							return (
 								<TableRow

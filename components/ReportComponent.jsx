@@ -3,7 +3,6 @@ import React from "react";
 import tw from "twrnc";
 
 export default function ReportComponent({ data, routing }) {
-	console.log(data.FailureID);
 	return (
 		<View
 			className={`${data.AssetStatus == 1 ? "bg-[#E8F0EE]" : "bg-[#F9EAEB]"}`}>
