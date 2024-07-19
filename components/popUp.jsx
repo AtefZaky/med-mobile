@@ -9,21 +9,86 @@ import {
 	TextInput,
 	Image,
 	TouchableOpacity,
+	ActivityIndicator
 } from "react-native";
 import MainButton from "./MainButton";
 import { icons, colors } from "../constants";
 import Toast from "react-native-toast-message";
+import api from "../utils/api";
 
-const PopUp = () => {
+const PopUp = ({ updateParent }) => {
 	const [modalVisible, setModalVisible] = useState(false);
-
+	const [isLoading, setIsLoading] = useState(false)
 	const [formData, setFormData] = useState({
-		H: "",
+		time: "",
 		suck: "",
-		kick: "",
-		killoWatt: "",
-		pressure: "",
+		direct: "",
+		kiloWaat: "",
+		airPressure: "",
 	});
+	const handleSubmit = async () => {
+		if(formData.time === "" || formData.suck === ""|| formData.direct === ""|| formData.kiloWaat === ""||formData.airPressure === ""){
+			Toast.show({
+				type: "error",
+				text1: "خطأ",
+				text2: "من فضلك ادخل البيانات المطلوبه",
+				autoHide: true,
+				visibilityTime: 3000,
+				text1Style: {
+				  textAlign: 'right',
+				},
+				text2Style: {
+				  textAlign: 'right',
+				},
+			  });
+			  return; // Prevent form submission if fields are empty
+		}
+		try {
+			setIsLoading(true)
+			await api.put('/operation/department', {
+				H: formData.time,
+				suck: formData.suck,
+				direct: formData.direct,
+				kilo: formData.kiloWaat,
+				air: formData.airPressure
+			});
+			Toast.show({
+				type: "success",
+				text1: "عملية ناجحه",
+				text2: "تم تسجيل الساعه بنجاح",
+				autoHide: true,
+				visibilityTime: 1500,
+				text1Style: {
+				  textAlign: 'right',
+				},
+				text2Style: {
+				  textAlign: 'right',
+				},
+			  });
+		
+			  setTimeout(() => {
+				updateParent(formData)
+				setIsLoading(false)
+				setModalVisible(false)
+			  }, 1500);
+		} catch (error) {
+			Toast.show({
+				type: "error",
+				text1: "خطأ",
+				text2: error.message,
+				autoHide: true,
+				visibilityTime: 1500,
+				text1Style: {
+				  textAlign: 'right',
+				},
+				text2Style: {
+				  textAlign: 'right',
+				},
+			  });
+			  setIsLoading(false)
+			  return; // Prevent form submission if fields are empty
+		}
+	}
 
 	return (
 		<View className="">
@@ -40,10 +105,10 @@ const PopUp = () => {
 							<TextInput
 								style={styles.input}
 								placeholder="أدخل الساعه "
-								value={formData.H}
+								value={formData.time}
 								keyboardType="numeric"
 								onChangeText={(value) => {
-									setFormData({ ...formData, H: value });
+									setFormData({ ...formData, time: value });
 								}}
 							/>
 							<Text style={styles.textStyle}>س(الساعه)</Text>
@@ -67,9 +132,9 @@ const PopUp = () => {
 								style={styles.input}
 								placeholder="منسوب الطرد "
 								keyboardType="numeric"
-								value={formData.kick}
+								value={formData.direct}
 								onChangeText={(value) => {
-									setFormData({ ...formData, kick: value });
+									setFormData({ ...formData, direct: value });
 								}}
 							/>
 							<Text style={styles.textStyle}>منسوب الطرد</Text>
@@ -79,9 +144,9 @@ const PopUp = () => {
 								style={styles.input}
 								placeholder="الكيلو وات "
 								keyboardType="numeric"
-								value={formData.killoWatt}
+								value={formData.kiloWaat}
 								onChangeText={(value) => {
-									setFormData({ ...formData, killoWatt: value });
+									setFormData({ ...formData, kiloWaat: value });
 								}}
 							/>
 							<Text style={styles.textStyle}>الكيلو وات</Text>
@@ -91,9 +156,9 @@ const PopUp = () => {
 								style={styles.input}
 								placeholder="ضغط الهواء "
 								keyboardType="numeric"
-								value={formData.pressure}
+								value={formData.airPressure}
 								onChangeText={(value) => {
-									setFormData({ ...formData, pressure: value });
+									setFormData({ ...formData, airPressure: value });
 								}}
 							/>
 
@@ -101,23 +166,23 @@ const PopUp = () => {
 						</View>
 
 						<TouchableOpacity
-							onPress={() => setModalVisible(true)}
+							onPress={handleSubmit}
 							activeOpacity={0.7}
 							className={`bg-primary rounded-lg min-h-[33px] flex flex-row justify-center w-[250px] m-3 mt-5 items-center`}>
 							<Image
-								source={icons.ArrowLineUpRight}
+								source={icons.ArrowUp}
 								className={`h-5 w-5 mr-1`}
 							/>
 							<Text className={`text-white font-tbold text-md`}>حفظ</Text>
 
-							{/* {isLoading && (
-          <ActivityIndicator
-            animating={isLoading}
-            color="#fff"
-            size="small"
-            className="ml-2"
-          />
-        )} */}
+							{isLoading && (
+							<ActivityIndicator
+								animating={isLoading}
+								color="#fff"
+								size="small"
+								className="ml-2"
+							/>
+							)}
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -133,13 +198,13 @@ const PopUp = () => {
 				<Text className={`text-white font-tbold text-md`}>اضافة</Text>
 
 				{/* {isLoading && (
-        <ActivityIndicator
-          animating={isLoading}
-          color="#fff"
-          size="small"
-          className="ml-2"
-        />
-      )} */}
+					<ActivityIndicator
+					animating={isLoading}
+					color="#fff"
+					size="small"
+					className="ml-2"
+					/>
+				)} */}
 			</TouchableOpacity>
 			{/* <Pressable
         style={[styles.button, styles.buttonOpen]}

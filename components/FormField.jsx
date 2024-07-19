@@ -68,7 +68,7 @@ const FormField = ({
 					onChangeText={(e) => {
 						handleChangeText(e);
 					}}
-					secureTextEntry={title === "كلمة المرور" && !showPassword}
+					secureTextEntry={!showPassword}
 					{...props}
 				/>
 			</View>

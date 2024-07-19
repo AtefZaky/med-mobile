@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getTimeDifference } from "../utils/dateFormater";
 import { ActivityIndicator } from "react-native";
 
-const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
+const TableRow = ({ item, onStartMachine, onCloseMachine, numOfRows }) => {
 	const [date, setDate] = useState({
 		counter: "",
 		startDate: item.StartInTime,
@@ -33,10 +33,10 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 
 	return (
 		<View className="flex flex-row justify-between py-2  px-3 items-center">
-			<View className="basis-1/4">
+			<View className="flex flex-1">
 				<Text className="text-center font-tmedium">{date.counter}</Text>
 			</View>
-			<View className="basis-1/4">
+			<View className="flex flex-1">
 				<TouchableOpacity
 					disabled={active == 2}
 					onPress={async () => {
@@ -54,7 +54,7 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 						active == 2
 							? "text-[#F15555] bg-[#F9EAEB]										]"
 							: "bg-[#F15555] text-white "
-					} px-4 py-1 rounded-md max-w-[70px] ml-3`}>
+					} px-4 py-1 rounded-md max-w-[1/${numOfRows}] ml-3`}>
 					{loader.close ? (
 						<ActivityIndicator
 							animating={loader.close}
@@ -71,7 +71,7 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 					)}
 				</TouchableOpacity>
 			</View>
-			<View className="basis-1/4">
+			<View className="flex flex-1">
 				<TouchableOpacity
 					className={`${
 						active == 1
@@ -108,8 +108,8 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 					)}
 				</TouchableOpacity>
 			</View>
-			<View className="basis-1/5">
-				<Text className="font-tmedium">{item.AssetName}</Text>
+			<View className="flex flex-1">
+				<Text className="font-tmedium text-center">{item.AssetName}</Text>
 			</View>
 		</View>
 	);
