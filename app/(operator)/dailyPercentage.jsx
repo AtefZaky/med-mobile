@@ -27,19 +27,15 @@ const DailyPercentage = () => {
       const filteredSuck = Object.fromEntries(
         Object.entries(suck).filter(([key, value]) => key.startsWith('H') && value != null)
       );
-      console.log(filteredSuck,"------------------------------")
       const filteredDirect = Object.fromEntries(
         Object.entries(direct).filter(([key, value]) => key.startsWith('H') && value != null)
       );
-      console.log(filteredDirect,"------------------------------")
       const filteredKilo = Object.fromEntries(
         Object.entries(killowaat).filter(([key, value]) => key.startsWith('H') && value != null)
       );
-      console.log(filteredKilo,"------------------------------")
       const filteredAir = Object.fromEntries(
         Object.entries(air).filter(([key, value]) => key.startsWith('H') && value != null)
       );
-      console.log(filteredAir,"------------------------------")
       let index = 1
       for (let key in filteredSuck) {
         const row = createObject(index, filteredSuck[key], filteredDirect[key], filteredKilo[key], filteredAir[key])
