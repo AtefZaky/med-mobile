@@ -6,7 +6,7 @@ import CaretDown from "../assets/images/CaretDown.png"
 import ChevronUp from "../assets/images/ChevronUp.png" 
 import List from "../assets/images/List.png" 
 import Signin from "../assets/images/SignIn.png"
-import eyeIcon from "../assets/images/eyeIcon.svg";
+import eyeIcon from "../assets/images/EyeClosed.png";
 import lock from "../assets/images/lock.png"
 import pencil from "../assets/images/Pencil.png"
 

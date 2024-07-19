@@ -273,7 +273,6 @@ const Welcome = () => {
             otherStyles="mt-7"
             icon={icons.lock}
             placeholder="ادخل كلمة المرور"
-            secureTextEntry={true}
           />
 
           <MainButton

@@ -25,13 +25,13 @@ const Table = ({
 }) => {
 	return (
 		<View>
-			<View className="flex flex-row gap-3 p-4 justify-between bg-[#E4E7EC] font items-center">
+			<View className="flex flex-row p-4 justify-center bg-[#E4E7EC] items-center">
 				{header.map((item, index) => (
 					<View
-						className="max-w-[70px] "
+						className=" flex flex-1 "
 						key={index}
 						style={styles.headerItem}>
-						<Text className="font-tregular">{item}</Text>
+						<Text className="font-tregular text-center">{item}</Text>
 					</View>
 				))}
 			</View>
@@ -45,6 +45,7 @@ const Table = ({
 									item={item}
 									onStartMachine={onStartMachine}
 									onCloseMachine={onCloseMachine}
+									numOfRows="4"
 								/>
 							);
 						} else if (reports) {

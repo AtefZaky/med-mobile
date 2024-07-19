@@ -21,6 +21,7 @@ const ReportFailure = () => {
 	const { user } = useGlobalContext();
 	const [options, setOptions] = useState([]);
 	const [loader, setloader] = useState(true);
+	const [isSubmitting, setSubmitting] = useState(false);
 	const [formdata, setFormData] = useState({
 		StatusDate: "",
 		AssetID: "",
@@ -59,9 +60,26 @@ const ReportFailure = () => {
 				FailureِAction: formdata.FailureِAction,
 				StatusID: formdata.StatusID,
 			};
+      setSubmitting(true)
 			const res = await api.post("/failure/report", data);
+      Toast.show({
+        type: "success",
+        text1: "عملية ناجحه",
+        text2: "تم تسجيل بلاغك",
+        autoHide: true,
+        visibilityTime: 1500,
+        text1Style: {
+          textAlign: 'right',
+        },
+        text2Style: {
+          textAlign: 'right',
+        },
+      });
+      setTimeout(() => {
+        setSubmitting(false)
+        navigation.navigate("home");       
+      }, 1500);
 
-			navigation.navigate("home");
 		} catch (error) {
 			if (error.response) {
 				// The request was made and the server responded with a status code
@@ -87,7 +105,6 @@ const ReportFailure = () => {
 				<Loader></Loader>
 			) : (
 				<View className=" flex  gap-6  p-4 pt-6 ">
-					<ScrollView keyboardShouldPersistTaps="always">
 						<View>
 							<FormField
 								value={formdata.StatusDate}
@@ -131,9 +148,10 @@ const ReportFailure = () => {
 						<View>
 							<MainButton
 								title={"ارسال"}
-								handlePress={submitData}></MainButton>
+								handlePress={submitData}
+                isLoading={isSubmitting}
+                ></MainButton>
 						</View>
-					</ScrollView>
 				</View>
 			)}
 			<Toast />
