@@ -1,21 +1,23 @@
 import { View, Text } from "react-native";
 import React, { useState, useEffect } from "react";
 import api from "../../utils/api";
-import {
-	Loader,
-	Header,
-	Dropdown,
-	FormField,
-	MainButton,
-} from "../../components";
+import { Loader, Header } from "../../components";
 import { ScrollView } from "react-native-virtualized-view";
+import { ChatBotStartUp } from "../../components";
+import Toast from "react-native-toast-message";
 export default function maintanaceHelper() {
 	const [options, setOptions] = useState([]);
 	const [loader, setloader] = useState(true);
 	const [chatStartUP, setChatStartUp] = useState({
 		failureDescription: "",
 		AssetID: "",
+		chating: false,
 	});
+	const [masseges, setMessages] = useState([
+		{ massege: "this is massege ", massegeCreator: "Ai" },
+		{ massege: "this is massege ", massegeCreator: "user" },
+		{ massege: "this is massege ", massegeCreator: "Ai" },
+	]);
 	const getAssets = async () => {
 		const { data } = await api.get("/assets");
 		if (data.success) {
@@ -29,47 +31,49 @@ export default function maintanaceHelper() {
 			console.log("error");
 		}
 	};
+	const startChat = () => {
+		if (!chatStartUP.AssetID || !chatStartUP.failureDescription) {
+			console.log("false");
+			Toast.show({
+				type: "error",
+				text1: "الرجاء ملء البينات",
+				autoHide: true,
+				visibilityTime: 3000,
+				text1Style: {
+					textAlign: "right",
+				},
+			});
+		} else {
+			setChatStartUp({ ...chatStartUP, chating: true });
+		}
+	};
 	useEffect(() => {
 		getAssets();
 	}, []);
 	return (
-		<ScrollView>
+		<View>
 			<Header title={"بيانات الفحص اليومي"}></Header>
 
 			{loader || !options.length ? (
 				<Loader></Loader>
 			) : (
-				<View className=" flex  gap-6  p-4 pt-6">
-					<View>
-						<Dropdown
-							title={"المعدة"}
-							data={options}
-							placeholder={"اختر المعدة"}
-							onChange={(key) => {
-								setChatStartUp({ ...chatStartUP, AssetID: key });
-							}}></Dropdown>
-					</View>
-
-					<View>
-						<FormField
-							value={chatStartUP.failureDescription}
-							handleChangeText={(value) => {
-								setFormData({ ...chatStartUP, failureDescription: value });
-							}}
-							title={"وصف العطل"}
-							placeholder={"ادخل وصف العطل"}></FormField>
-					</View>
-
-					<View>
-						<MainButton
-							className="mt-6"
-							title={"حفظ"}
-							handlePress={() => {
-								console.log("k");
-							}}></MainButton>
-					</View>
+				<View>
+					<ScrollView></ScrollView>
 				</View>
+
+				// <ChatBotStartUp
+				// 	startChatBot={startChat}
+				// 	setAssets={(v) => {
+				// 		setChatStartUp({ ...chatStartUP, AssetID: v });
+				// 	}}
+				// 	setfailureDescription={(v) => {
+				// 		setChatStartUp({ ...chatStartUP, failureDescription: v });
+				// 	}}
+				// 	failureDescription={chatStartUP.failureDescription}
+				// 	dropdownOptions={options}
+				// />
 			)}
-		</ScrollView>
+			<Toast />
+		</View>
 	);
 }

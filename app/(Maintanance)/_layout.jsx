@@ -12,9 +12,9 @@ const AuthLayout = () => {
 		if (isLogged) {
 			if (user.type === roles.operator) {
 				router.replace("/home");
-			  } else if (user.type === roles.maintenar) {
+			} else if (user.type === roles.maintenar) {
 				router.replace("/Maintanacehome");
-			  }
+			}
 		}
 	}, [isLogged, router]);
 

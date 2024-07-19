@@ -1,10 +1,11 @@
 import { View, Text } from "react-native";
 import React from "react";
+import ChatBot from "../../components/chatBot";
 
-export default function chatbot() {
+export default function Chatbot() {
 	return (
 		<View>
-			<Text>chatbot</Text>
+			<ChatBot></ChatBot>
 		</View>
 	);
 }
