@@ -35,9 +35,11 @@ const Table = ({
 					</View>
 				))}
 			</View>
-			<View style={styles.scrollStyle}>
+			<View>
 				<FlatList
+					extraData={data}
 					data={data}
+					keyExtractor={(item, index) => index.toString()}
 					renderItem={({ item }) => {
 						if (assetsOperation) {
 							return (
@@ -86,11 +88,5 @@ const styles = StyleSheet.create({
 		justifyContent: "space-around",
 		alignItems: "center",
 		paddingVertical: 8,
-	},
-	scrollStyle: {
-		display: "flex",
-
-		// justifyContent: "center",
-		// alignContent: "center",
 	},
 });
