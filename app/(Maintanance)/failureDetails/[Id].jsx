@@ -2,20 +2,20 @@ import { View, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native-virtualized-view";
+
 import api from "../../../utils/api";
 import {
 	Header,
-	Dropdown,
-	FormField,
-	MainButton,
 	FailureDetailsHeaderItem,
 	Loader,
+	FailureForm,
 } from "../../../components";
 
 const failureDetails = () => {
 	const { Id } = useLocalSearchParams();
 	const [FailureData, setFailureData] = useState([]);
 	const [loader, setLoader] = useState(true);
+	const [dataSent, setDataSent] = useState(false);
 	const getFailureData = async () => {
 		try {
 			const res = await api.get(`failure/${Id}`);
@@ -32,41 +32,49 @@ const failureDetails = () => {
 		getFailureData();
 	}, []);
 	return (
-		<View>
+		<ScrollView keyboardShouldPersistTaps="handled">
+			{/* <View> */}
 			<Header title={"تفاصيل العطل"} />
 			<View>
 				{loader ? (
 					<Loader isLoading={loader}></Loader>
 				) : (
 					<View>
-						<View className="p-4">
-							<View className="bg-[#E4E7EC] flex gap-y-2 mt-4 rounded-md">
-								<FailureDetailsHeaderItem
-									data={{ title: "المعدة", value: FailureData.AssetName }}
-								/>
-								<FailureDetailsHeaderItem
-									data={{
-										title: "الحالة",
-										value: FailureData.AssetStatus == 1 ? "يعمل" : "لا يعمل",
-									}}
-								/>
-								<FailureDetailsHeaderItem
-									data={{
-										title: "التاريخ",
-										value:
-											FailureData?.FailureDate?.split("T")[0] ||
-											"لا توجد معلومات",
-									}}
-								/>
-								<FailureDetailsHeaderItem
-									data={{ title: "العطل", value: FailureData.FailureID }}
-								/>
+						<View>
+							<View className="p-4">
+								<View className="bg-[#E4E7EC] flex gap-y-2 mt-4 rounded-md max-h-[140px] py-2">
+									<FailureDetailsHeaderItem
+										data={{ title: "المعدة", value: FailureData.AssetName }}
+									/>
+									<FailureDetailsHeaderItem
+										data={{
+											title: "الحالة",
+											value: FailureData.AssetStatus == 1 ? "يعمل" : "لا يعمل",
+										}}
+									/>
+									<FailureDetailsHeaderItem
+										data={{
+											title: "التاريخ",
+											value:
+												FailureData?.FailureDate?.split("T")[0] ||
+												"لا توجد معلومات",
+										}}
+									/>
+									<FailureDetailsHeaderItem
+										data={{ title: "العطل", value: FailureData.FailureID }}
+									/>
+								</View>
+
+								<View className="mt-[19px]">
+									<FailureForm setDataSent={setDataSent} />
+								</View>
 							</View>
 						</View>
 					</View>
 				)}
 			</View>
-		</View>
+			{/* </View> */}
+		</ScrollView>
 	);
 };
 

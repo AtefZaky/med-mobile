@@ -24,7 +24,6 @@ const PopUp = () => {
 		killoWatt: "",
 		pressure: "",
 	});
-	console.log(formData);
 
 	return (
 		<View className="">

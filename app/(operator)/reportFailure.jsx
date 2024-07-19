@@ -31,10 +31,6 @@ const ReportFailure = () => {
 	const assetsStatus = [
 		{ value: "يعمل", key: "1" },
 		{ value: "متوقف", key: "2" },
-		// { option: "بلاغ", id: "3" },
-		// { option: "عاطل", id: "4" },
-		// { option: "عمرة", id: "5" },
-		// { option: "لا يوجد", id: "6" },
 	];
 	const navigation = useNavigation();
 	const getAssets = async () => {
@@ -91,51 +87,53 @@ const ReportFailure = () => {
 				<Loader></Loader>
 			) : (
 				<View className=" flex  gap-6  p-4 pt-6 ">
-					<View>
-						<FormField
-							value={formdata.StatusDate}
-							handleChangeText={(value) => {
-								setFormData({ ...formdata, StatusDate: value });
-							}}
-							title={"التاريخ"}
-							placeholder={"اختر التاريخ"}></FormField>
-					</View>
-					<View>
-						<Dropdown
-							title={"المعدة"}
-							data={options}
-							placeholder={"اختر المعدة"}
-							onChange={(key) => {
-								setFormData({ ...formdata, AssetID: key });
-							}}></Dropdown>
-					</View>
-					<View>
-						<Dropdown
-							title={"حالة المعدة"}
-							data={assetsStatus}
-							placeholder={"اختر الحالة  "}
-							onChange={(optionid) => {
-								setFormData({
-									...formdata,
-									StatusID: optionid,
-								});
-							}}></Dropdown>
-					</View>
-					<View>
-						<FormField
-							value={formdata.FailureِAction}
-							handleChangeText={(value) => {
-								setFormData({ ...formdata, FailureِAction: value });
-							}}
-							title={"الاجراء المتخذ قبل الابلاغ"}
-							placeholder={"ادخل الاجراء"}></FormField>
-					</View>
+					<ScrollView keyboardShouldPersistTaps="always">
+						<View>
+							<FormField
+								value={formdata.StatusDate}
+								handleChangeText={(value) => {
+									setFormData({ ...formdata, StatusDate: value });
+								}}
+								title={"التاريخ"}
+								placeholder={"اختر التاريخ"}></FormField>
+						</View>
+						<View>
+							<Dropdown
+								title={"المعدة"}
+								data={options}
+								placeholder={"اختر المعدة"}
+								onChange={(key) => {
+									setFormData({ ...formdata, AssetID: key });
+								}}></Dropdown>
+						</View>
+						<View>
+							<Dropdown
+								title={"حالة المعدة"}
+								data={assetsStatus}
+								placeholder={"اختر الحالة  "}
+								onChange={(optionid) => {
+									setFormData({
+										...formdata,
+										StatusID: optionid,
+									});
+								}}></Dropdown>
+						</View>
+						<View>
+							<FormField
+								value={formdata.FailureِAction}
+								handleChangeText={(value) => {
+									setFormData({ ...formdata, FailureِAction: value });
+								}}
+								title={"الاجراء المتخذ قبل الابلاغ"}
+								placeholder={"ادخل الاجراء"}></FormField>
+						</View>
 
-					<View>
-						<MainButton
-							title={"ارسال"}
-							handlePress={submitData}></MainButton>
-					</View>
+						<View>
+							<MainButton
+								title={"ارسال"}
+								handlePress={submitData}></MainButton>
+						</View>
+					</ScrollView>
 				</View>
 			)}
 			<Toast />

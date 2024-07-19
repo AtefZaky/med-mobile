@@ -35,7 +35,7 @@ export default function reports() {
 	return (
 		<>
 			<Header title={"البلاغات"}></Header>
-			<ScrollView className="h-[70vh]">
+			<ScrollView className="h-[60vh]">
 				{loader ? (
 					<Loader isLoading={loader}></Loader>
 				) : (
@@ -47,9 +47,9 @@ export default function reports() {
 					/>
 				)}
 			</ScrollView>
-			<View className="px-4">
+			<View className="px-4 mb-[56px]">
 				<MainButton title={"انشاء بلاغ"}></MainButton>
 			</View>
-			</>
+		</>
 	);
 }

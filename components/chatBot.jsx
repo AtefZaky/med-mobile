@@ -1,35 +1,31 @@
-import { Text, View, ScrollView, Dimensions, StyleSheet } from 'react-native'
+import { Text, View, ScrollView, Dimensions, StyleSheet } from "react-native";
 import Toast from "react-native-toast-message";
-import { PopUp, ChatbotComponent } from "../../components"
-import { Header } from '../../components';
+import ChatbotComponent from "./chatContent";
+import { Header } from "./index";
 
-import React, { Component } from 'react'
-import { useGlobalContext } from '../../context/GlobalProvider';
+import React, { Component } from "react";
+import { useGlobalContext } from "../context/GlobalProvider";
 
 const ChatBot = () => {
-    const { user } = useGlobalContext()
-    return (
-        <View>
-            <Header title="المناسيب اليوميه " />
-            <ChatbotComponent />
+	const { user } = useGlobalContext();
+	return (
+		<View>
+			<Header title="المناسيب اليوميه " />
+			<ChatbotComponent />
 
-
-
-            <Toast />
-
-        </View>
-    );
+			<Toast />
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({
-    contant: {
-        flexDirection: "column",
-        //   width: "90%" ,
-        //   textAlign: "center",
-        //   textAlignVertical: "center",
-        //   height:"80%",
-    },
-
+	contant: {
+		flexDirection: "column",
+		//   width: "90%" ,
+		//   textAlign: "center",
+		//   textAlignVertical: "center",
+		//   height:"80%",
+	},
 });
 
 export default ChatBot;

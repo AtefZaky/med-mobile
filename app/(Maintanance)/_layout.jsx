@@ -8,6 +8,7 @@ import { roles } from "../../constants";
 const AuthLayout = () => {
 	const { loading, isLogged, user } = useGlobalContext();
 	const router = useRouter();
+
 	if (user.type === roles.operator) {
         <Redirect href="/home" />;
       } else if (user.type === roles.maintenar) {
