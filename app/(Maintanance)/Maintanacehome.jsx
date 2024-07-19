@@ -10,6 +10,7 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 const Maintanacehome = () => {
 	const { user } = useGlobalContext();
 	const navigation = useNavigation();
+
 	return (
 		<View>
 			<Header />

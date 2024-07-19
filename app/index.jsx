@@ -207,11 +207,16 @@ const Welcome = () => {
         },
       });
 
-      if (result.UserTypeID === roles.operator) {
-        router.replace("/home");
-      } else if (result.UserTypeID === roles.maintenar) {
-        router.replace("/Maintanacehome");
-      }
+      setTimeout(() => {
+        if (result.UserTypeID === roles.operator) {
+          setSubmitting(false);
+          router.replace("/home");
+        } else if (result.UserTypeID === roles.maintenar) {
+          setSubmitting(false);
+          router.replace("/Maintanacehome");
+        }  
+      }, 1500);
+
     } catch (error) {
       Toast.show({
         type: "error",
@@ -226,20 +231,20 @@ const Welcome = () => {
           textAlign: 'right',
         },
       });
-    } finally {
-      setSubmitting(false);
     }
   };
 
   useEffect(() => {
     if (isLogged) {
+      console.log(user.type)
       if (user.type === roles.operator) {
         router.replace("/home");
       } else if (user.type === roles.maintenar) {
+        console.log(user.type)
         router.replace("/Maintanacehome");
       }
     }
-  }, [isLogged]);
+  }, []);
 
   return (
     <SafeAreaView className="bg-white h-full">

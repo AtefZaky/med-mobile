@@ -8,15 +8,12 @@ import { roles } from "../../constants";
 const AuthLayout = () => {
 	const { loading, isLogged, user } = useGlobalContext();
 	const router = useRouter();
-	useEffect(() => {
-		if (isLogged) {
-			if (user.type === roles.operator) {
-				router.replace("/home");
-			} else if (user.type === roles.maintenar) {
-				router.replace("/Maintanacehome");
-			}
-		}
-	}, [isLogged, router]);
+
+	if (user.type === roles.operator) {
+        <Redirect href="/home" />;
+      } else if (user.type === roles.maintenar) {
+        <Redirect href="/Maintanacehome" />;
+      }
 
 	return (
 		<>
