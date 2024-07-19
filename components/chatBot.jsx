@@ -1,7 +1,7 @@
 import { Text, View, ScrollView, Dimensions, StyleSheet } from "react-native";
 import Toast from "react-native-toast-message";
 import ChatbotComponent from "./chatContent";
-import { Header } from "./index";
+import { Header } from "./header";
 
 import React, { Component } from "react";
 import { useGlobalContext } from "../context/GlobalProvider";

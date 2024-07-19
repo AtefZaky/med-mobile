@@ -1,7 +1,9 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import tw from "twrnc";
+
 export default function ReportComponent({ data, routing }) {
+	console.log(data.FailureID);
 	return (
 		<View
 			className={`${data.AssetStatus == 1 ? "bg-[#E8F0EE]" : "bg-[#F9EAEB]"}`}>

@@ -32,49 +32,50 @@ const failureDetails = () => {
 		getFailureData();
 	}, []);
 	return (
-		<ScrollView keyboardShouldPersistTaps="handled">
-			{/* <View> */}
+		<View>
 			<Header title={"تفاصيل العطل"} />
-			<View>
-				{loader ? (
-					<Loader isLoading={loader}></Loader>
-				) : (
-					<View>
+			<ScrollView>
+				{/* <View> */}
+				<View>
+					{loader ? (
+						<Loader isLoading={loader}></Loader>
+					) : (
 						<View>
-							<View className="p-4">
-								<View className="bg-[#E4E7EC] flex gap-y-2 mt-4 rounded-md max-h-[140px] py-2">
-									<FailureDetailsHeaderItem
-										data={{ title: "المعدة", value: FailureData.AssetName }}
-									/>
-									<FailureDetailsHeaderItem
-										data={{
-											title: "الحالة",
-											value: FailureData.AssetStatus == 1 ? "يعمل" : "لا يعمل",
-										}}
-									/>
-									<FailureDetailsHeaderItem
-										data={{
-											title: "التاريخ",
-											value:
-												FailureData?.FailureDate?.split("T")[0] ||
-												"لا توجد معلومات",
-										}}
-									/>
-									<FailureDetailsHeaderItem
-										data={{ title: "العطل", value: FailureData.FailureID }}
-									/>
-								</View>
+							<View>
+								<View className="p-4">
+									<View className="bg-[#E4E7EC] flex gap-y-2 mt-4 rounded-md max-h-[140px] py-2">
+										<FailureDetailsHeaderItem
+											data={{ title: "المعدة", value: FailureData.AssetName }}
+										/>
+										<FailureDetailsHeaderItem
+											data={{
+												title: "الحالة",
+												value:
+													FailureData.AssetStatus == 1 ? "يعمل" : "لا يعمل",
+											}}
+										/>
+										<FailureDetailsHeaderItem
+											data={{
+												title: "التاريخ",
+												value:
+													FailureData?.FailureDate?.split("T")[0] ||
+													"لا توجد معلومات",
+											}}
+										/>
+										<FailureDetailsHeaderItem
+											data={{ title: "العطل", value: FailureData.FailureID }}
+										/>
+									</View>
 
-								<View className="mt-[19px]">
-									<FailureForm setDataSent={setDataSent} />
+									<View className="mt-[19px] "></View>
 								</View>
 							</View>
 						</View>
-					</View>
-				)}
-			</View>
-			{/* </View> */}
-		</ScrollView>
+					)}
+					<FailureForm setDataSent={setDataSent} />
+				</View>
+			</ScrollView>
+		</View>
 	);
 };
 
