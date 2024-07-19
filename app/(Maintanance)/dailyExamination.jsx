@@ -1,31 +1,19 @@
-import {
-	FormField,
-	Header,
-	Loader,
-	MainButton,
-	Dropdown,
-} from "../../components";
+import { Header, Loader, DailyExmanationForm } from "../../components";
 import { ScrollView } from "react-native-virtualized-view";
 import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import api from "../../utils/api";
 import { useNavigation } from "@react-navigation/native";
 import { View } from "react-native";
+import { router } from "expo-router";
+import Toast from "react-native-toast-message";
+
 export default function dailyExamination() {
 	const { user } = useGlobalContext();
-	const [options, setOptions] = useState([]);
 	const [loader, setloader] = useState(true);
-	const [formdata, setFormData] = useState({
-		Date: "",
-		AssetID: "",
 
-		WorkDone: "",
-
-		Notes: "",
-	});
-
-	console.log(formdata);
-
+	const [options, setOptions] = useState([]);
+	const [buttonLoading, setButtonLoading] = useState(false);
 	const navigation = useNavigation();
 
 	const getAssets = async () => {
@@ -45,88 +33,83 @@ export default function dailyExamination() {
 		getAssets();
 	}, []);
 
-	const submitData = async () => {
-		console.log(formdata.StatusID);
-		console.log(formdata);
-		console.log(user);
+	const submitData = async (formdata) => {
+		setButtonLoading(true);
 		try {
 			const data = {
-				DepartmentID: user.DepartmentID,
 				AssetID: formdata.AssetID,
-				WorkDone: formdata.WorkDone,
-				Notes: formdata.Notes,
+				ch_done: formdata.ch_done,
+				notes: formdata.notes,
 			};
-			const res = await api.post("/failure/report", data);
+			const res = await api.post("/operation/check", data);
 			console.log("Response:", res);
-			navigation.navigate("/Maintanacehome");
+			Toast.show({
+				type: "success",
+				text1: "تم الحفظ",
+				autoHide: true,
+				visibilityTime: 1500,
+				text1Style: {
+					textAlign: "right",
+				},
+			});
+			setTimeout(() => {
+				router.replace("/Maintanacehome");
+			}, 1500);
 		} catch (error) {
+			setButtonLoading(false);
 			if (error.response) {
 				// The request was made and the server responded with a status code
 				// that falls out of the range of 2xx
-				console.error("Response Error:", error.response.data);
+				Toast.show({
+					type: "error",
+					text1: error.response.data,
+					autoHide: true,
+					visibilityTime: 1500,
+					text1Style: {
+						textAlign: "right",
+					},
+				});
 			} else if (error.request) {
 				// The request was made but no response was received
-				console.error("Request Error:", error.request);
+				Toast.show({
+					type: "error",
+					text1: error.request,
+					autoHide: true,
+					visibilityTime: 1500,
+					text1Style: {
+						textAlign: "right",
+					},
+				});
 			} else {
 				// Something happened in setting up the request that triggered an Error
-				console.error("Error:", error.message);
+				Toast.show({
+					type: "error",
+					text1: error.message,
+					autoHide: true,
+					visibilityTime: 1500,
+					text1Style: {
+						textAlign: "right",
+					},
+				});
 			}
 		}
 	};
 
 	return (
-		<ScrollView>
+		<View>
 			<Header title={"بيانات الفحص اليومي"}></Header>
 
-			{loader || !options.length ? (
-				<Loader></Loader>
-			) : (
-				<View className=" flex  gap-6  p-4 pt-6">
-					<View>
-						<FormField
-							value={formdata.Date}
-							handleChangeText={(value) => {
-								setFormData({ ...formdata, Date: value });
-							}}
-							title={"التاريخ"}
-							placeholder={"اختر التاريخ"}></FormField>
-					</View>
-					<View>
-						<Dropdown
-							title={"المعدة"}
-							data={options}
-							placeholder={"اختر المعدة"}
-							onChange={(key) => {
-								setFormData({ ...formdata, AssetID: key });
-							}}></Dropdown>
-					</View>
-					<View>
-						<FormField
-							value={formdata.WorkDone}
-							handleChangeText={(value) => {
-								setFormData({ ...formdata, WorkDone: value });
-							}}
-							title={"الاعمال التي تمت"}
-							placeholder={"ادخل الاعمال التي تمت"}></FormField>
-					</View>
-					<View>
-						<FormField
-							value={formdata.Notes}
-							handleChangeText={(value) => {
-								setFormData({ ...formdata, Notes: value });
-							}}
-							title={"الملاحظات"}
-							placeholder={"ادخل الملاحظات"}></FormField>
-					</View>
-
-					<View>
-						<MainButton
-							className="mt-3"
-							title={"حفظ"}
-							handlePress={submitData}></MainButton>
-					</View>
-				</View>
-			)}
-		</ScrollView>
+			<ScrollView>
+				{loader ? (
+					<Loader></Loader>
+				) : (
+					<DailyExmanationForm
+						submitData={submitData}
+						options={options}
+						isLoading={buttonLoading}></DailyExmanationForm>
+				)}
+			</ScrollView>
+			<Toast />
+		</View>
 	);
 }

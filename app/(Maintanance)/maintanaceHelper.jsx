@@ -1,10 +1,17 @@
-import { View, Text } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import React, { useState, useEffect } from "react";
 import api from "../../utils/api";
-import { Loader, Header } from "../../components";
-import { ScrollView } from "react-native-virtualized-view";
-import { ChatBotStartUp } from "../../components";
+import {
+	Loader,
+	Header,
+	MassegeContainer,
+	ChatBotStartUp,
+} from "../../components";
 import Toast from "react-native-toast-message";
+import icon from "../../constants/icons";
+import { router } from "expo-router";
+import SubmitFormAiChat from "../../components/SubmitFormAiChat";
+import { ScrollView } from "react-native-virtualized-view";
 export default function maintanaceHelper() {
 	const [options, setOptions] = useState([]);
 	const [loader, setloader] = useState(true);
@@ -13,11 +20,11 @@ export default function maintanaceHelper() {
 		AssetID: "",
 		chating: false,
 	});
-	const [masseges, setMessages] = useState([
-		{ massege: "this is massege ", massegeCreator: "Ai" },
-		{ massege: "this is massege ", massegeCreator: "user" },
-		{ massege: "this is massege ", massegeCreator: "Ai" },
-	]);
+
+	const [buttonDisabled, setButtonDisabled] = useState(false);
+
+	const [History, setHistory] = useState([]);
+
 	const getAssets = async () => {
 		const { data } = await api.get("/assets");
 		if (data.success) {
@@ -47,31 +54,93 @@ export default function maintanaceHelper() {
 			setChatStartUp({ ...chatStartUP, chating: true });
 		}
 	};
+	const sendMassege = async (query) => {
+		if (!query) {
+			Toast.show({
+				type: "error",
+				text1: "الرجاء ملء البينات",
+				autoHide: true,
+				visibilityTime: 3000,
+				text1Style: {
+					textAlign: "right",
+				},
+			});
+			return false;
+		} else {
+			setButtonDisabled(true);
+			try {
+				const res = await api.post("ai", { history: History, q: query });
+				setHistory(res.data.history);
+				setButtonDisabled(false);
+				return true;
+			} catch (err) {
+				Toast.show({
+					type: "error",
+					text1: " فشل الاتصال",
+					autoHide: true,
+					visibilityTime: 3000,
+					text1Style: {
+						textAlign: "right",
+					},
+				});
+				setButtonDisabled(false);
+
+				return true;
+			}
+		}
+	};
+
 	useEffect(() => {
 		getAssets();
 	}, []);
+
+	useEffect(() => {}, [chatStartUP.chating]);
 	return (
-		<View>
-			<Header title={"بيانات الفحص اليومي"}></Header>
+		<View className="">
+			<Header title={"المساعدة في الصيانة"}></Header>
 
 			{loader || !options.length ? (
 				<Loader></Loader>
 			) : (
-				<View>
-					<ScrollView></ScrollView>
-				</View>
+				<>
+					{!chatStartUP.chating ? (
+						<ChatBotStartUp
+							startChatBot={startChat}
+							setAssets={(v) => {
+								setChatStartUp({ ...chatStartUP, AssetID: v });
+							}}
+							setfailureDescription={(v) => {
+								setChatStartUp({ ...chatStartUP, failureDescription: v });
+							}}
+							failureDescription={chatStartUP.failureDescription}
+							dropdownOptions={options}
+						/>
+					) : (
+						<>
+							{loader ? (
+								<Loader isLoading={loader}></Loader>
+							) : (
+								<View>
+									<View className="h-[74vh]">
+										<FlatList
+											style={{ padding: 16, paddingBottom: 0 }}
+											data={History}
+											renderItem={({ item: item }) => {
+												return <MassegeContainer {...item} />;
+											}}
+											keyExtractor={(item, index) => index.toString()}
+										/>
+									</View>
 
-				// <ChatBotStartUp
-				// 	startChatBot={startChat}
-				// 	setAssets={(v) => {
-				// 		setChatStartUp({ ...chatStartUP, AssetID: v });
-				// 	}}
-				// 	setfailureDescription={(v) => {
-				// 		setChatStartUp({ ...chatStartUP, failureDescription: v });
-				// 	}}
-				// 	failureDescription={chatStartUP.failureDescription}
-				// 	dropdownOptions={options}
-				// />
+									<SubmitFormAiChat
+										buttonDisabled={buttonDisabled}
+										sendMassege={sendMassege}
+									/>
+								</View>
+							)}
+						</>
+					)}
+				</>
 			)}
 			<Toast />
 		</View>

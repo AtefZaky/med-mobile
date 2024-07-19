@@ -58,13 +58,23 @@ api.interceptors.response.use(
 	}
 );
 
-const saveTokens = async (accessToken, refreshToken, username, lastActive, UserTypeID, UserDepartmentID) => {
+const saveTokens = async (
+	accessToken,
+	refreshToken,
+	username,
+	lastActive,
+	UserTypeID,
+	UserDepartmentID
+) => {
 	await SecureStore.setItemAsync("accessToken", accessToken);
 	await SecureStore.setItemAsync("refreshToken", refreshToken);
 	await SecureStore.setItemAsync("username", JSON.stringify(username));
 	await SecureStore.setItemAsync("lastActive", JSON.stringify(lastActive));
 	await SecureStore.setItemAsync("UserTypeID", JSON.stringify(UserTypeID));
-	await SecureStore.setItemAsync("UserDepartmentID", JSON.stringify(UserDepartmentID));
+	await SecureStore.setItemAsync(
+		"UserDepartmentID",
+		JSON.stringify(UserDepartmentID)
+	);
 };
 
 // Usage in your login function
@@ -80,7 +90,14 @@ export const login = async (email, password) => {
 		const { username, lastActive, UserTypeID, UserDepartmentID } = user;
 
 		if (success) {
-			await saveTokens(accessToken, refreshToken, username, lastActive, UserTypeID, UserDepartmentID);
+			await saveTokens(
+				accessToken,
+				refreshToken,
+				username,
+				lastActive,
+				UserTypeID,
+				UserDepartmentID
+			);
 			console.log("Login successful:", username);
 			return {
 				accessToken,

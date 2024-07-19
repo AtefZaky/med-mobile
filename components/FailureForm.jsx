@@ -20,7 +20,7 @@ export default function FailureForm({ setDataSent }) {
 		{ value: "متوقف", key: "2" },
 	];
 	return (
-		<View className="gap-8">
+		<View className="gap-8 p-4">
 			<View>
 				<FormField
 					title={"تاريخ الاصلاح"}
@@ -75,9 +75,11 @@ export default function FailureForm({ setDataSent }) {
 						setFormData({ ...formData, Notes: value });
 					}}></FormField>
 			</View>
-			<MainButton
-				containerStyles={"ml-8 mt-[68px] mb-4 w-[93%]"}
-				title={"ارسال"}></MainButton>
+			<View>
+				<MainButton
+					containerStyles={"m-auto mb-[170px] w-full"}
+					title={"ارسال"}></MainButton>
+			</View>
 		</View>
 	);
 }

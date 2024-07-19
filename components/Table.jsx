@@ -23,6 +23,7 @@ const Table = ({
 	addingDailyPrecentageFunction,
 	reports,
 }) => {
+	console.log(data);
 	return (
 		<View>
 			<View className="flex flex-row p-4 justify-center bg-[#E4E7EC] items-center">
@@ -35,10 +36,13 @@ const Table = ({
 					</View>
 				))}
 			</View>
-			<View style={styles.scrollStyle}>
+			<View>
 				<FlatList
+					extraData={data}
 					data={data}
+					keyExtractor={(item, index) => index.toString()}
 					renderItem={({ item }) => {
+						console.log(item);
 						if (assetsOperation) {
 							return (
 								<TableRow
@@ -87,11 +91,5 @@ const styles = StyleSheet.create({
 		justifyContent: "space-around",
 		alignItems: "center",
 		paddingVertical: 8,
-	},
-	scrollStyle: {
-		display: "flex",
-
-		// justifyContent: "center",
-		// alignContent: "center",
 	},
 });

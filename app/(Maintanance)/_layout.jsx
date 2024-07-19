@@ -10,10 +10,10 @@ const AuthLayout = () => {
 	const router = useRouter();
 
 	if (user.type === roles.operator) {
-        <Redirect href="/home" />;
-      } else if (user.type === roles.maintenar) {
-        <Redirect href="/Maintanacehome" />;
-      }
+		<Redirect href="/home" />;
+	} else if (user.type === roles.maintenar) {
+		<Redirect href="/Maintanacehome" />;
+	}
 
 	return (
 		<>
