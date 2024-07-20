@@ -10,23 +10,23 @@ export default function ReportComponent({ data, routing }) {
 				onPress={() => {
 					routing(data.FailureID);
 				}}
-				className=" font-tmedium flex flex-row items-center px-4 gap-2 justify-center"
+				className=" font-tmedium flex flex-row items-center px-4 justify-center"
 				style={[
-					tw`   flex-1 flex justify-between items-center  flex-row-reverse  items-center p-[16px]   `,
+					tw`   flex-1 flex justify-between items-center  flex-row-reverse  items-center py-[16px]   `,
 					{ width: "100%" },
 				]}>
-				<Text className="font-tbold center max-w-[80px]">{data.FailureID}</Text>
+				<Text className="font-tbold text-center flex-1">{data.FailureID}</Text>
 
-				<Text className={`font-tbold center max-w-[80px] leading-6`}>
+				<Text className={`font-tbold text-center leading-6 flex-1`}>
 					{data.AssetName}
 				</Text>
 
-				<Text className={`font-tbold center max-w-[80px]`}>
+				<Text className={`font-tbold text-center flex-1`}>
 					{data.FailureDate.split("T")[0] || 0}
 				</Text>
 
 				<Text
-					className={` font-tbold center max-w-[80px]  ${
+					className={` font-tbold text-center flex-1 ${
 						data.AssetStatus == 1 ? "text-[#019444] " : "text-[#F15555]"
 					}`}>
 					{data.AssetStatus == 1 ? "تعمل" : "لا تعمل"}

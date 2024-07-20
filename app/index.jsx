@@ -145,7 +145,7 @@
 // export default Welcome;
 
 import { useState, useEffect } from "react";
-import { Link, Redirect, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 import Toast from "react-native-toast-message";
