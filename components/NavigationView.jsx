@@ -1,24 +1,12 @@
-import {
-	Text,
-	View,
-	TouchableOpacity,
-	DrawerLayoutAndroid,
-	Image,
-} from "react-native";
-import { ScrollView } from "react-native-virtualized-view";
-import Toast from "react-native-toast-message";
-import { useNavigation } from "@react-navigation/native";
+import { View, Text } from "react-native";
+import React from "react";
+import { Image } from "react-native";
+import { icons } from "../constants";
+import { MainButton } from "./MainButton";
+import { TouchableOpacity } from "react-native";
 
-import React, { useRef } from "react";
-import { Header, MainButton } from "../../components";
-import { useGlobalContext } from "../../context/GlobalProvider";
-
-import { icons } from "../../constants";
-const Maintanacehome = () => {
-	const { user } = useGlobalContext();
-	const navigation = useNavigation();
-	const drawer = useRef(null);
-	const navigationView = () => (
+export default function NavigationView({ username, closeDrawer }) {
+	return (
 		<View className="w-full mt-[80px]">
 			<View
 				className="border-b-[#E4E7EC] border-b  p-4 "
@@ -33,7 +21,7 @@ const Maintanacehome = () => {
 						<Text
 							className="font-tregular"
 							style={styles.paragraph}>
-							{user.username}
+							{username}
 						</Text>
 					</View>
 				</View>
@@ -41,10 +29,9 @@ const Maintanacehome = () => {
 
 			<TouchableOpacity
 				onPress={() => {
-					drawer.current.closeDrawer();
+					closeDrawer;
 				}}
-				className="border-b-[#E4E7EC] border-b  p-4 "
-				style={styles.itemContainer}>
+				className="border-b-[#E4E7EC] border-b  p-4 ">
 				<View className="flex-row-reverse justify-between items-center">
 					<View className=" flex-row-reverse items-center gap-2   ">
 						<Image
@@ -59,14 +46,12 @@ const Maintanacehome = () => {
 						</Text>
 					</View>
 					<Image
-						source={icons.leftArrow}
+						source={icons.CaretLeft}
 						className="w-4 h-4"
 					/>
 				</View>
 			</TouchableOpacity>
-			<View
-				className="border-b-[#E4E7EC] border-b  p-4 "
-				style={styles.itemContainer}>
+			<View className="border-b-[#E4E7EC] border-b  p-4 ">
 				<View className="flex-row-reverse justify-between items-center">
 					<View className=" flex-row-reverse items-center gap-2   ">
 						<Image
@@ -86,9 +71,7 @@ const Maintanacehome = () => {
 					/>
 				</View>
 			</View>
-			<View
-				className="border-b-[#E4E7EC] border-b  p-4 "
-				style={styles.itemContainer}>
+			<View className="border-b-[#E4E7EC] border-b  p-4 ">
 				<View className="flex-row-reverse justify-between items-center">
 					<View className=" flex-row-reverse items-center gap-2   ">
 						<Image
@@ -105,9 +88,7 @@ const Maintanacehome = () => {
 					<Text style={styles.paragraph}>العربية</Text>
 				</View>
 			</View>
-			<View
-				className="border-b-[#E4E7EC] border-b  p-4 "
-				style={styles.itemContainer}>
+			<View className="border-b-[#E4E7EC] border-b  p-4 ">
 				<View className="flex-row-reverse justify-between items-center">
 					<View className=" flex-row-reverse items-center gap-2   ">
 						<Image
@@ -122,13 +103,13 @@ const Maintanacehome = () => {
 						</Text>
 					</View>
 					<Image
-						source={icons.leftArrow}
+						source={icons.CaretLeft}
 						className="w-4 h-4"
 					/>
 				</View>
 			</View>
 
-			<View style={styles.logoutButtonContainer}>
+			<View>
 				<MainButton
 					containerStyles={"m-auto mt-[100px] w-[200px]  "}
 					handlePress={console.log("logout")}
@@ -136,58 +117,7 @@ const Maintanacehome = () => {
 			</View>
 		</View>
 	);
-	return (
-		<DrawerLayoutAndroid
-			ref={drawer}
-			drawerWidth={300}
-			drawerPosition={"right"}
-			renderNavigationView={navigationView}>
-			<View>
-				<Header
-					hasLeftComponent={true}
-					onDrawerPress={() => {
-						drawer.current.openDrawer();
-					}}
-				/>
-				<ScrollView>
-					<View className="flex px-4 my-6">
-						<View className=" mb-20">
-							<Text className="text-right font-tregular text-base text-primary">
-								مرحبا بك
-							</Text>
-							<Text className="text-right font-tbold text-base text-primary mb-4">
-								{user.username}
-							</Text>
-							<Text className="text-base text-primary font-tregular">
-								اخر ظهور :{" "}
-								<Text className="text-sm font-tlight">{user.lastActive}</Text>
-							</Text>
-						</View>
-						<MainButton
-							title="بينات الفحص اليومي"
-							containerStyles="mt-7"
-							handlePress={() => navigation.navigate("dailyExamination")}
-						/>
-
-						<MainButton
-							title="المساعدة في الصيانة"
-							containerStyles="mt-7"
-							handlePress={() => navigation.navigate("maintanaceHelper")}
-						/>
-						<MainButton
-							title="البلاغات"
-							containerStyles="mt-7"
-							handlePress={() => navigation.navigate("reports")}
-						/>
-					</View>
-					<Toast />
-				</ScrollView>
-			</View>
-		</DrawerLayoutAndroid>
-	);
-};
-
-export default Maintanacehome;
+}
 const styles = {
 	paragraph: { fontFamily: "Tajawal-Regular", fontSize: 16 },
 };

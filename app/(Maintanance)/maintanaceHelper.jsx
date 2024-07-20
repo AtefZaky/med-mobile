@@ -8,10 +8,7 @@ import {
 	ChatBotStartUp,
 } from "../../components";
 import Toast from "react-native-toast-message";
-import icon from "../../constants/icons";
-import { router } from "expo-router";
 import SubmitFormAiChat from "../../components/SubmitFormAiChat";
-import { ScrollView } from "react-native-virtualized-view";
 export default function maintanaceHelper() {
 	const [options, setOptions] = useState([]);
 	const [loader, setloader] = useState(true);
