@@ -22,13 +22,11 @@ export default function FailureForm({ setDataSent }) {
 	return (
 		<View className="gap-8 p-4">
 			<View>
-				<FormField
-					title={"تاريخ الاصلاح"}
-					placeholder={"اختر التاريخ"}
-					value={formData.FixDate}
-					handleChangeText={(value) => {
+				<DatePickerInput
+					setDate={(value) => {
 						setFormData({ ...formData, FixDate: value });
-					}}></FormField>
+					}}
+				/>
 			</View>
 			<View>
 				<FormField

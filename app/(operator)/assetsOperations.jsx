@@ -24,7 +24,6 @@ const AssetsOperations = () => {
 		const fetchData = async () => {
 			try {
 				const result = await getData();
-
 				setData(result.data);
 				setLoader(false);
 			} catch (error) {

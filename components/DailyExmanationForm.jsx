@@ -18,13 +18,11 @@ export default function DailyExmanationForm({
 	return (
 		<View className=" flex flex-col  gap-6  p-4 pt-6">
 			<View>
-				<FormField
-					value={formdata.ch_date}
-					handleChangeText={(value) => {
+				<DatePickerInput
+					setDate={(value) => {
 						setFormData({ ...formdata, ch_date: value });
 					}}
-					title={"التاريخ"}
-					placeholder={"اختر التاريخ"}></FormField>
+				/>
 			</View>
 			<View>
 				<Dropdown

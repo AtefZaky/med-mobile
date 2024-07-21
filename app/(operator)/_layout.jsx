@@ -1,6 +1,5 @@
-import { Redirect, Stack, useRouter } from "expo-router";
-import { useEffect } from "react";
-import { Loader } from "../../components";
+import { Redirect, Stack } from "expo-router";
+
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { roles } from "../../constants";
@@ -8,10 +7,12 @@ import { roles } from "../../constants";
 const AuthLayout = () => {
 	const { loading, isLogged, user } = useGlobalContext();
 	if (user.type === roles.operator) {
-    <Redirect href="/home" />;
-  } else if (user.type === roles.maintenar) {
-    <Redirect href="/Maintanacehome" />;
-  }
+		<Redirect href="/home" />;
+	} else if (user.type === roles.maintenar) {
+		<Redirect href="/Maintanacehome" />;
+	} else if (user.type === roles.manager) {
+		<Redirect href="/MangerHome" />;
+	}
 
 	return (
 		<>

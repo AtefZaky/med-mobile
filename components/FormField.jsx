@@ -13,7 +13,9 @@ const FormField = ({
 	otherStyles,
 	icon,
 	inputIcon,
+	blurFunction,
 	disableChat,
+	FocusFunction,
 	...props
 }) => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -60,6 +62,16 @@ const FormField = ({
 					</TouchableOpacity>
 				)}
 				<TextInput
+					onBlur={() => {
+						if (blurFunction) {
+							blurFunction();
+						}
+					}}
+					onFocus={() => {
+						if (FocusFunction) {
+							FocusFunction();
+						}
+					}}
 					multiline={title !== "كلمة المرور"}
 					className="flex-1 text-base text-dark font-tregular text-right"
 					value={value}
