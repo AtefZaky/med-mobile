@@ -1,5 +1,3 @@
-import { LogoBar, Header, Select, ChatbotComponent } from "../components";
-
 import React, { useState, useRef } from "react";
 import {
 	View,
@@ -12,13 +10,13 @@ import {
 
 const DarkBlue = "#0047ab"; // Assuming this is the color you want to use
 
-const SearchInput = () => {
+const SearchInput = ({ setQuery }) => {
 	const [searchText, setSearchText] = useState("");
 	const inputRef = useRef(null);
 
 	const handleSearch = () => {
 		// Add your search logic here
-		console.log("Searching for:", searchText);
+		setQuery(searchText);
 	};
 
 	const activateSearchInput = () => {

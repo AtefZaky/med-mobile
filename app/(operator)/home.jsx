@@ -5,12 +5,14 @@ import React from "react";
 import { Header, MainButton } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { DrawerLayoutAndroid, Image } from "react-native";
-import { useRef } from "react";
+import { useRef, useCallback, useState } from "react";
 import { icons } from "../../constants";
-import { useCallback } from "react";
+
 const Home = () => {
 	const { user } = useGlobalContext();
 	const navigation = useNavigation();
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
 	const drawer = useRef(null);
 
 	const navigationView = () => (
@@ -37,6 +39,7 @@ const Home = () => {
 			<TouchableOpacity
 				onPress={() => {
 					drawer.current.closeDrawer();
+					setIsDrawerOpen(false);
 				}}
 				className="border-b-[#E4E7EC] border-b  p-4 "
 				style={styles.itemContainer}>
@@ -133,15 +136,19 @@ const Home = () => {
 	);
 
 	useFocusEffect(
-		// useCallback(() => {
-		() => {
+		useCallback(() => {
+			// This will close the drawer whenever the Home screen gains focus
 			if (drawer.current) {
 				drawer.current.closeDrawer();
+				setIsDrawerOpen(false);
 			}
-		}
-		// }, [])
+		}, [])
 	);
 
+	const handleDrawerOpen = () => {
+		drawer.current.openDrawer();
+		setIsDrawerOpen(true);
+	};
 	return (
 		<DrawerLayoutAndroid
 			ref={drawer}
@@ -151,9 +158,7 @@ const Home = () => {
 			<View>
 				<Header
 					hasLeftComponent={true}
-					onDrawerPress={() => {
-						drawer.current.openDrawer();
-					}}
+					onDrawerPress={handleDrawerOpen}
 				/>
 				<ScrollView>
 					<View className="flex px-4 my-6">

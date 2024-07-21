@@ -104,46 +104,44 @@ const ReportFailure = () => {
 				<Loader></Loader>
 			) : (
 				<View className=" flex  gap-6  p-4 pt-6 ">
- main
 					<View>
 						<DatePickerInput
 							setDate={(value) => {
 								setFormData({ ...formdata, StatusDate: value });
 							}}
+						/>
+					</View>
 
-					
-					
-						<View>
-							<Dropdown
-								title={"المعدة"}
-								data={options}
-								placeholder={"اختر المعدة"}
-								onChange={(key) => {
-									setFormData({ ...formdata, AssetID: key });
-								}}></Dropdown>
-						</View>
-						<View>
-							<Dropdown
-								title={"حالة المعدة"}
-								data={assetsStatus}
-								placeholder={"اختر الحالة  "}
-								onChange={(optionid) => {
-									setFormData({
-										...formdata,
-										StatusID: optionid,
-									});
-								}}></Dropdown>
-						</View>
-						<View>
-							<FormField
-								value={formdata.FailureِAction}
-								handleChangeText={(value) => {
-									setFormData({ ...formdata, FailureِAction: value });
-								}}
-								title={"الاجراء المتخذ قبل الابلاغ"}
-								placeholder={"ادخل الاجراء"}
-								></FormField>
-						</View>
+					<View>
+						<Dropdown
+							title={"المعدة"}
+							data={options}
+							placeholder={"اختر المعدة"}
+							onChange={(key) => {
+								setFormData({ ...formdata, AssetID: key });
+							}}></Dropdown>
+					</View>
+					<View>
+						<Dropdown
+							title={"حالة المعدة"}
+							data={assetsStatus}
+							placeholder={"اختر الحالة  "}
+							onChange={(optionid) => {
+								setFormData({
+									...formdata,
+									StatusID: optionid,
+								});
+							}}></Dropdown>
+					</View>
+					<View>
+						<FormField
+							value={formdata.FailureِAction}
+							handleChangeText={(value) => {
+								setFormData({ ...formdata, FailureِAction: value });
+							}}
+							title={"الاجراء المتخذ قبل الابلاغ"}
+							placeholder={"ادخل الاجراء"}></FormField>
+					</View>
 
 					<View>
 						<MainButton

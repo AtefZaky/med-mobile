@@ -189,6 +189,11 @@ const Maintanacehome = () => {
 							containerStyles="mt-7"
 							handlePress={() => navigation.navigate("reports")}
 						/>
+						<MainButton
+							title="الاصناف المخزنية"
+							containerStyles="mt-7"
+							handlePress={() => navigation.navigate("InventoyItems")}
+						/>
 					</View>
 					<Toast />
 				</ScrollView>
