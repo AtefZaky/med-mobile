@@ -35,15 +35,15 @@ const Header = ({ title, hasLeftComponent = false, onDrawerPress }) => {
 					{title}
 				</Text>
 				{!hasLeftComponent ? (
-					<View style={styles.rightComponent}>
-						<TouchableOpacity onPress={() => router.replace("/home")}>
-							<Image
-								source={icons.ArrowRight}
-								style={styles.rightComponentIcon}
-								resizeMode="contain"
-							/>
-						</TouchableOpacity>
-					</View>
+					<TouchableOpacity
+						style={styles.rightComponent}
+						onPress={() => router.replace("/home")}>
+						<Image
+							source={icons.ArrowRight}
+							style={styles.rightComponentIcon}
+							resizeMode="contain"
+						/>
+					</TouchableOpacity>
 				) : (
 					<TouchableOpacity
 						// style={styles.leftComponent}

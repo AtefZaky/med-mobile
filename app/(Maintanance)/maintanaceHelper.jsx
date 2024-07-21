@@ -1,4 +1,11 @@
-import { View, Text, FlatList } from "react-native";
+import {
+	View,
+	Text,
+	FlatList,
+	KeyboardAvoidingView,
+	Platform,
+	ScrollView,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import api from "../../utils/api";
 import {
@@ -93,7 +100,7 @@ export default function maintanaceHelper() {
 
 	useEffect(() => {}, [chatStartUP.chating]);
 	return (
-		<View className="">
+		<View>
 			<Header title={"المساعدة في الصيانة"}></Header>
 
 			{loader || !options.length ? (
@@ -117,23 +124,25 @@ export default function maintanaceHelper() {
 							{loader ? (
 								<Loader isLoading={loader}></Loader>
 							) : (
-								<View>
-									<View className="h-[74vh]">
-										<FlatList
-											style={{ padding: 16, paddingBottom: 0 }}
-											data={History}
-											renderItem={({ item: item }) => {
-												return <MassegeContainer {...item} />;
-											}}
-											keyExtractor={(item, index) => index.toString()}
-										/>
-									</View>
+								<KeyboardAvoidingView
+									behavior={Platform.OS === "ios" ? "padding" : "height"}
+									keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 64}>
+									<ScrollView className="h-[76vh] p-4">
+										{History.map((item, index) => {
+											return (
+												<MassegeContainer
+													{...item}
+													key={index}
+												/>
+											);
+										}) || <Text>لا يوجد رسائل</Text>}
+									</ScrollView>
 
 									<SubmitFormAiChat
 										buttonDisabled={buttonDisabled}
 										sendMassege={sendMassege}
 									/>
-								</View>
+								</KeyboardAvoidingView>
 							)}
 						</>
 					)}

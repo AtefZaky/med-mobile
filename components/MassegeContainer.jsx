@@ -1,7 +1,7 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import { useGlobalContext } from "../context/GlobalProvider";
-
+import Markdown from "react-native-markdown-display";
 export default function MassegeContainer({ role, content }) {
 	const { user } = useGlobalContext();
 	return (
@@ -13,7 +13,7 @@ export default function MassegeContainer({ role, content }) {
 				<Text className=" font-tmedium ">
 					{role == "assistant" ? "المساعد ف الصيانة " : user.username}
 				</Text>
-				<Text className="font-tregular">{content}</Text>
+				<Text>{content}</Text>
 			</View>
 		</View>
 	);

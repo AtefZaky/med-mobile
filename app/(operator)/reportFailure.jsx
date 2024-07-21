@@ -11,7 +11,7 @@ import {
 	Loader,
 	MainButton,
 	Dropdown,
-	Select,
+	DatePickerInput,
 } from "../../components";
 import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/GlobalProvider";
@@ -28,7 +28,7 @@ const ReportFailure = () => {
 		FailureِAction: "",
 		StatusID: "",
 	});
-
+	console.log(formdata);
 	const assetsStatus = [
 		{ value: "يعمل", key: "1" },
 		{ value: "متوقف", key: "2" },
@@ -60,26 +60,25 @@ const ReportFailure = () => {
 				FailureِAction: formdata.FailureِAction,
 				StatusID: formdata.StatusID,
 			};
-      setSubmitting(true)
+			setSubmitting(true);
 			const res = await api.post("/failure/report", data);
-      Toast.show({
-        type: "success",
-        text1: "عملية ناجحه",
-        text2: "تم تسجيل بلاغك",
-        autoHide: true,
-        visibilityTime: 1500,
-        text1Style: {
-          textAlign: 'right',
-        },
-        text2Style: {
-          textAlign: 'right',
-        },
-      });
-      setTimeout(() => {
-        setSubmitting(false)
-        navigation.navigate("home");       
-      }, 1500);
-
+			Toast.show({
+				type: "success",
+				text1: "عملية ناجحه",
+				text2: "تم تسجيل بلاغك",
+				autoHide: true,
+				visibilityTime: 1500,
+				text1Style: {
+					textAlign: "right",
+				},
+				text2Style: {
+					textAlign: "right",
+				},
+			});
+			setTimeout(() => {
+				setSubmitting(false);
+				navigation.navigate("home");
+			}, 1500);
 		} catch (error) {
 			if (error.response) {
 				// The request was made and the server responded with a status code
@@ -105,53 +104,57 @@ const ReportFailure = () => {
 				<Loader></Loader>
 			) : (
 				<View className=" flex  gap-6  p-4 pt-6 ">
-						<View>
-							<FormField
-								value={formdata.StatusDate}
-								handleChangeText={(value) => {
-									setFormData({ ...formdata, StatusDate: value });
-								}}
-								title={"التاريخ"}
-								placeholder={"اختر التاريخ"}></FormField>
-						</View>
-						<View>
-							<Dropdown
-								title={"المعدة"}
-								data={options}
-								placeholder={"اختر المعدة"}
-								onChange={(key) => {
-									setFormData({ ...formdata, AssetID: key });
-								}}></Dropdown>
-						</View>
-						<View>
-							<Dropdown
-								title={"حالة المعدة"}
-								data={assetsStatus}
-								placeholder={"اختر الحالة  "}
-								onChange={(optionid) => {
-									setFormData({
-										...formdata,
-										StatusID: optionid,
-									});
-								}}></Dropdown>
-						</View>
-						<View>
-							<FormField
-								value={formdata.FailureِAction}
-								handleChangeText={(value) => {
-									setFormData({ ...formdata, FailureِAction: value });
-								}}
-								title={"الاجراء المتخذ قبل الابلاغ"}
-								placeholder={"ادخل الاجراء"}></FormField>
-						</View>
+					<View>
+						<DatePickerInput
+							setDate={(value) => {
+								setFormData({ ...formdata, StatusDate: value });
+							}}
+						/>
+						{/* <FormField
+							value={formdata.StatusDate}
+							handleChangeText={(value) => {
+								setFormData({ ...formdata, StatusDate: value });
+							}}
+							title={"التاريخ"}
+							placeholder={"اختر التاريخ"}></FormField> */}
+					</View>
+					<View>
+						<Dropdown
+							title={"المعدة"}
+							data={options}
+							placeholder={"اختر المعدة"}
+							onChange={(key) => {
+								setFormData({ ...formdata, AssetID: key });
+							}}></Dropdown>
+					</View>
+					<View>
+						<Dropdown
+							title={"حالة المعدة"}
+							data={assetsStatus}
+							placeholder={"اختر الحالة  "}
+							onChange={(optionid) => {
+								setFormData({
+									...formdata,
+									StatusID: optionid,
+								});
+							}}></Dropdown>
+					</View>
+					<View>
+						<FormField
+							value={formdata.FailureِAction}
+							handleChangeText={(value) => {
+								setFormData({ ...formdata, FailureِAction: value });
+							}}
+							title={"الاجراء المتخذ قبل الابلاغ"}
+							placeholder={"ادخل الاجراء"}></FormField>
+					</View>
 
-						<View>
-							<MainButton
-								title={"ارسال"}
-								handlePress={submitData}
-                isLoading={isSubmitting}
-                ></MainButton>
-						</View>
+					<View>
+						<MainButton
+							title={"ارسال"}
+							handlePress={submitData}
+							isLoading={isSubmitting}></MainButton>
+					</View>
 				</View>
 			)}
 			<Toast />

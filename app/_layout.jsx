@@ -9,40 +9,51 @@ import GlobalProvider from "../context/GlobalProvider";
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
+	const [fontsLoaded, error] = useFonts({
+		"Tajawal-Bold": require("../assets/fonts/Tajawal-Bold.ttf"),
+		"Tajawal-Light": require("../assets/fonts/Tajawal-Light.ttf"),
+		"Tajawal-Medium": require("../assets/fonts/Tajawal-Medium.ttf"),
+		"Tajawal-Regular": require("../assets/fonts/Tajawal-Regular.ttf"),
+	});
 
-  const [fontsLoaded, error] = useFonts({
-    "Tajawal-Bold": require("../assets/fonts/Tajawal-Bold.ttf"),
-    "Tajawal-Light": require("../assets/fonts/Tajawal-Light.ttf"),
-    "Tajawal-Medium": require("../assets/fonts/Tajawal-Medium.ttf"),
-    "Tajawal-Regular": require("../assets/fonts/Tajawal-Regular.ttf"),
-  });
+	useEffect(() => {
+		if (error) throw error;
 
-  useEffect(() => {
-    if (error) throw error;
+		if (fontsLoaded) {
+			SplashScreen.hideAsync();
+		}
+	}, [fontsLoaded, error]);
 
-    if (fontsLoaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded, error]);
+	if (!fontsLoaded) {
+		return null;
+	}
 
-  if (!fontsLoaded) {
-    return null;
-  }
+	if (!fontsLoaded && !error) {
+		return null;
+	}
 
-  if (!fontsLoaded && !error) {
-    return null;
-  }
-
-  return (
-    <GlobalProvider>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(operator)" options={{ headerShown: false }} />
-        <Stack.Screen name="(Maintanance)" options={{ headerShown: false }} />
-      </Stack>
-    </GlobalProvider>
-  );
-
+	return (
+		<GlobalProvider>
+			<Stack>
+				<Stack.Screen
+					name="index"
+					options={{ headerShown: false }}
+				/>
+				<Stack.Screen
+					name="(operator)"
+					options={{ headerShown: false }}
+				/>
+				<Stack.Screen
+					name="(Maintanance)"
+					options={{ headerShown: false }}
+				/>
+				<Stack.Screen
+					name="(Manger)"
+					options={{ headerShown: false }}
+				/>
+			</Stack>
+		</GlobalProvider>
+	);
 };
 
 export default RootLayout;

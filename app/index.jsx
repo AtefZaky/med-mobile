@@ -214,6 +214,9 @@ const Welcome = () => {
 				} else if (result.UserTypeID === roles.maintenar) {
 					setSubmitting(false);
 					router.replace("/Maintanacehome");
+				} else if (result.UserTypeID === roles.manager) {
+					setSubmitting(false);
+					router.replace("/MangerHome");
 				}
 			}, 1500);
 		} catch (error) {
@@ -242,6 +245,8 @@ const Welcome = () => {
 			} else if (user.type === roles.maintenar) {
 				console.log(user.type);
 				router.replace("/Maintanacehome");
+			} else if (user.type === roles.manager) {
+				router.replace("/MangerHome");
 			}
 		}
 	}, []);

@@ -8,16 +8,24 @@ import {
 import { ScrollView } from "react-native-virtualized-view";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
-
 import React, { useRef } from "react";
 import { Header, MainButton } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
-
+import { useEffect } from "react";
 import { icons } from "../../constants";
 const Maintanacehome = () => {
 	const { user } = useGlobalContext();
 	const navigation = useNavigation();
 	const drawer = useRef(null);
+
+	useEffect(() => {
+		return () => {
+			// Ensure the drawer is closed when the component unmounts
+			if (drawer.current) {
+				drawer.current.closeDrawer();
+			}
+		};
+	}, []);
 	const navigationView = () => (
 		<View className="w-full mt-[80px]">
 			<View
@@ -131,7 +139,9 @@ const Maintanacehome = () => {
 			<View style={styles.logoutButtonContainer}>
 				<MainButton
 					containerStyles={"m-auto mt-[100px] w-[200px]  "}
-					handlePress={console.log("logout")}
+					handlePress={() => {
+						console.log("logout");
+					}}
 					title={"تسجيل الخروج"}></MainButton>
 			</View>
 		</View>

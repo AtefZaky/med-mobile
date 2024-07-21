@@ -1,19 +1,13 @@
-import {
-	Text,
-	View,
-	ScrollView,
-	Dimensions,
-	TouchableOpacity,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, View, ScrollView, TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message";
-import { useNavigation } from "@react-navigation/native";
-import React, { Component, useState, useEffect } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import React from "react";
 import { Header, MainButton } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { DrawerLayoutAndroid, Image } from "react-native";
 import { useRef } from "react";
 import { icons } from "../../constants";
+import { useCallback } from "react";
 const Home = () => {
 	const { user } = useGlobalContext();
 	const navigation = useNavigation();
@@ -60,7 +54,7 @@ const Home = () => {
 						</Text>
 					</View>
 					<Image
-						source={icons.leftArrow}
+						source={icons.CaretLeft}
 						className="w-4 h-4"
 					/>
 				</View>
@@ -123,7 +117,7 @@ const Home = () => {
 						</Text>
 					</View>
 					<Image
-						source={icons.leftArrow}
+						source={icons.CaretLeft}
 						className="w-4 h-4"
 					/>
 				</View>
@@ -137,56 +131,69 @@ const Home = () => {
 			</View>
 		</View>
 	);
+
+	useFocusEffect(
+		// useCallback(() => {
+		() => {
+			if (drawer.current) {
+				drawer.current.closeDrawer();
+			}
+		}
+		// }, [])
+	);
+
 	return (
 		<DrawerLayoutAndroid
 			ref={drawer}
 			drawerWidth={300}
 			drawerPosition={"right"}
 			renderNavigationView={navigationView}>
-			<ScrollView>
+			<View>
 				<Header
 					hasLeftComponent={true}
 					onDrawerPress={() => {
 						drawer.current.openDrawer();
 					}}
 				/>
-				<View className="flex px-4 my-6">
-					<View className=" mb-20">
-						<Text className="text-right font-tregular text-base text-primary">
-							مرحبا بك
-						</Text>
-						<Text className="text-right font-tbold text-base text-primary mb-4">
-							{user.username}
-						</Text>
-						<Text className="text-base text-primary font-tregular">
-							اخر ظهور :{" "}
-							<Text className="text-sm font-tlight">{user.lastActive}</Text>
-						</Text>
-					</View>
-					<MainButton
-						title="تشغيل و ايقاف الوحدات"
-						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("assetsOperations")}
-					/>
-					<MainButton
-						title="المناسيب اليومية"
-						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("dailyPercentage")}
-					/>
+				<ScrollView>
+					<View className="flex px-4 my-6">
+						<View className=" mb-20">
+							<Text className="text-right font-tregular text-base text-primary">
+								مرحبا بك
+							</Text>
+							<Text className="text-right font-tbold text-base text-primary mb-4">
+								{user.username}
+							</Text>
+							<Text className="text-base text-primary font-tregular">
+								اخر ظهور :{" "}
+								<Text className="text-sm font-tlight">{user.lastActive}</Text>
+							</Text>
+						</View>
+						<MainButton
+							title="تشغيل و ايقاف الوحدات"
+							containerStyles="mt-7"
+							handlePress={() => navigation.navigate("assetsOperations")}
+						/>
+						<MainButton
+							title="المناسيب اليومية"
+							containerStyles="mt-7"
+							handlePress={() => navigation.navigate("dailyPercentage")}
+						/>
 
-					<MainButton
-						title="بيانات التشغيل اليومية"
-						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("dailyOperationsInfo")}
-					/>
-					<MainButton
-						title="الابلاغ عن العطال"
-						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("reportFailure")}
-					/>
-				</View>
-				<Toast />
-			</ScrollView>
+						<MainButton
+							title="بيانات التشغيل اليومية"
+							containerStyles="mt-7"
+							handlePress={() => navigation.navigate("dailyOperationsInfo")}
+						/>
+						<MainButton
+							title="الابلاغ عن العطال"
+							containerStyles="mt-7"
+							handlePress={() => navigation.navigate("reportFailure")}
+						/>
+					</View>
+					<Toast />
+				</ScrollView>
+			</View>
 		</DrawerLayoutAndroid>
 	);
 };

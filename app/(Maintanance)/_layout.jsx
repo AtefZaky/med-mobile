@@ -13,6 +13,8 @@ const AuthLayout = () => {
 		<Redirect href="/home" />;
 	} else if (user.type === roles.maintenar) {
 		<Redirect href="/Maintanacehome" />;
+	} else if (user.type === roles.manager) {
+		<Redirect href="/MangerHome" />;
 	}
 
 	return (
@@ -25,12 +27,7 @@ const AuthLayout = () => {
 							headerShown: false,
 						}}
 					/>
-					<Stack.Screen
-						name="chatbot"
-						options={{
-							headerShown: false,
-						}}
-					/>
+
 					<Stack.Screen
 						name="dailyExamination"
 						options={{
