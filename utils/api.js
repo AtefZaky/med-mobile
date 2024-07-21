@@ -117,4 +117,17 @@ export const login = async (email, password) => {
 	}
 };
 
+export const logOut = async () => {
+	try {
+		await SecureStore.deleteItemAsync("accessToken");
+		await SecureStore.deleteItemAsync("refreshToken");
+		await SecureStore.deleteItemAsync("username");
+		await SecureStore.deleteItemAsync("lastActive");
+		await SecureStore.deleteItemAsync("UserTypeID");
+		await SecureStore.deleteItemAsync("UserDepartmentID");	
+	} catch (error) {
+		throw error
+	}
+}
+
 export default api;

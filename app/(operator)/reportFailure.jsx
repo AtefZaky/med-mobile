@@ -104,7 +104,6 @@ const ReportFailure = () => {
 				<Loader></Loader>
 			) : (
 				<View className=" flex  gap-6  p-4 pt-6 ">
- main
 					<View>
 						<DatePickerInput
 							setDate={(value) => {
@@ -112,7 +111,8 @@ const ReportFailure = () => {
 							}}
 
 					
-					
+					    />
+					</View>
 						<View>
 							<Dropdown
 								title={"المعدة"}

@@ -6,12 +6,16 @@ import { roles } from "../../constants";
 
 const AuthLayout = () => {
 	const { loading, isLogged, user } = useGlobalContext();
-	if (user.type === roles.operator) {
-		<Redirect href="/home" />;
-	} else if (user.type === roles.maintenar) {
-		<Redirect href="/Maintanacehome" />;
-	} else if (user.type === roles.manager) {
-		<Redirect href="/MangerHome" />;
+	if (user) {
+		if (user.type === roles.operator) {
+			<Redirect href="/home" />;
+		} else if (user.type === roles.maintenar) {
+			<Redirect href="/Maintanacehome" />;
+		} else if (user.type === roles.manager) {
+			<Redirect href="/MangerHome" />;
+		}
+	} else{
+		<Redirect href="/" />;
 	}
 
 	return (
