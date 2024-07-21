@@ -32,7 +32,7 @@ const TableRow = ({ item, onStartMachine, onCloseMachine, numOfRows }) => {
 	}, [active]);
 
 	return (
-		<View className="flex flex-row justify-between py-2  px-3 items-center">
+		<View className="flex flex-row justify-between py-2  px-3 items-center border-b-[1px] border-[#E4E7EC]">
 			<View className="flex flex-1">
 				<Text className="text-center font-tmedium">{date.counter}</Text>
 			</View>

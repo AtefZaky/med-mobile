@@ -50,7 +50,7 @@ const DailyOperation = () => {
 	  };
 
 
-  const header = ["اخر قراءة", "اخر ساعة", "الوحدة", "بند التشغيل", "المعدة"];
+  const header = ["اخر قراءة", "اخر ساعة", "الوحدة", "المعدة"];
   const handleSubmit = async (H, value) => {
     if (H === "" || value === "" || formData.OperationItemID === "" || formData.AssetID === "") {
       Toast.show({

@@ -25,23 +25,24 @@ const DailyPercentage = () => {
       const killowaat = data.data.operations[2]
       const air = data.data.operations[3]
       const filteredSuck = Object.fromEntries(
-        Object.entries(suck).filter(([key, value]) => key.startsWith('H') && value != null)
+        Object.entries(suck).filter(([key, value]) => !isNaN(Number(key)) && value != null)
       );
+      
       const filteredDirect = Object.fromEntries(
-        Object.entries(direct).filter(([key, value]) => key.startsWith('H') && value != null)
+        Object.entries(direct).filter(([key, value]) => !isNaN(Number(key)) && value != null)
       );
+      
       const filteredKilo = Object.fromEntries(
-        Object.entries(killowaat).filter(([key, value]) => key.startsWith('H') && value != null)
+        Object.entries(killowaat).filter(([key, value]) => !isNaN(Number(key)) && value != null)
       );
+      
       const filteredAir = Object.fromEntries(
-        Object.entries(air).filter(([key, value]) => key.startsWith('H') && value != null)
+        Object.entries(air).filter(([key, value]) => !isNaN(Number(key)) && value != null)
       );
-      let index = 1
       for (let key in filteredSuck) {
-        const row = createObject(index, filteredSuck[key], filteredDirect[key], filteredKilo[key], filteredAir[key])
+        const row = createObject(key, filteredSuck[key], filteredDirect[key], filteredKilo[key], filteredAir[key])
         console.log(row)
         dailyDataSample.push(row)
-        index++;
       }
       console.log(dailyDataSample)
       setData(dailyDataSample)
@@ -57,7 +58,7 @@ const DailyPercentage = () => {
 					<PopUp updateParent = {(e)=> setData([...data,e])}/>
 				</View>
 				<View
-					className="w-full flex mt-4">
+					className="w-full flex mt-">
 					<Table
 						header={header}
 						dailyPrecentageData={true}

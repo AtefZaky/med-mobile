@@ -4,7 +4,7 @@ import tw from "twrnc";
 
 const DailyOperation = ({data, handlePress}) => {
       const filteredAsset = Object.fromEntries(
-        Object.entries(data).filter(([key, value]) => key.startsWith('H') && value != null)
+        Object.entries(data).filter(([key, value]) => !isNaN(Number(key)) && value != null)
       ); 
       let values = Object.keys(filteredAsset)
       let size = values.length
@@ -21,14 +21,13 @@ const DailyOperation = ({data, handlePress}) => {
 					{ width: "100%" },
 				]}>
 				<Text className="font-tbold text-center flex-1">{data.AssetName}</Text>
-				<Text className="font-tbold text-center flex-1">{data.AssetCode}</Text>
 
 				<Text className={`font-tbold text-center leading-6 flex-1`}>
 					{data.OperationItemName}
 				</Text>
 
 				<Text className={`font-tbold text-center flex-1`}>
-					{size}
+					{values[size-1]}
 				</Text>
 				<Text className={`font-tbold text-center flex-1`}>
 					{filteredAsset[lastKey]}
