@@ -18,10 +18,8 @@ export default function MangerLayout() {
 		<>
 			<SafeAreaView>
 				<Stack>
-					<Stack.Screen name="MangerHome" options={{ headerShown: true }}/>
+					<Stack.Screen name="MangerHome" options={{ headerShown: false }}/>
 					<Stack.Screen name="notifcation" options={{headerShown:false}}/>
-
-				
 				</Stack>
 			</SafeAreaView>
 		</>

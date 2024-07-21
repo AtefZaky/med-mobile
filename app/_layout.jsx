@@ -49,7 +49,7 @@ const RootLayout = () => {
 				/>
 				<Stack.Screen
 					name="(Manger)"
-					options={{ headerShown: true }}
+					options={{ headerShown: false }}
 				/>
 			</Stack>
 		</GlobalProvider>
