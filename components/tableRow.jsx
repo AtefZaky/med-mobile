@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { getTimeDifference } from "../utils/dateFormater";
 import { ActivityIndicator } from "react-native";
+import ProgressBar from "./ProgressBar";
 
 const TableRow = ({ item, onStartMachine, onCloseMachine, numOfRows }) => {
 	const [date, setDate] = useState({
@@ -32,7 +33,7 @@ const TableRow = ({ item, onStartMachine, onCloseMachine, numOfRows }) => {
 	}, [active]);
 
 	return (
-		<View className="flex flex-row justify-between py-2  px-3 items-center border-b-[1px] border-[#E4E7EC]">
+		<View className="flex flex-row justify-between p-3 items-center border-b-[1px] border-[#E4E7EC]">
 			<View className="flex flex-1">
 				<Text className="text-center font-tmedium">{date.counter}</Text>
 			</View>
@@ -110,6 +111,7 @@ const TableRow = ({ item, onStartMachine, onCloseMachine, numOfRows }) => {
 			</View>
 			<View className="flex flex-1">
 				<Text className="font-tmedium text-center">{item.AssetName}</Text>
+				<ProgressBar value={30} />
 			</View>
 		</View>
 	);

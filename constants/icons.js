@@ -20,6 +20,7 @@ import SignOut from "../assets/images/SignOut.png";
 import notifcationBell from "../assets/images/Bell.png";
 import leftArrow from "../assets/images/CaretLeft.png";
 import ArrowUpRight from "../assets/images/ArrowLineUpRight.png"
+import warning from "../assets/images/Warning.png"
 
 export default {
 	egyptFlag,
@@ -42,5 +43,6 @@ export default {
 	pencil,
     ArrowUpRight,
     eyeSlash,
-	LogoLef
+	LogoLef,
+	warning
 };
