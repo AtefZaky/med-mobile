@@ -34,8 +34,21 @@ const AuthLayout = () => {
 							headerShown: false,
 						}}
 					/>
+
 					<Stack.Screen
 						name="failureDetails/[Id]"
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="InventoyItems"
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="itemDetails/[id]"
 						options={{
 							headerShown: false,
 						}}

@@ -17,7 +17,9 @@ import ChatBotStartUp from "./ChatBotStartUp";
 import SubmitFormAiChat from "./SubmitFormAiChat";
 import DailyExmanationForm from "./DailyExmanationForm";
 import DatePickerInput from "./DatePickerInput";
+import SearchInput from "./SearchInput";
 export {
+	SearchInput,
 	DatePickerInput,
 	Loader,
 	DailyExmanationForm,
