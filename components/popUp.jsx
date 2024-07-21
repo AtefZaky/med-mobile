@@ -107,6 +107,7 @@ const PopUp = ({ updateParent }) => {
 								placeholder="أدخل الساعه "
 								value={formData.time}
 								keyboardType="numeric"
+								className="px-4"
 								onChangeText={(value) => {
 									setFormData({ ...formData, time: value });
 								}}
@@ -120,6 +121,7 @@ const PopUp = ({ updateParent }) => {
 								placeholder=" منسوب المص "
 								keyboardType="numeric"
 								value={formData.suck}
+								className="px-4"
 								onChangeText={(value) => {
 									setFormData({ ...formData, suck: value });
 								}}
@@ -133,6 +135,7 @@ const PopUp = ({ updateParent }) => {
 								placeholder="منسوب الطرد "
 								keyboardType="numeric"
 								value={formData.direct}
+								className="px-4"
 								onChangeText={(value) => {
 									setFormData({ ...formData, direct: value });
 								}}
@@ -144,6 +147,7 @@ const PopUp = ({ updateParent }) => {
 								style={styles.input}
 								placeholder="الكيلو وات "
 								keyboardType="numeric"
+								className="px-4"
 								value={formData.kiloWaat}
 								onChangeText={(value) => {
 									setFormData({ ...formData, kiloWaat: value });
@@ -156,6 +160,7 @@ const PopUp = ({ updateParent }) => {
 								style={styles.input}
 								placeholder="ضغط الهواء "
 								keyboardType="numeric"
+								className="px-4"
 								value={formData.airPressure}
 								onChangeText={(value) => {
 									setFormData({ ...formData, airPressure: value });
@@ -168,9 +173,9 @@ const PopUp = ({ updateParent }) => {
 						<TouchableOpacity
 							onPress={handleSubmit}
 							activeOpacity={0.7}
-							className={`bg-primary rounded-lg min-h-[33px] flex flex-row justify-center w-[250px] m-3 mt-5 items-center`}>
+							className={`bg-primary rounded-lg min-h-[33px] flex flex-row justify-center w-[250px] m-3 mt-5 items-center py-3`}>
 							<Image
-								source={icons.ArrowUp}
+								source={icons.ArrowUpRight}
 								className={`h-5 w-5 mr-1`}
 							/>
 							<Text className={`text-white font-tbold text-md`}>حفظ</Text>

@@ -44,6 +44,7 @@ const PopUpOper = ({setModalVisible, modalVisible, handleSubmit, isLoading }) =>
 								style={styles.input}
 								placeholder="أدخل الساعه"
 								value={formData.H}
+								className="px-4"
 								keyboardType="numeric"
 								onChangeText={(value) => {
 									setFormData({ ...formData, H: value });
@@ -55,22 +56,23 @@ const PopUpOper = ({setModalVisible, modalVisible, handleSubmit, isLoading }) =>
 						<View style={styles.container}>
 							<TextInput
 								style={styles.input}
-								placeholder="اخر قراءة"
+								placeholder="القراءة الحالية"
 								keyboardType="numeric"
+								className="px-4"
 								value={formData.value}
 								onChangeText={(value) => {
 									setFormData({ ...formData, value: value });
 								}}
 							/>
-							<Text style={styles.textStyle}>اخر قرائه</Text>
+							<Text style={styles.textStyle}>القراءة الحالية</Text>
 						</View>
 
 						<TouchableOpacity
 							onPress={handleChange}
 							activeOpacity={0.7}
-							className={`bg-primary rounded-lg min-h-[33px] flex flex-row justify-center w-[250px] m-3 mt-5 items-center`}>
+							className={`bg-primary rounded-lg min-h-[33px] flex flex-row justify-center w-[250px] m-3 mt-5 items-center py-3`}>
 							<Image
-								source={icons.ArrowUp}
+								source={icons.ArrowUpRight}
 								className={`h-5 w-5 mr-1`}
 							/>
 							<Text className={`text-white font-tbold text-md`}>حفظ</Text>

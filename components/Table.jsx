@@ -175,7 +175,7 @@ const Table = ({
                         className="flex flex-1"
                         key={index}
                         style={styles.headerItem}>
-                        <Text className="font-tregular text-center">{item}</Text>
+                        <Text className="font-tregular text-center leading-[18px]">{item}</Text>
                     </View>
                 ))}
             </View>

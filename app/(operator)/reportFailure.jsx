@@ -142,7 +142,8 @@ const ReportFailure = () => {
 									setFormData({ ...formdata, FailureِAction: value });
 								}}
 								title={"الاجراء المتخذ قبل الابلاغ"}
-								placeholder={"ادخل الاجراء"}></FormField>
+								placeholder={"ادخل الاجراء"}
+								></FormField>
 						</View>
 
 						<View>

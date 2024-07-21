@@ -41,7 +41,7 @@ const FormField = ({
 				{title === "كلمة المرور" && (
 					<TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
 						<Image
-							source={!showPassword ? icons.eyeIcon : icons.eyeIcon}
+							source={!showPassword ? icons.eyeIcon : icons.eyeSlash}
 							className="w-6 h-6"
 							resizeMode="contain"
 						/>

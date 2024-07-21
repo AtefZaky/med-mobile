@@ -6,9 +6,11 @@ import CaretDown from "../assets/images/CaretDown.png"
 import ChevronUp from "../assets/images/ChevronUp.png" 
 import List from "../assets/images/List.png" 
 import Signin from "../assets/images/SignIn.png"
-import eyeIcon from "../assets/images/EyeClosed.png";
+import eyeIcon from "../assets/images/Eye.png";
+import eyeSlash from "../assets/images/EyeSlash.png";
 import lock from "../assets/images/lock.png"
 import pencil from "../assets/images/Pencil.png"
+import ArrowUpRight from "../assets/images/ArrowLineUpRight.png"
 
 export default {
     ArrowRight,
@@ -20,6 +22,8 @@ export default {
     List,
     Signin,
     eyeIcon,
+    eyeSlash,
     lock,
-    pencil
+    pencil,
+    ArrowUpRight
 }
