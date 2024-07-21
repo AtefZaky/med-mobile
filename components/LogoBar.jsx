@@ -6,10 +6,10 @@ const LogoBar = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerLeftContainer}>
-          <Image source={require('../assets/images/logoleft.jpg')} style={styles.LeftImage} />
+          <Image source={require('../assets/images/logoleft.jpg')} style={styles.LeftImage} resizeMode='contain' />
         </View>
         <View style={styles.headerRightContainer}>
-          <Image source={require('../assets/images/logoright.jpg')} style={styles.RightImage} />
+          <Image source={require('../assets/images/logoright.jpg')} style={styles.RightImage} resizeMode='contain' />
         
         </View>
       </View>

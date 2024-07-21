@@ -1,19 +1,46 @@
 import { Text, View, ScrollView, TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Header, MainButton } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { DrawerLayoutAndroid, Image } from "react-native";
 import { useRef, useCallback, useState } from "react";
 import { icons } from "../../constants";
 
+import { useCallback } from "react";
+import api, { logOut } from "../../utils/api";
+import { useRouter } from "expo-router";
+
+
 const Home = () => {
-	const { user } = useGlobalContext();
+	const { user, setIsLogged, setUser } = useGlobalContext();
 	const navigation = useNavigation();
+
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+
+	const router = useRouter()
+
 	const drawer = useRef(null);
+	const handleLogOut = async () => {
+		await api.get("/auth/signout")
+		console.log('-----------logout--------------')
+		await logOut()
+		setIsLogged(false)
+		setUser(null)
+		router.replace('/')
+	}
+	useEffect(() => {
+		drawer.current.closeDrawer();
+	  if (user){
+		return
+	  }
+	  else{
+		router.replace('/')
+	  }
+	}, [])
+	
 
 	const navigationView = () => (
 		<View className="w-full mt-[80px]">
@@ -30,7 +57,7 @@ const Home = () => {
 						<Text
 							className="font-tregular"
 							style={styles.paragraph}>
-							{user.username}
+							{user ? user.username: ""}
 						</Text>
 					</View>
 				</View>
@@ -129,21 +156,27 @@ const Home = () => {
 			<View style={styles.logoutButtonContainer}>
 				<MainButton
 					containerStyles={"m-auto mt-[100px] w-[200px]  "}
-					handlePress={console.log("logout")}
-					title={"تسجيل الخروج"}></MainButton>
+					handlePress={handleLogOut}
+					title={"تسجيل الخروج"}>
+				</MainButton>
 			</View>
 		</View>
 	);
 
 	useFocusEffect(
-		useCallback(() => {
-			// This will close the drawer whenever the Home screen gains focus
-			if (drawer.current) {
-				drawer.current.closeDrawer();
-				setIsDrawerOpen(false);
-			}
-		}, [])
-	);
+
+        useCallback(() => {
+            if (drawer.current) {
+                drawer.current.closeDrawer();
+            }
+            return () => {
+                if (drawer.current) {
+                    drawer.current.closeDrawer();
+                }
+            };
+        }, [])
+    );
+
 
 	const handleDrawerOpen = () => {
 		drawer.current.openDrawer();
@@ -167,11 +200,11 @@ const Home = () => {
 								مرحبا بك
 							</Text>
 							<Text className="text-right font-tbold text-base text-primary mb-4">
-								{user.username}
+								{user? user.username: ""}
 							</Text>
 							<Text className="text-base text-primary font-tregular">
 								اخر ظهور :{" "}
-								<Text className="text-sm font-tlight">{user.lastActive}</Text>
+								<Text className="text-sm font-tlight">{user? user.lastActive: ""}</Text>
 							</Text>
 						</View>
 						<MainButton

@@ -13,7 +13,7 @@ export default function MassegeContainer({ role, content }) {
 				<Text className=" font-tmedium ">
 					{role == "assistant" ? "المساعد ف الصيانة " : user.username}
 				</Text>
-				<Text>{content}</Text>
+				<Text className="font-tregular leading-6">{content}</Text>
 			</View>
 		</View>
 	);

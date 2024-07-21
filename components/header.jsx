@@ -1,12 +1,14 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
 import { router } from "expo-router";
-import { colors } from "../constants";
+import { colors, roles } from "../constants";
 import { icons } from "../constants";
+import { useGlobalContext } from "../context/GlobalProvider";
 
 import Icon from "react-native-vector-icons/MaterialIcons"; // Import the Icon component
 
 const Header = ({ title, hasLeftComponent = false, onDrawerPress }) => {
+	const { user } = useGlobalContext();
 	return (
 		<View style={styles.containerAll}>
 			<View style={styles.topRow}>
@@ -16,12 +18,14 @@ const Header = ({ title, hasLeftComponent = false, onDrawerPress }) => {
 							<Image
 								source={require("../assets/images/logoleft.jpg")}
 								style={styles.LeftImage}
+							 	resizeMode="contain"
 							/>
 						</View>
 						<View style={styles.headerRightContainer}>
 							<Image
 								source={require("../assets/images/logoright.jpg")}
 								style={styles.RightImage}
+								resizeMode="contain"
 							/>
 						</View>
 					</View>
@@ -37,7 +41,15 @@ const Header = ({ title, hasLeftComponent = false, onDrawerPress }) => {
 				{!hasLeftComponent ? (
 					<TouchableOpacity
 						style={styles.rightComponent}
-						onPress={() => router.replace("/home")}>
+						onPress={() => {
+							if (user.type === roles.operator) {
+								router.replace("/home");
+							} else if (user.type === roles.maintenar) {
+								router.replace("/Maintanacehome");
+							} else if (user.type === roles.manager) {
+								router.replace("/MangerHome");
+							}
+						}}>
 						<Image
 							source={icons.ArrowRight}
 							style={styles.rightComponentIcon}
