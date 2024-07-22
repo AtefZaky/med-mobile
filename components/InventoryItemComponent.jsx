@@ -7,7 +7,7 @@ export default function InventoryItemComponent({ data, handlePress }) {
 			onPress={() => {
 				handlePress(data.ItemID, data.ItemName);
 			}}
-			className="flex flex-row-reverse justify-center items-center px-4 py-4 border-b border border-[#E4E7EC]">
+			className="flex flex-row-reverse justify-center items-center border-[0.5px] px-4 py-4 border-b border-[#E4E7EC]">
 			<View className="flex-1">
 				<Text className=" text-center font-tmedium text-base">
 					{" "}

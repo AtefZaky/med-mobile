@@ -5,7 +5,7 @@ export default function ItemDetailsComponent({ data }) {
 	console.log(data, "item");
 	const { DepartmentName, Phone, BalanceQty } = data;
 	return (
-		<View className="flex flex-row-reverse ">
+		<View className="flex flex-row-reverse items-center p-4 border-b border-[0.5px] border-[#E4E7EC]">
 			<Text className="flex-1 font-tmedium text-center leading-6">
 				{DepartmentName}
 			</Text>

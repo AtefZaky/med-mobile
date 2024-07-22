@@ -48,7 +48,9 @@ const RootLayout = () => {
 					options={{ headerShown: false }}
 				/>
 				<Stack.Screen
+
 					name="(manager)"
+
 					options={{ headerShown: false }}
 				/>
 			</Stack>
