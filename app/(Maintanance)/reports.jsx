@@ -4,6 +4,7 @@ import { Header, Loader, MainButton, Table } from "../../components";
 import { ScrollView } from "react-native-virtualized-view";
 import api from "../../utils/api";
 import { router } from "expo-router";
+import { icons } from "../../constants";
 export default function reports() {
 	const [loader, setLoader] = useState(true);
 	const [data, setData] = useState([]);
@@ -43,6 +44,8 @@ export default function reports() {
 
 			<View className="px-4 py-8 mb-[45px] ">
 				<MainButton
+					icon={icons.pencil}
+					iconStyles={"mr-4"}
 					handlePress={() => {
 						router.push("MaintenanceReportFailure");
 					}}

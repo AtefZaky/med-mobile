@@ -12,13 +12,12 @@ import {
 } from "../../../components";
 import Toast from "react-native-toast-message";
 
-
 const failureDetails = () => {
 	const { Id } = useLocalSearchParams();
 	const [FailureData, setFailureData] = useState([]);
 	const [loader, setLoader] = useState(true);
 	const [dataSent, setDataSent] = useState(false);
-const [error,setError]=useState(null)
+	const [error, setError] = useState(null);
 	const getFailureData = async () => {
 		try {
 			const res = await api.get(`failure/${Id}`);
@@ -30,8 +29,8 @@ const [error,setError]=useState(null)
 			console.log(error);
 		}
 	};
-	useEffect(()=>{
-		if(dataSent){
+	useEffect(() => {
+		if (dataSent) {
 			Toast.show({
 				type: "success",
 				text1: "عملية ناجحه",
@@ -46,11 +45,9 @@ const [error,setError]=useState(null)
 				},
 			});
 			setTimeout(() => {
-				router.replace("Maintanacehome")
+				router.replace("Maintanacehome");
 			}, 1500);
-		}
-	
-		else if(error){
+		} else if (error) {
 			Toast.show({
 				type: "error",
 				text1: "خطأ",
@@ -65,19 +62,14 @@ const [error,setError]=useState(null)
 				},
 			});
 		}
-		
-	
-
-
-	},[dataSent,error])
+	}, [dataSent, error]);
 	useEffect(() => {
 		getFailureData();
 	}, []);
 	return (
 		<View>
-
 			<Header title={"تفاصيل العطل"} />
-			<Toast/>
+			<Toast />
 			<ScrollView>
 				{/* <View> */}
 				<View>
@@ -116,8 +108,13 @@ const [error,setError]=useState(null)
 							</View>
 						</View>
 					)}
-					
-					<FailureForm setError={setError} id={Id} dataSent={dataSent} setDataSent={setDataSent} />
+
+					<FailureForm
+						setError={setError}
+						id={Id}
+						dataSent={dataSent}
+						setDataSent={setDataSent}
+					/>
 				</View>
 			</ScrollView>
 		</View>

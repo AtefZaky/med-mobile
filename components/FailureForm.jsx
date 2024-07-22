@@ -7,8 +7,9 @@ import api from "../utils/api";
 import MainButton from "./MainButton";
 import DatePickerInput from "./DatePickerInput";
 import Toast from "react-native-toast-message";
-export default function FailureForm({ setDataSent,id,setError,dataSent }) {
-	const [submitting,setSubmitting]=useState(false)
+import { icons } from "../constants";
+export default function FailureForm({ setDataSent, id, setError, dataSent }) {
+	const [submitting, setSubmitting] = useState(false);
 	const [formData, setFormData] = useState({
 		AssetID: id,
 		FixDate: "",
@@ -20,7 +21,15 @@ export default function FailureForm({ setDataSent,id,setError,dataSent }) {
 	});
 
 	const submit = async () => {
-		if (formData.AssetID === "" || formData.FixDate === ""||formData.FailureAction===""||formData.FailureReason===""||formData.Cost===""||formData.Notes===""||formData.StatusID==="") {
+		if (
+			formData.AssetID === "" ||
+			formData.FixDate === "" ||
+			formData.FailureAction === "" ||
+			formData.FailureReason === "" ||
+			formData.Cost === "" ||
+			formData.Notes === "" ||
+			formData.StatusID === ""
+		) {
 			Toast.show({
 				type: "error",
 				text1: "خطأ",
@@ -40,16 +49,13 @@ export default function FailureForm({ setDataSent,id,setError,dataSent }) {
 		setSubmitting(true);
 
 		try {
-
-			console.log(formData)
-			const result = await api.post(`failure/repair/${id}`,formData)
-			setDataSent(true)
-			console.log(result)
-
-		
+			console.log(formData);
+			const result = await api.post(`failure/repair/${id}`, formData);
+			setDataSent(true);
+			console.log(result);
 		} catch (error) {
 			setSubmitting(false);
-			setError( error.message)
+			setError(error.message);
 		}
 	};
 
@@ -59,69 +65,69 @@ export default function FailureForm({ setDataSent,id,setError,dataSent }) {
 	];
 	return (
 		<>
-			
-		<View className="gap-8 p-4">
-			
-			<View>
-				<DatePickerInput
-					setDate={(value) => {
-						setFormData({ ...formData, FixDate: value });
-					}}
-				/>
+			<View className="gap-8 p-4">
+				<View>
+					<DatePickerInput
+						setDate={(value) => {
+							setFormData({ ...formData, FixDate: value });
+						}}
+					/>
+				</View>
+				<View>
+					<FormField
+						title={"الاجراء المتخذ"}
+						placeholder={"ادخل الاجراء"}
+						value={formData.FailureAction}
+						handleChangeText={(value) => {
+							setFormData({ ...formData, FailureAction: value });
+						}}></FormField>
+				</View>
+				<View>
+					<FormField
+						title={"سبب العطل"}
+						placeholder={"ادخل سبب العطل"}
+						value={formData.FailureReason}
+						handleChangeText={(value) => {
+							setFormData({ ...formData, FailureReason: value });
+						}}></FormField>
+				</View>
+				<View>
+					<Dropdown
+						title={"الحالة بعد الاصلاح"}
+						data={assetsStatus}
+						placeholder={"اختر الحالة"}
+						onChange={(key) => {
+							setFormData({ ...formData, StatusID: key });
+						}}></Dropdown>
+				</View>
+				<View>
+					<FormField
+						title={"التكلفة"}
+						placeholder={"ادخل التكلفى"}
+						value={formData.Cost}
+						handleChangeText={(value) => {
+							setFormData({ ...formData, Cost: value });
+						}}></FormField>
+				</View>
+				<View>
+					<FormField
+						title={"الملاحظات"}
+						placeholder={"ادخل الملاحظات"}
+						value={formData.Notes}
+						handleChangeText={(value) => {
+							setFormData({ ...formData, Notes: value });
+						}}></FormField>
+				</View>
+				<View>
+					<MainButton
+						isLoading={dataSent || submitting}
+						handlePress={submit}
+						icon={icons.ArrowUp}
+						iconStyles={"mr-4"}
+						containerStyles={"m-auto mb-[170px] w-full"}
+						title={"ارسال"}></MainButton>
+				</View>
 			</View>
-			<View>
-				<FormField
-					title={"الاجراء المتخذ"}
-					placeholder={"ادخل الاجراء"}
-					value={formData.FailureAction}
-					handleChangeText={(value) => {
-						setFormData({ ...formData, FailureAction: value });
-					}}></FormField>
-			</View>
-			<View>
-				<FormField
-					title={"سبب العطل"}
-					placeholder={"ادخل سبب العطل"}
-					value={formData.FailureReason}
-					handleChangeText={(value) => {
-						setFormData({ ...formData, FailureReason: value });
-					}}></FormField>
-			</View>
-			<View>
-				<Dropdown
-					title={"الحالة بعد الاصلاح"}
-					data={assetsStatus}
-					placeholder={"اختر الحالة"}
-					onChange={(key) => {
-						setFormData({ ...formData, StatusID: key });
-					}}></Dropdown>
-			</View>
-			<View>
-				<FormField
-					title={"التكلفة"}
-					placeholder={"ادخل التكلفى"}
-					value={formData.Cost}
-					handleChangeText={(value) => {
-						setFormData({ ...formData, Cost: value });
-					}}></FormField>
-			</View>
-			<View>
-				<FormField
-					title={"الملاحظات"}
-					placeholder={"ادخل الملاحظات"}
-					value={formData.Notes}
-					handleChangeText={(value) => {
-						setFormData({ ...formData, Notes: value });
-					}}></FormField>
-			</View>
-			<View>
-
-				<MainButton
-				isLoading={dataSent||submitting}
-				handlePress={submit}
-					containerStyles={"m-auto mb-[170px] w-full"}
-					title={"ارسال"}></MainButton>
-			</View>
-		</View></>
+		</>
 	);
 }

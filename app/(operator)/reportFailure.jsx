@@ -31,7 +31,7 @@ const ReportFailure = () => {
 	console.log(formdata);
 	const assetsStatus = [
 		{ value: "يعمل", key: "1" },
-		{ value: "متوقف", key: "2" },
+		{ value: "لا يعمل", key: "2" },
 	];
 	const navigation = useNavigation();
 	const getAssets = async () => {
@@ -142,7 +142,6 @@ const ReportFailure = () => {
 							title={"الاجراء المتخذ قبل الابلاغ"}
 							placeholder={"ادخل الاجراء"}></FormField>
 					</View>
-
 
 					<View>
 						<MainButton

@@ -18,22 +18,25 @@ export default function Dropdown({ data, onChange, placeholder, title }) {
 			<SelectList
 				data={data}
 				placeholder={placeholder}
+				placeholderColor="#959595"
 				boxStyles={{
 					alignItems: "center",
 					justifyContent: "space-between",
 					padding: 12,
+					borderRadius: 8,
 					display: "flex",
 					flexDirection: "row-reverse",
 					borderColor: "#1C5B7D",
-					opacity: 0.65,
+					opacity: 1,
 					borderWidth: 0.5,
-					minHeight: 65,
+					height: 56,
 				}}
 				fontFamily="Tajawal-Medium"
 				dropdownStyles={{
 					borderColor: "#1C5B7D",
 					borderWidth: 0.5,
 				}}
+				inputStyles={{ placeholderTextColor: "green" }}
 				searchPlaceholder="بحث"
 				setSelected={changeDropDown}
 			/>

@@ -42,7 +42,8 @@ const SearchInput = ({ setQuery }) => {
 				style={styles.iconButton}
 				onPress={activateSearchInput}>
 				<Image
-					className="my-6"
+					className="my-6 w-4 h-4"
+					resizeMethod="cover"
 					source={require("../assets/images/MagnifyingGlass.png")}
 					style={styles.searchIcon}
 				/>
@@ -55,26 +56,27 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: "row",
 		alignItems: "center",
-		borderWidth: 1,
-		borderColor: DarkBlue,
+		borderWidth: 0.5,
+		borderColor: "#1C5B7D",
 		borderRadius: 10,
 		paddingVertical: 10,
 		paddingHorizontal: 20,
-		height: 48,
+		height: 56,
+		direction: "rtl",
 		width: "90%",
 	},
 	input: {
 		flex: 1,
 		fontSize: 14,
-		height: 48,
+		height: 56,
 	},
 	iconButton: {},
 	searchIcon: {
 		marginLeft: 10,
 
 		// position:"absolute",
-		width: 30,
-		height: 30,
+		width: 22,
+		height: 22,
 		// right:"7%",
 		// padding:4,
 	},

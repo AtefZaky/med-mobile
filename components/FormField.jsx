@@ -21,12 +21,10 @@ const FormField = ({
 	const [showPassword, setShowPassword] = useState(false);
 
 	return (
-		<View className={`space-y-4 ${otherStyles}`}>
+		<View className={`space-y-2 ${otherStyles}`}>
 			{haveTitle && (
 				<View className={` flex flex-row justify-end`}>
-					<Text className="text-base text-dark font-tbold text-right">
-						{title}
-					</Text>
+					<Text className=" text-dark font-tbold text-right">{title}</Text>
 
 					{icon ? (
 						<Image
@@ -39,7 +37,7 @@ const FormField = ({
 					)}
 				</View>
 			)}
-			<View className="w-full h-16 px-4 bg-#FEFEFE rounded-lg border-[0.5px] border-primary focus:border-primary flex flex-row items-center">
+			<View className="w-full h-14 px-4 bg-#FEFEFE rounded-lg border-[0.5px] border-primary focus:border-primary flex flex-row items-center">
 				{title === "كلمة المرور" && (
 					<TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
 						<Image

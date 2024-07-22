@@ -1,10 +1,9 @@
 import { Header, Loader, DailyExmanationForm } from "../../components";
-import { ScrollView } from "react-native-virtualized-view";
 import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import api from "../../utils/api";
 import { useNavigation } from "@react-navigation/native";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
 
@@ -99,7 +98,7 @@ export default function dailyExamination() {
 		<View>
 			<Header title={"بيانات الفحص اليومي"}></Header>
 
-			<ScrollView>
+			<ScrollView className="h-[90vh] pb-5">
 				{loader ? (
 					<Loader></Loader>
 				) : (
