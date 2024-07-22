@@ -9,7 +9,7 @@ import {
 	TextInput,
 	Image,
 	TouchableOpacity,
-	ActivityIndicator
+	ActivityIndicator,
 } from "react-native";
 import MainButton from "./MainButton";
 import { icons, colors } from "../constants";
@@ -18,7 +18,7 @@ import api from "../utils/api";
 
 const PopUp = ({ updateParent }) => {
 	const [modalVisible, setModalVisible] = useState(false);
-	const [isLoading, setIsLoading] = useState(false)
+	const [isLoading, setIsLoading] = useState(false);
 	const [formData, setFormData] = useState({
 		time: "",
 		suck: "",
@@ -27,7 +27,13 @@ const PopUp = ({ updateParent }) => {
 		airPressure: "",
 	});
 	const handleSubmit = async () => {
-		if(formData.time === "" || formData.suck === ""|| formData.direct === ""|| formData.kiloWaat === ""||formData.airPressure === ""){
+		if (
+			formData.time === "" ||
+			formData.suck === "" ||
+			formData.direct === "" ||
+			formData.kiloWaat === "" ||
+			formData.airPressure === ""
+		) {
 			Toast.show({
 				type: "error",
 				text1: "خطأ",
@@ -35,22 +41,22 @@ const PopUp = ({ updateParent }) => {
 				autoHide: true,
 				visibilityTime: 3000,
 				text1Style: {
-				  textAlign: 'right',
+					textAlign: "right",
 				},
 				text2Style: {
-				  textAlign: 'right',
+					textAlign: "right",
 				},
-			  });
-			  return; // Prevent form submission if fields are empty
+			});
+			return; // Prevent form submission if fields are empty
 		}
 		try {
-			setIsLoading(true)
-			await api.put('/operation/department', {
+			setIsLoading(true);
+			await api.put("/operation/department", {
 				H: formData.time,
 				suck: formData.suck,
 				direct: formData.direct,
 				kilo: formData.kiloWaat,
-				air: formData.airPressure
+				air: formData.airPressure,
 			});
 			Toast.show({
 				type: "success",
@@ -59,18 +65,18 @@ const PopUp = ({ updateParent }) => {
 				autoHide: true,
 				visibilityTime: 1500,
 				text1Style: {
-				  textAlign: 'right',
+					textAlign: "right",
 				},
 				text2Style: {
-				  textAlign: 'right',
+					textAlign: "right",
 				},
-			  });
-		
-			  setTimeout(() => {
-				updateParent(formData)
-				setIsLoading(false)
-				setModalVisible(false)
-			  }, 1500);
+			});
+
+			setTimeout(() => {
+				updateParent(formData);
+				setIsLoading(false);
+				setModalVisible(false);
+			}, 1500);
 		} catch (error) {
 			Toast.show({
 				type: "error",
@@ -79,16 +85,16 @@ const PopUp = ({ updateParent }) => {
 				autoHide: true,
 				visibilityTime: 1500,
 				text1Style: {
-				  textAlign: 'right',
+					textAlign: "right",
 				},
 				text2Style: {
-				  textAlign: 'right',
+					textAlign: "right",
 				},
-			  });
-			  setIsLoading(false)
-			  return; // Prevent form submission if fields are empty
+			});
+			setIsLoading(false);
+			return; // Prevent form submission if fields are empty
 		}
-	}
+	};
 
 	return (
 		<View className="">
@@ -181,12 +187,12 @@ const PopUp = ({ updateParent }) => {
 							<Text className={`text-white font-tbold text-md`}>حفظ</Text>
 
 							{isLoading && (
-							<ActivityIndicator
-								animating={isLoading}
-								color="#fff"
-								size="small"
-								className="ml-2"
-							/>
+								<ActivityIndicator
+									animating={isLoading}
+									color="#fff"
+									size="small"
+									className="ml-2"
+								/>
 							)}
 						</TouchableOpacity>
 					</View>
@@ -211,13 +217,6 @@ const PopUp = ({ updateParent }) => {
 					/>
 				)} */}
 			</TouchableOpacity>
-			{/* <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        className= " rounded-lg flex justify-center"
-        onPress={() => setModalVisible(true)}>
-        <Image source={icons.pencil} className={`h-6 w-6 mr-6`} />
-        <Text style={styles.textStyle}>إضافة</Text>
-      </Pressable> */}
 		</View>
 	);
 };

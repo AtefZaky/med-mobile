@@ -48,8 +48,8 @@ const RootLayout = () => {
 					options={{ headerShown: false }}
 				/>
 				<Stack.Screen
-					name="(Manger)"
-					options={{ headerShown: true }}
+					name="(manager)"
+					options={{ headerShown: false }}
 				/>
 			</Stack>
 		</GlobalProvider>

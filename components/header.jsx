@@ -18,7 +18,7 @@ const Header = ({ title, hasLeftComponent = false, onDrawerPress }) => {
 							<Image
 								source={require("../assets/images/logoleft.jpg")}
 								style={styles.LeftImage}
-							 	resizeMode="contain"
+								resizeMode="contain"
 							/>
 						</View>
 						<View style={styles.headerRightContainer}>
@@ -47,7 +47,7 @@ const Header = ({ title, hasLeftComponent = false, onDrawerPress }) => {
 							} else if (user.type === roles.maintenar) {
 								router.replace("/Maintanacehome");
 							} else if (user.type === roles.manager) {
-								router.replace("/MangerHome");
+								router.replace("/ManagerHome");
 							}
 						}}>
 						<Image
