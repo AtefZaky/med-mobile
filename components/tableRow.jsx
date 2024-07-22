@@ -111,7 +111,7 @@ const TableRow = ({ item, onStartMachine, onCloseMachine, numOfRows }) => {
 			</View>
 			<View className="flex flex-1">
 				<Text className="font-tmedium text-center">{item.AssetName}</Text>
-				<ProgressBar value={30} />
+				<ProgressBar value={99} />
 			</View>
 		</View>
 	);

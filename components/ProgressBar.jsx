@@ -14,20 +14,20 @@ const ProgressBar = ({ value }) => {
       useNativeDriver: false,
     }).start();
 
-    if (value < 5){
+    if (value >= 99){
         setText("تحتاج الي عمره")
     }
   }, [value]);
 
   const getColor = () => {
     if (value < 20) {
-      return ['#ff0000', '#ff4000'];
+      return ['#00cc00' , '#019444']
     } else if (value < 50) {
-      return ['#ffbf00', '#ff8000'];
-    } else if (value < 75){
       return ['#00ff00', '#00cc00'];
+    } else if (value < 75){
+      return ['#ffbf00', '#ff8000'];
     } else {
-        return ['#00cc00' , '#019444']
+      return ['#ff0000', '#ff4000'];
     }
   };
 
@@ -46,7 +46,7 @@ const ProgressBar = ({ value }) => {
       </View>
       {text?(
         <Text className=" font-tbold text-[8px] text-[#F15555] mt-1">
-        <Image className="h-3 w-3" source={icons.warning} resizeMode='contain'/>
+        <Image className="h-3 w-3" source={icons.warning} resizeMode='contain'/>&nbsp;
         {text}
       </Text>
       ): ""}
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   batteryShell: {
-    width: 35,
+    width: 60,
     height: 8,
     borderWidth: 0.8,
     borderColor: '#333',

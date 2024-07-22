@@ -25,10 +25,9 @@ const ReportFailure = () => {
 	const [formdata, setFormData] = useState({
 		StatusDate: "",
 		AssetID: "",
-		FailureِAction: "",
+		FailureAction: "",
 		StatusID: "",
-	});
-	console.log(formdata);
+	})
 	const assetsStatus = [
 		{ value: "يعمل", key: "1" },
 		{ value: "متوقف", key: "2" },
@@ -57,9 +56,10 @@ const ReportFailure = () => {
 				DepartmentID: user.DepartmentID,
 				StatusDate: formdata.StatusDate,
 				AssetID: formdata.AssetID,
-				FailureِAction: formdata.FailureِAction,
+				FailureAction: formdata.FailureAction,
 				StatusID: formdata.StatusID,
 			};
+			console.log(formdata)
 			setSubmitting(true);
 			const res = await api.post("/failure/report", data);
 			Toast.show({
@@ -107,6 +107,7 @@ const ReportFailure = () => {
 					<View>
 						<DatePickerInput
 							setDate={(value) => {
+								console.log(value)
 								setFormData({ ...formdata, StatusDate: value });
 							}}
 						/>
@@ -135,9 +136,9 @@ const ReportFailure = () => {
 					</View>
 					<View>
 						<FormField
-							value={formdata.FailureِAction}
+							value={formdata.FailureAction}
 							handleChangeText={(value) => {
-								setFormData({ ...formdata, FailureِAction: value });
+								setFormData({ ...formdata, FailureAction: value });
 							}}
 							title={"الاجراء المتخذ قبل الابلاغ"}
 							placeholder={"ادخل الاجراء"}></FormField>
