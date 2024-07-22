@@ -12,9 +12,9 @@ const AuthLayout = () => {
 		} else if (user.type === roles.maintenar) {
 			<Redirect href="/Maintanacehome" />;
 		} else if (user.type === roles.manager) {
-			<Redirect href="/MangerHome" />;
+			<Redirect href="/ManagerHome" />;
 		}
-	} else{
+	} else {
 		<Redirect href="/" />;
 	}
 

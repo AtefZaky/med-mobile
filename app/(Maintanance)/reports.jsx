@@ -42,7 +42,11 @@ export default function reports() {
 			</View>
 
 			<View className="px-4 py-8 mb-[45px] ">
-				<MainButton title={"انشاء بلاغ"}></MainButton>
+				<MainButton
+					handlePress={() => {
+						router.push("MaintenanceReportFailure");
+					}}
+					title={"انشاء بلاغ"}></MainButton>
 			</View>
 		</View>
 	);

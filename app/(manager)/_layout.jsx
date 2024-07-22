@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { roles } from "../../constants";
 
 const AuthLayout = () => {
-	const { loading, isLogged, user } = useGlobalContext();
+	const { user } = useGlobalContext();
 	const router = useRouter();
 
 	if (user) {
@@ -15,11 +15,9 @@ const AuthLayout = () => {
 		} else if (user.type === roles.maintenar) {
 			<Redirect href="/Maintanacehome" />;
 		} else if (user.type === roles.manager) {
-
 			<Redirect href="/ManagerHome" />;
 		}
 	} else {
-
 		<Redirect href="/" />;
 	}
 
@@ -28,51 +26,14 @@ const AuthLayout = () => {
 			<SafeAreaView className="bg-white h-full">
 				<Stack>
 					<Stack.Screen
-						name="Maintanacehome"
+						name="ManagerHome"
 						options={{
 							headerShown: false,
 						}}
 					/>
 
 					<Stack.Screen
-						name="dailyExamination"
-						options={{
-							headerShown: false,
-						}}
-					/>
-
-					<Stack.Screen
-						name="failureDetails/[Id]"
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name="InventoyItems"
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name="itemDetails/[id]"
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name="maintanaceHelper"
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name="reports"
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name="MaintenanceReportFailure"
+						name="notifcation"
 						options={{
 							headerShown: false,
 						}}
