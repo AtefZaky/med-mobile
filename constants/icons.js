@@ -18,6 +18,7 @@ import House from "../assets/images/House.png";
 import SignOut from "../assets/images/SignOut.png";
 import notifcationBell from "../assets/images/Bell.png";
 import leftArrow from "../assets/images/CaretLeft.png";
+
 import ArrowUpRight from "../assets/images/ArrowLineUpRight.png";
 import whiteBell from "../assets/images/whiteBell.png";
 import ActivewhiteBell from "../assets/images/whiteActiveBell.png";
@@ -43,7 +44,9 @@ export default {
 	eyeIcon,
 	lock,
 	pencil,
-	ArrowUpRight,
-	eyeSlash,
+
+    ArrowUpRight,
+    eyeSlash,
 	LogoLef,
+	warning
 };
