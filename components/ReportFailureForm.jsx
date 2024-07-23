@@ -6,12 +6,7 @@ import { useGlobalContext } from "../context/GlobalProvider";
 import api from "../utils/api";
 import { icons } from "../constants";
 import { getFormattedLocalDate } from "../utils/dateFormater";
-const ReportFailureForm = ({
-	submitData,
-	options,
-	assetsStatus,
-	submitting,
-}) => {
+const ReportFailureForm = ({ submitData, options, assetsStatus }) => {
 	const { user } = useGlobalContext();
 	const [formdata, setFormData] = useState({
 		DepartmentID: user.DepartmentID,
@@ -20,7 +15,7 @@ const ReportFailureForm = ({
 		FailureAction: "",
 		StatusID: "",
 	});
-
+	const [submitting, setSubmitting] = useState(false);
 	return (
 		<>
 			<View className="p-4">
@@ -67,7 +62,7 @@ const ReportFailureForm = ({
 					iconStyles={"mr-4"}
 					title={"ارسال"}
 					handlePress={() => {
-						submitData(formdata);
+						submitData(formdata, setSubmitting);
 					}}
 					isLoading={submitting}></MainButton>
 			</View>

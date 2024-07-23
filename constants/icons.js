@@ -22,8 +22,15 @@ import warning from "../assets/images/Warning.png";
 import ArrowUpRight from "../assets/images/ArrowLineUpRight.png";
 import whiteBell from "../assets/images/whiteBell.png";
 import ActivewhiteBell from "../assets/images/whiteActiveBell.png";
-
+import yellowFlag from "../assets/images/RedFlag.png";
+import RedFlag from "../assets/images/RedFlag.png";
+import grayFlag from "../assets/images/grayFlag.png";
+import blueFlag from "../assets/images/blueFlag.png";
 export default {
+	grayFlag,
+	blueFlag,
+	RedFlag,
+	yellowFlag,
 	ActivewhiteBell,
 	egyptFlag,
 	flag,

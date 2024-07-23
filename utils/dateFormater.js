@@ -8,9 +8,13 @@ export function formatDate(date, sepertae) {
 	const seconds = date.getSeconds();
 
 	const formattedDate = `${year}-${month}-${day}`;
+
 	const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+	const formattedTimeSeperate = `${hours}:${minutes}`;
+
 	if (sepertae) {
-		return [formattedDate, formattedTime];
+		return [formattedDate, formattedTimeSeperate];
 	} else {
 		return `${formattedDate} ${formattedTime}`;
 	}

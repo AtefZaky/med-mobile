@@ -11,13 +11,11 @@ import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
 
 const ReportFailure = () => {
-	const [error, setError] = useState({ error: null, counter: "" });
 	const [assetsStatus, setAssetsStatus] = useState([]);
-	const [dataSent, setDataSent] = useState(false);
 	const [options, setOptions] = useState([]);
 	const [loader, setloader] = useState(true);
 	const navigation = useNavigation();
-	const [submitting, setSubmitting] = useState(false);
+
 	const getAssets = async () => {
 		const { data } = await api.get("/assets");
 		if (data.success) {
@@ -30,7 +28,7 @@ const ReportFailure = () => {
 			Toast.show({
 				type: "error",
 				text1: data.message || "خطأ",
-				text2: "حدث خطأ اثناء تسجيل البلاغ",
+				text2: "حدث خطأ اثناءالاتاصال بالخادم",
 				autoHide: true,
 				visibilityTime: 1500,
 				text1Style: {
@@ -59,7 +57,7 @@ const ReportFailure = () => {
 			Toast.show({
 				type: "error",
 				text1: data.message || "خطأ",
-				text2: "حدث خطأ اثناء تسجيل البلاغ",
+				text2: "حدث خطأ اثناءالاتاصال بالخادم",
 				autoHide: true,
 				visibilityTime: 1500,
 				text1Style: {
@@ -73,7 +71,7 @@ const ReportFailure = () => {
 			});
 		}
 	};
-	const submitData = async (formdata) => {
+	const submitData = async (formdata, setSubmitting) => {
 		if (
 			!formdata.AssetID ||
 			!formdata.StatusID ||
@@ -98,7 +96,22 @@ const ReportFailure = () => {
 			setSubmitting(true);
 			const res = await api.post("/failure/report", formdata);
 			if (res.data.success) {
-				return setDataSent(true);
+				Toast.show({
+					type: "success",
+					text1: "عملية ناجحه",
+					text2: "تم تسجيل بلاغك",
+					autoHide: true,
+					visibilityTime: 1500,
+					text1Style: {
+						textAlign: "right",
+					},
+					text2Style: {
+						textAlign: "right",
+					},
+				});
+				setTimeout(() => {
+					navigation.navigate("Maintanacehome");
+				}, 1500);
 			} else {
 				setSubmitting(false);
 				Toast.show({
@@ -116,17 +129,20 @@ const ReportFailure = () => {
 				});
 			}
 		} catch (error) {
-			if (error.response) {
-				// The request was made and the server responded with a status code
-				// that falls out of the range of 2xx
-				setError(error.response.data);
-			} else if (error.request) {
-				// The request was made but no response was received
-				setError(error.request);
-			} else {
-				// Something happened in setting up the request that triggered an Error
-				setError(error.message);
-			}
+			Toast.show({
+				type: "error",
+				text1: error.message || "خطأ",
+				text2: "حدث خطأ اثناء تسجيل البلاغ",
+				autoHide: true,
+				visibilityTime: 1500,
+				text1Style: {
+					textAlign: "right",
+				},
+				text2Style: {
+					textAlign: "right",
+				},
+			});
+			setSubmitting(false);
 		}
 	};
 
@@ -139,41 +155,6 @@ const ReportFailure = () => {
 		fetchData();
 	}, []);
 
-	useEffect(() => {
-		if (dataSent) {
-			Toast.show({
-				type: "success",
-				text1: "عملية ناجحه",
-				text2: "تم تسجيل بلاغك",
-				autoHide: true,
-				visibilityTime: 1500,
-				text1Style: {
-					textAlign: "right",
-				},
-				text2Style: {
-					textAlign: "right",
-				},
-			});
-			setTimeout(() => {
-				navigation.navigate("Maintanacehome");
-			}, 1500);
-		} else if (error.error) {
-			Toast.show({
-				type: "error",
-				text1: error.error || "خطأ",
-				text2: "حدث خطأ اثناء تسجيل البلاغ",
-				autoHide: true,
-				visibilityTime: 1500,
-				text1Style: {
-					textAlign: "right",
-				},
-				text2Style: {
-					textAlign: "right",
-				},
-			});
-		}
-	}, [dataSent, error.counter]);
-
 	return (
 		<View>
 			<View>
@@ -181,11 +162,10 @@ const ReportFailure = () => {
 			</View>
 
 			{loader || !options.length || !assetsStatus.length ? (
-				<Loader></Loader>
+				<Loader isLoading={loader}></Loader>
 			) : (
 				<ScrollView>
 					<ReportFailureForm
-						submitting={submitting}
 						options={options}
 						assetsStatus={assetsStatus}
 						submitData={submitData}

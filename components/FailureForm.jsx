@@ -1,21 +1,13 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Dropdown from "./DropDown";
 import FormField from "./FormField";
-import api from "../utils/api";
 import MainButton from "./MainButton";
 import DatePickerInput from "./DatePickerInput";
-import Toast from "react-native-toast-message";
 import { icons } from "../constants";
 import { getFormattedLocalDate } from "../utils/dateFormater";
-export default function FailureForm({
-	setDataSent,
-	id,
-	setError,
-	dataSent,
-	assetsStatus,
-}) {
+export default function FailureForm({ id, submit, assetsStatus }) {
 	const [submitting, setSubmitting] = useState(false);
 	const [formData, setFormData] = useState({
 		AssetID: id,
@@ -26,43 +18,6 @@ export default function FailureForm({
 		Cost: "",
 		Notes: "",
 	});
-
-	const submit = async () => {
-		if (
-			formData.AssetID === "" ||
-			formData.FixDate === "" ||
-			formData.FailureAction === "" ||
-			formData.FailureReason === "" ||
-			formData.Cost === "" ||
-			formData.Notes === "" ||
-			formData.StatusID === ""
-		) {
-			Toast.show({
-				type: "error",
-				text1: "خطأ",
-				text2: "من فضلك ادخل البيانات المطلوبه",
-				autoHide: true,
-				visibilityTime: 3000,
-				text1Style: {
-					textAlign: "right",
-				},
-				text2Style: {
-					textAlign: "right",
-				},
-			});
-			return; // Prevent form submission if fields are empty
-		}
-
-		setSubmitting(true);
-
-		try {
-			const result = await api.post(`failure/repair/${id}`, formData);
-			setDataSent(true);
-		} catch (error) {
-			setSubmitting(false);
-			setError(error.message);
-		}
-	};
 
 	return (
 		<>
@@ -122,8 +77,10 @@ export default function FailureForm({
 				</View>
 				<View>
 					<MainButton
-						isLoading={dataSent || submitting}
-						handlePress={submit}
+						isLoading={submitting}
+						handlePress={() => {
+							submit(formData, setSubmitting);
+						}}
 						icon={icons.ArrowUp}
 						iconStyles={"mr-4"}
 						containerStyles={"m-auto mb-[170px] w-full"}
