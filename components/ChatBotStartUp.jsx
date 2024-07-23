@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import Dropdown from "./DropDown";
 import FormField from "./FormField";
+import icons from "../constants/icons";
 import MainButton from "./MainButton";
 export default function ChatBotStartUp({
 	setAssets,
@@ -34,7 +35,9 @@ export default function ChatBotStartUp({
 
 			<View>
 				<MainButton
-					className="mt-7"
+					icon={icons.ArrowUp}
+					iconStyles={"mr-4"}
+					containerStyles={"mt-8"}
 					title={"ارسال"}
 					handlePress={startChatBot}></MainButton>
 			</View>

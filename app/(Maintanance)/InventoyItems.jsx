@@ -5,7 +5,8 @@ import { Header, SearchInput, Table } from "../../components";
 import api from "../../utils/api";
 import Loader from "../../components/Loader";
 import { useRouter } from "expo-router";
-import { da } from "date-fns/locale";
+
+import Toast from "react-native-toast-message";
 export default function InventoyItem() {
 	const [Query, setQuery] = useState("");
 	const [Data, setData] = useState([]);
@@ -20,8 +21,15 @@ export default function InventoyItem() {
 			const data = await api.get(`balance/items`);
 			setData(data.data.data);
 		} catch (error) {
-			// setError(error.message);
-			console.log(error.massge);
+			Toast.show({
+				type: "error",
+				text1: error.massge,
+				autoHide: true,
+				visibilityTime: 1500,
+				text1Style: {
+					textAlign: "right",
+				},
+			});
 		} finally {
 			setLoading(false);
 		}
@@ -43,6 +51,7 @@ export default function InventoyItem() {
 
 	return (
 		<View>
+			<Toast></Toast>
 			<Header title="الاصناف المخزنية" />
 			<SearchInput
 				setQuery={(value) => {

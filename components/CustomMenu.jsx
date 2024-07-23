@@ -10,12 +10,9 @@ const CustomMenu = ({ modalVisible, setModalVisible }) => {
 	const { user, setUser, isLogged, setIsLogged } = useGlobalContext();
 	const handleLogOut = async () => {
 		await api.get("/auth/signout");
-		// console.log("-----------logout--------------");
 		await logOut();
-
 		setIsLogged(false);
 		setUser(null);
-		console.log("-----------logout--------------");
 		router.replace("/");
 	};
 	return (

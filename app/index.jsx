@@ -239,11 +239,9 @@ const Welcome = () => {
 
 	useEffect(() => {
 		if (isLogged) {
-			console.log(user.type);
 			if (user.type === roles.operator) {
 				router.replace("/home");
 			} else if (user.type === roles.maintenar) {
-				console.log(user.type);
 				router.replace("/Maintanacehome");
 			} else if (user.type === roles.manager) {
 				router.replace("/ManagerHome");

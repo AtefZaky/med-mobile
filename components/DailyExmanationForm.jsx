@@ -1,31 +1,34 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import { useState } from "react";
 import FormField from "./FormField";
 import MainButton from "./MainButton";
 import Dropdown from "./DropDown";
 import DatePickerInput from "./DatePickerInput";
+import { getFormattedLocalDate } from "../utils/dateFormater";
+import { icons } from "../constants";
 export default function DailyExmanationForm({
 	options,
 	isLoading,
 	submitData,
 }) {
 	const [formdata, setFormData] = useState({
-		ch_date: "",
+		ch_date: `${getFormattedLocalDate()}`,
 		AssetID: "",
 		ch_done: "",
 		notes: "",
 	});
+
 	return (
-		<View className=" flex flex-col  gap-6  p-4 pt-6">
-			<View>
+		<>
+			<View className="pt-4 pb-6 px-4 mx-auto">
 				<DatePickerInput
 					setDate={(value) => {
 						setFormData({ ...formdata, ch_date: value });
 					}}
 				/>
 			</View>
-			<View>
+			<View className="pb-6 px-4 ">
 				<Dropdown
 					title={"المعدة"}
 					data={options}
@@ -34,7 +37,7 @@ export default function DailyExmanationForm({
 						setFormData({ ...formdata, AssetID: key });
 					}}></Dropdown>
 			</View>
-			<View>
+			<View className="pb-6 px-4 ">
 				<FormField
 					value={formdata.ch_done}
 					handleChangeText={(value) => {
@@ -43,7 +46,7 @@ export default function DailyExmanationForm({
 					title={"الاعمال التي تمت"}
 					placeholder={"ادخل الاعمال التي تمت"}></FormField>
 			</View>
-			<View>
+			<View className="pb-6 px-4">
 				<FormField
 					value={formdata.notes}
 					handleChangeText={(value) => {
@@ -53,15 +56,17 @@ export default function DailyExmanationForm({
 					placeholder={"ادخل الملاحظات"}></FormField>
 			</View>
 
-			<View>
+			<View className="pb-6 px-3">
 				<MainButton
 					isLoading={isLoading}
-					className="mt-3"
+					icon={icons.ArrowUpRight}
+					iconStyles={"mr-4"}
+					containerStyles={"mt-4  "}
 					title={"حفظ"}
 					handlePress={() => {
 						submitData(formdata);
 					}}></MainButton>
 			</View>
-		</View>
+		</>
 	);
 }

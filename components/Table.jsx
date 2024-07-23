@@ -65,7 +65,6 @@ const Table = ({
 				/>
 			);
 		} else if (inventoryItemDetails) {
-			console.log(item, "item");
 			return <ItemDetailsComponent data={item} />;
 		} else {
 			return null; // or some default component
@@ -88,9 +87,7 @@ const Table = ({
 			</View>
 
 			<ScrollView className="flex-1">
-				{console.log(data, "data")}
 				{data.map((item, index) => {
-					console.log(item, "item");
 					return <View key={index}>{renderContent(item)}</View>;
 					// <View key={index}>{renderContent(item)}</View>;
 				})}

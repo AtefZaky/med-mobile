@@ -24,7 +24,7 @@ const DatePickerInput = ({ setDate }) => {
 		setShowDatePicker(false);
 		if (date) {
 			const date1 = new Date(date);
-			console.log(date1.setHours(date1.getHours() + 3));
+
 			setSelectedDate(date);
 			const cairoTime = moment(date)
 				.tz("Africa/Cairo")
@@ -67,6 +67,11 @@ const DatePickerInput = ({ setDate }) => {
 					display="default"
 					minimumDate={new Date(2022, 0, 1)}
 					onChange={onDateChange}
+					customStyles={{
+						placeholderText: {
+							color: "green", // Changse the placeholder text color
+						},
+					}}
 				/>
 			)}
 		</View>
@@ -87,19 +92,18 @@ const styles = StyleSheet.create({
 	container: {
 		width: "100%",
 	},
-	padding: {
-		paddingHorizontal: 4,
-	},
+	padding: {},
 	label: {
 		fontSize: 14,
-		fontWeight: "bold",
 		fontFamily: "Tajawal-Bold",
 	},
 	inputContainer: {
 		flexDirection: "row-reverse",
+
 		alignItems: "center",
 		width: "100%",
 		borderRadius: 8,
+		height: 56,
 		paddingHorizontal: 8,
 		borderWidth: 0.5,
 		borderColor: "#227099",
@@ -111,7 +115,7 @@ const styles = StyleSheet.create({
 		border: "4px solid #fff",
 		fontSize: 14,
 		fontFamily: "Tajawal-Medium",
-		fontWeight: "bold",
+		color: "black",
 	},
 });
 

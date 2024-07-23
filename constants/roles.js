@@ -1,8 +1,6 @@
-
-const manager = 2;
-const operator = 4;
+const manager = 4;
+const operator = 2;
 const maintenar = 3;
-
 
 export default {
 	manager,
