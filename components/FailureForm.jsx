@@ -8,11 +8,18 @@ import MainButton from "./MainButton";
 import DatePickerInput from "./DatePickerInput";
 import Toast from "react-native-toast-message";
 import { icons } from "../constants";
-export default function FailureForm({ setDataSent, id, setError, dataSent }) {
+import { getFormattedLocalDate } from "../utils/dateFormater";
+export default function FailureForm({
+	setDataSent,
+	id,
+	setError,
+	dataSent,
+	assetsStatus,
+}) {
 	const [submitting, setSubmitting] = useState(false);
 	const [formData, setFormData] = useState({
 		AssetID: id,
-		FixDate: "",
+		FixDate: `${getFormattedLocalDate()}`,
 		FailureAction: "",
 		FailureReason: "",
 		StatusID: "",
@@ -49,20 +56,14 @@ export default function FailureForm({ setDataSent, id, setError, dataSent }) {
 		setSubmitting(true);
 
 		try {
-			console.log(formData);
 			const result = await api.post(`failure/repair/${id}`, formData);
 			setDataSent(true);
-			console.log(result);
 		} catch (error) {
 			setSubmitting(false);
 			setError(error.message);
 		}
 	};
 
-	const assetsStatus = [
-		{ value: "يعمل", key: "1" },
-		{ value: "متوقف", key: "2" },
-	];
 	return (
 		<>
 			<View className="gap-8 p-4">
@@ -102,6 +103,7 @@ export default function FailureForm({ setDataSent, id, setError, dataSent }) {
 				</View>
 				<View>
 					<FormField
+						numeric={true}
 						title={"التكلفة"}
 						placeholder={"ادخل التكلفى"}
 						value={formData.Cost}

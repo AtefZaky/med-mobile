@@ -1,38 +1,20 @@
 import { View } from "react-native";
-
 import { ScrollView } from "react-native-virtualized-view";
-
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
-
-import {
-	FormField,
-	Header,
-	Loader,
-	MainButton,
-	Dropdown,
-	DatePickerInput,
-} from "../../components";
+import ReportFailureForm from "../../components/ReportFailureForm";
+import { Header, Loader } from "../../components";
 import React, { useEffect, useState } from "react";
-import { useGlobalContext } from "../../context/GlobalProvider";
 import api from "../../utils/api";
 
 const ReportFailure = () => {
-	const { user } = useGlobalContext();
+	const [error, setError] = useState({ error: null, counter: "" });
+	const [assetsStatus, setAssetsStatus] = useState([]);
+	const [dataSent, setDataSent] = useState(false);
 	const [options, setOptions] = useState([]);
 	const [loader, setloader] = useState(true);
-	const [isSubmitting, setSubmitting] = useState(false);
-	const [formdata, setFormData] = useState({
-		StatusDate: "",
-		AssetID: "",
-		FailureAction: "",
-		StatusID: "",
-	})
-	const assetsStatus = [
-		{ value: "يعمل", key: "1" },
-		{ value: "لا يعمل", key: "2" },
-	];
 	const navigation = useNavigation();
+	const [submitting, setSubmitting] = useState(false);
 	const getAssets = async () => {
 		const { data } = await api.get("/assets");
 		if (data.success) {
@@ -41,27 +23,122 @@ const ReportFailure = () => {
 				key: item.AssetID,
 			}));
 			setOptions(transformedData);
-			setloader(false);
 		} else {
-			console.log("error");
+			Toast.show({
+				type: "error",
+				text1: data.message || "خطأ",
+				text2: "حدث خطأ اثناء تسجيل البلاغ",
+				autoHide: true,
+				visibilityTime: 1500,
+				text1Style: {
+					textAlign: "right",
+					fontSize: 16,
+				},
+				text2Style: {
+					textAlign: "right",
+					fontSize: 14,
+				},
+			});
 		}
 	};
+
+	const getAssetStatus = async () => {
+		const { data } = await api.get("failure/status/menu");
+
+		if (data.success) {
+			const transformedData = data.items.map((item) => ({
+				value: item.StatusName,
+				key: item.StatusID,
+			}));
+			setAssetsStatus(transformedData);
+			setloader(false);
+		} else {
+			Toast.show({
+				type: "error",
+				text1: data.message || "خطأ",
+				text2: "حدث خطأ اثناء تسجيل البلاغ",
+				autoHide: true,
+				visibilityTime: 1500,
+				text1Style: {
+					textAlign: "right",
+					fontSize: 16,
+				},
+				text2Style: {
+					textAlign: "right",
+					fontSize: 14,
+				},
+			});
+		}
+	};
+	const submitData = async (formdata) => {
+		if (
+			!formdata.AssetID ||
+			!formdata.StatusID ||
+			!formdata.FailureAction ||
+			!formdata.StatusDate
+		) {
+			return Toast.show({
+				type: "error",
+				text1: "خطأ",
+				text2: "من فضلك ادخل البيانات المطلوبه",
+				autoHide: true,
+				visibilityTime: 1500,
+				text1Style: {
+					textAlign: "right",
+				},
+				text2Style: {
+					textAlign: "right",
+				},
+			});
+		}
+		try {
+			setSubmitting(true);
+			const res = await api.post("/failure/report", formdata);
+			if (res.data.success) {
+				return setDataSent(true);
+			} else {
+				setSubmitting(false);
+				Toast.show({
+					type: "error",
+					text1: res.data.message || "خطأ",
+					text2: "حدث خطأ اثناء تسجيل البلاغ",
+					autoHide: true,
+					visibilityTime: 1500,
+					text1Style: {
+						textAlign: "right",
+					},
+					text2Style: {
+						textAlign: "right",
+					},
+				});
+			}
+		} catch (error) {
+			setSubmitting(false);
+			if (error.response) {
+				// The request was made and the server responded with a status code
+				// that falls out of the range of 2xx
+				setError({ ...error, error: error.response.data });
+			} else if (error.request) {
+				// The request was made but no response was received
+				setError({ ...error, error: error.request });
+			} else {
+				// Something happened in setting up the request that triggered an Error
+				setError({ ...error, error: error.message });
+			}
+		}
+	};
+
 	useEffect(() => {
-		getAssets();
+		const fetchData = async () => {
+			getAssets();
+			getAssetStatus();
+			setloader(false);
+		};
+		fetchData();
 	}, []);
 
-	const submitData = async () => {
-		try {
-			const data = {
-				DepartmentID: user.DepartmentID,
-				StatusDate: formdata.StatusDate,
-				AssetID: formdata.AssetID,
-				FailureAction: formdata.FailureAction,
-				StatusID: formdata.StatusID,
-			};
-			console.log(formdata)
-			setSubmitting(true);
-			const res = await api.post("/failure/report", data);
+	useEffect(() => {
+		if (dataSent) {
 			Toast.show({
 				type: "success",
 				text1: "عملية ناجحه",
@@ -76,23 +153,24 @@ const ReportFailure = () => {
 				},
 			});
 			setTimeout(() => {
-				setSubmitting(false);
 				navigation.navigate("home");
 			}, 1500);
-		} catch (error) {
-			if (error.response) {
-				// The request was made and the server responded with a status code
-				// that falls out of the range of 2xx
-				console.error("Response Error:", error.response.data);
-			} else if (error.request) {
-				// The request was made but no response was received
-				console.error("Request Error:", error.request);
-			} else {
-				// Something happened in setting up the request that triggered an Error
-				console.error("Error:", error.message);
-			}
+		} else if (error.error) {
+			Toast.show({
+				type: "error",
+				text1: error.error || "خطأ",
+				text2: "حدث خطأ اثناء تسجيل البلاغ",
+				autoHide: true,
+				visibilityTime: 1500,
+				text1Style: {
+					textAlign: "right",
+				},
+				text2Style: {
+					textAlign: "right",
+				},
+			});
 		}
-	};
+	}, [dataSent, error.counter]);
 
 	return (
 		<View>
@@ -100,57 +178,17 @@ const ReportFailure = () => {
 				<Header title={"الابلاغ عن الاعطال"} />
 			</View>
 
-			{loader || !options.length ? (
+			{loader || !options.length || !assetsStatus.length ? (
 				<Loader></Loader>
 			) : (
-				<View className=" flex  gap-6  p-4 pt-6 ">
-					<View>
-						<DatePickerInput
-							setDate={(value) => {
-								console.log(value)
-								setFormData({ ...formdata, StatusDate: value });
-							}}
-						/>
-					</View>
-
-					<View>
-						<Dropdown
-							title={"المعدة"}
-							data={options}
-							placeholder={"اختر المعدة"}
-							onChange={(key) => {
-								setFormData({ ...formdata, AssetID: key });
-							}}></Dropdown>
-					</View>
-					<View>
-						<Dropdown
-							title={"حالة المعدة"}
-							data={assetsStatus}
-							placeholder={"اختر الحالة  "}
-							onChange={(optionid) => {
-								setFormData({
-									...formdata,
-									StatusID: optionid,
-								});
-							}}></Dropdown>
-					</View>
-					<View>
-						<FormField
-							value={formdata.FailureAction}
-							handleChangeText={(value) => {
-								setFormData({ ...formdata, FailureAction: value });
-							}}
-							title={"الاجراء المتخذ قبل الابلاغ"}
-							placeholder={"ادخل الاجراء"}></FormField>
-					</View>
-
-					<View>
-						<MainButton
-							title={"ارسال"}
-							handlePress={submitData}
-							isLoading={isSubmitting}></MainButton>
-					</View>
-				</View>
+				<ScrollView>
+					<ReportFailureForm
+						submitting={submitting}
+						options={options}
+						assetsStatus={assetsStatus}
+						submitData={submitData}
+					/>
+				</ScrollView>
 			)}
 			<Toast />
 		</View>

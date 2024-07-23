@@ -25,7 +25,15 @@ export default function dailyExamination() {
 			setOptions(transformedData);
 			setloader(false);
 		} else {
-			console.log("error");
+			Toast.show({
+				type: "خطاء",
+				text1: "حدث خطأ ما",
+				autoHide: true,
+				visibilityTime: 1500,
+				text1Style: {
+					textAlign: "right",
+				},
+			});
 		}
 	};
 	useEffect(() => {
@@ -33,15 +41,32 @@ export default function dailyExamination() {
 	}, []);
 
 	const submitData = async (formdata) => {
+		if (
+			formdata.AssetID === "" ||
+			formdata.ch_done === "" ||
+			formdata.notes === "" ||
+			formdata.ch_date === ""
+		) {
+			Toast.show({
+				type: "error",
+				text1: "خطأ",
+				text2: "من فضلك ادخل البيانات المطلوبه",
+				autoHide: true,
+				visibilityTime: 3000,
+				text1Style: {
+					textAlign: "right",
+				},
+				text2Style: {
+					textAlign: "right",
+				},
+			});
+			return; // Prevent form submission if fields are empty
+		}
+
 		setButtonLoading(true);
 		try {
-			const data = {
-				AssetID: formdata.AssetID,
-				ch_done: formdata.ch_done,
-				notes: formdata.notes,
-			};
-			const res = await api.post("/operation/check", data);
-			console.log("Response:", res);
+			const res = await api.post("/operation/check", formdata);
+
 			Toast.show({
 				type: "success",
 				text1: "تم الحفظ",

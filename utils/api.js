@@ -2,7 +2,9 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
 // Define your API base URL
-const API_BASE_URL = "http://192.168.1.24:5000/api";
+// const API_BASE_URL = "http://192.168.1.24:5000/api";
+
+const API_BASE_URL = "http://isis-eg.com:8501/api";
 
 // Create an Axios instance
 const api = axios.create({
@@ -124,10 +126,10 @@ export const logOut = async () => {
 		await SecureStore.deleteItemAsync("username");
 		await SecureStore.deleteItemAsync("lastActive");
 		await SecureStore.deleteItemAsync("UserTypeID");
-		await SecureStore.deleteItemAsync("UserDepartmentID");	
+		await SecureStore.deleteItemAsync("UserDepartmentID");
 	} catch (error) {
-		throw error
+		throw error;
 	}
-}
+};
 
 export default api;

@@ -92,12 +92,12 @@ const AssetsOperations = () => {
 					{data ? (
 						<ScrollView style={{ flexGrow: 1 }}>
 							<Header title="تشغيل و ايقاف الوحدات" />
-							<View className="flex justify-center p-4">
-								<Text className="font-tregular text-base text-center">
+							<View className="flex justify-center p-6	">
+								<Text className="font-tmedium text-base text-center">
 									{formatedDate}
 								</Text>
 							</View>
-							<View className="w-full flex py-4">
+							<View className="w-full flex ">
 								<Table
 									assetsOperation={true}
 									header={assetsOperationHeader}

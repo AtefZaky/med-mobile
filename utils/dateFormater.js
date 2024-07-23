@@ -1,4 +1,4 @@
-export function formatDate(date) {
+export function formatDate(date, sepertae) {
 	const year = date.getFullYear();
 	const month = date.getMonth() + 1; // Months are zero-based, so add 1
 	const day = date.getDate();
@@ -9,8 +9,11 @@ export function formatDate(date) {
 
 	const formattedDate = `${year}-${month}-${day}`;
 	const formattedTime = `${hours}:${minutes}:${seconds}`;
-
-	return `${formattedDate} ${formattedTime}`;
+	if (sepertae) {
+		return [formattedDate, formattedTime];
+	} else {
+		return `${formattedDate} ${formattedTime}`;
+	}
 }
 
 export function getTimeDifference(startDate, endDate) {

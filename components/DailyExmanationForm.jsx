@@ -18,7 +18,6 @@ export default function DailyExmanationForm({
 		ch_done: "",
 		notes: "",
 	});
-	console.log(formdata);
 
 	return (
 		<>

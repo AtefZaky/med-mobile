@@ -18,7 +18,7 @@ export default function itemDetails() {
 				const res = await api.get(`balance/${id}`);
 
 				setData(res.data.data);
-				console.log("res.data.data", res.data.data);
+
 				if (res.data.data == 0) {
 					setError("هذا الصنف غير متوفر حالياً");
 				} else {
@@ -48,7 +48,6 @@ export default function itemDetails() {
 						</View>
 					) : (
 						<ScrollView>
-							{console.log("------------------", data, "------------------")}
 							<Table
 								data={data}
 								inventoryItemDetails={true}

@@ -8,6 +8,7 @@ import { DrawerLayoutAndroid, Image } from "react-native";
 import { useRef } from "react";
 import { icons } from "../../constants";
 import CustomMenu from "../../components/CustomMenu";
+import UserInfo from "../../components/UserInfo";
 const ManagerHome = () => {
 	const { user } = useGlobalContext();
 	const navigation = useNavigation();
@@ -27,21 +28,10 @@ const ManagerHome = () => {
 						setModalVisible(e);
 					}}
 					modalVisible={modalVisible}></CustomMenu>
+				<UserInfo />
 
 				<ScrollView>
-					<View className="flex px-4 my-6">
-						<View className=" mb-20">
-							<Text className="text-right font-tregular text-base text-primary">
-								مرحبا بك
-							</Text>
-							<Text className="text-right font-tbold text-base text-primary mb-4">
-								{user.username}
-							</Text>
-							<Text className="text-base text-primary font-tregular">
-								اخر ظهور :{" "}
-								<Text className="text-sm font-tlight">{user.lastActive}</Text>
-							</Text>
-						</View>
+					<View className="flex px-4 ">
 						<MainButton
 							icon={icons.whiteBell}
 							title="التنبيهات"

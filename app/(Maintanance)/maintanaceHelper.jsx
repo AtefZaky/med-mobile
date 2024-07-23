@@ -44,7 +44,6 @@ export default function maintanaceHelper() {
 	};
 	const startChat = () => {
 		if (!chatStartUP.AssetID || !chatStartUP.failureDescription) {
-			console.log("false");
 			Toast.show({
 				type: "error",
 				text1: "الرجاء ملء البينات",

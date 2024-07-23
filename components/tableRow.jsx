@@ -7,10 +7,13 @@ import ProgressBar from "./ProgressBar";
 const TableRow = ({ item, onStartMachine, onCloseMachine, numOfRows }) => {
 	const [date, setDate] = useState({
 		counter: "",
-		startDate: item.StartInTime,
-		endDate: item.EndInTime,
+		startDate: item.StartIn,
+		endDate: item.EndIn,
 	});
-	const [active, setActive] = useState(item.StatusID);
+
+	const [active, setActive] = useState(
+		new Date(date.startDate) > new Date(date.endDate) ? 1 : 2
+	);
 	const [loader, setLoader] = useState({ open: false, close: false });
 
 	useEffect(() => {
@@ -53,7 +56,7 @@ const TableRow = ({ item, onStartMachine, onCloseMachine, numOfRows }) => {
 					}}
 					className={`${
 						active == 2
-							? "text-[#F15555] bg-[#F9EAEB]										]"
+							? "text-[#F15555] bg-[#F9EAEB]"
 							: "bg-[#F15555] text-white "
 					} px-4 py-1 rounded-md max-w-[1/${numOfRows}] ml-3`}>
 					{loader.close ? (

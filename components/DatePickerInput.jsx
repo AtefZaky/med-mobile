@@ -24,7 +24,7 @@ const DatePickerInput = ({ setDate }) => {
 		setShowDatePicker(false);
 		if (date) {
 			const date1 = new Date(date);
-			console.log(date1.setHours(date1.getHours() + 3));
+
 			setSelectedDate(date);
 			const cairoTime = moment(date)
 				.tz("Africa/Cairo")
