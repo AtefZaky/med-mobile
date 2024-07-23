@@ -1,5 +1,4 @@
 {
-
 	"expo": {
 		"name": "med",
 		"slug": "med",
@@ -21,7 +20,11 @@
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/images/icon.png",
 				"backgroundColor": "#ffffff"
-			}
+			},
+			"permissions": ["INTERNET"],
+			"useNextNotificationsApi": true,
+			"allowClearTextTraffic": true,
+			"package": "com.amrkhaled222.med"
 		},
 		"web": {
 			"bundler": "metro",
@@ -31,6 +34,14 @@
 		"plugins": ["expo-router"],
 		"experiments": {
 			"typedRoutes": true
+		},
+		"extra": {
+			"router": {
+				"origin": false
+			},
+			"eas": {
+				"projectId": "4970ce31-f724-4da8-ba86-f748354f06bf"
+			}
 		}
 	}
 }
