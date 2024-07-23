@@ -1,7 +1,6 @@
 import {
 	View,
 	Text,
-	FlatList,
 	KeyboardAvoidingView,
 	Platform,
 	ScrollView,
@@ -42,9 +41,9 @@ export default function maintanaceHelper() {
 			console.log("error");
 		}
 	};
-	const startChat = () => {
+	const startChat = async () => {
 		if (!chatStartUP.AssetID || !chatStartUP.failureDescription) {
-			Toast.show({
+			return Toast.show({
 				type: "error",
 				text1: "الرجاء ملء البينات",
 				autoHide: true,
@@ -53,10 +52,35 @@ export default function maintanaceHelper() {
 					textAlign: "right",
 				},
 			});
-		} else {
+		}
+		setloader(true);
+		try {
+			const start = {
+				AssetID: chatStartUP.AssetID,
+				history: [],
+				q: chatStartUP.failureDescription,
+			};
+			const res = await api.post("ai", start);
 			setChatStartUp({ ...chatStartUP, chating: true });
+			console.log(res.data.history);
+			res.data.history.shift();
+
+			setHistory(res.data.history);
+		} catch (err) {
+			Toast.show({
+				type: "error",
+				text1: " فشل الاتصال",
+				autoHide: true,
+				visibilityTime: 3000,
+				text1Style: {
+					textAlign: "right",
+				},
+			});
+		} finally {
+			setloader(false);
 		}
 	};
+
 	const sendMassege = async (query) => {
 		if (!query) {
 			Toast.show({
@@ -72,7 +96,12 @@ export default function maintanaceHelper() {
 		} else {
 			setButtonDisabled(true);
 			try {
-				const res = await api.post("ai", { history: History, q: query });
+				const res = await api.post("ai", {
+					history: History,
+					q: query,
+					AssetID: chatStartUP.AssetID,
+				});
+
 				setHistory(res.data.history);
 				setButtonDisabled(false);
 				return true;
@@ -97,13 +126,12 @@ export default function maintanaceHelper() {
 		getAssets();
 	}, []);
 
-	useEffect(() => {}, [chatStartUP.chating]);
 	return (
 		<View>
 			<Header title={"المساعدة في الصيانة"}></Header>
 
 			{loader || !options.length ? (
-				<Loader></Loader>
+				<Loader isLoading={loader}></Loader>
 			) : (
 				<>
 					{!chatStartUP.chating ? (

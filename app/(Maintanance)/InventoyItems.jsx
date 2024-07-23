@@ -59,7 +59,7 @@ export default function InventoyItem() {
 				}}
 			/>
 			{Loading ? (
-				<Loader />
+				<Loader isLoading={Loading} />
 			) : (
 				<>
 					{Error ? (

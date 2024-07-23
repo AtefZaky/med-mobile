@@ -16,8 +16,6 @@ const failureDetails = () => {
 	const { Id } = useLocalSearchParams();
 	const [FailureData, setFailureData] = useState([]);
 	const [loader, setLoader] = useState(true);
-	const [dataSent, setDataSent] = useState(false);
-	const [error, setError] = useState(null);
 	const [assetsStatus, setAssetsStatus] = useState([]);
 	const getFailureData = async () => {
 		try {
@@ -70,8 +68,36 @@ const failureDetails = () => {
 		}
 	};
 
-	useEffect(() => {
-		if (dataSent) {
+	const submit = async (formData, setSubmitting) => {
+		if (
+			formData.AssetID === "" ||
+			formData.FixDate === "" ||
+			formData.FailureAction === "" ||
+			formData.FailureReason === "" ||
+			formData.Cost === "" ||
+			formData.Notes === "" ||
+			formData.StatusID === ""
+		) {
+			Toast.show({
+				type: "error",
+				text1: "خطأ",
+				text2: "من فضلك ادخل البيانات المطلوبه",
+				autoHide: true,
+				visibilityTime: 3000,
+				text1Style: {
+					textAlign: "right",
+				},
+				text2Style: {
+					textAlign: "right",
+				},
+			});
+			return; // Prevent form submission if fields are empty
+		}
+
+		setSubmitting(true);
+
+		try {
+			const result = await api.post(`failure/repair/${Id}`, formData);
 			Toast.show({
 				type: "success",
 				text1: "عملية ناجحه",
@@ -88,11 +114,11 @@ const failureDetails = () => {
 			setTimeout(() => {
 				router.replace("Maintanacehome");
 			}, 1500);
-		} else if (error) {
+		} catch (error) {
 			Toast.show({
 				type: "error",
 				text1: "خطأ",
-				text2: error,
+				text2: error.message,
 				autoHide: true,
 				visibilityTime: 3000,
 				text1Style: {
@@ -102,8 +128,10 @@ const failureDetails = () => {
 					textAlign: "right",
 				},
 			});
+			setSubmitting(false);
 		}
-	}, [dataSent, error]);
+	};
+
 	useEffect(() => {
 		const fetchData = async () => {
 			getAssetStatus();
@@ -155,10 +183,8 @@ const failureDetails = () => {
 					)}
 
 					<FailureForm
-						setError={setError}
 						id={Id}
-						dataSent={dataSent}
-						setDataSent={setDataSent}
+						submit={submit}
 						assetsStatus={assetsStatus}
 					/>
 				</View>

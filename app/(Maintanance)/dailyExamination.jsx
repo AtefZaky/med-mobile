@@ -40,7 +40,7 @@ export default function dailyExamination() {
 		getAssets();
 	}, []);
 
-	const submitData = async (formdata) => {
+	const submitData = async (formdata, setButtonLoading) => {
 		if (
 			formdata.AssetID === "" ||
 			formdata.ch_done === "" ||
@@ -125,15 +125,15 @@ export default function dailyExamination() {
 
 			<ScrollView className="h-[90vh] pb-5">
 				{loader ? (
-					<Loader></Loader>
+					<Loader isLoading={loader}></Loader>
 				) : (
 					<DailyExmanationForm
 						submitData={submitData}
-						options={options}
-						isLoading={buttonLoading}></DailyExmanationForm>
+						options={options}></DailyExmanationForm>
 				)}
 			</ScrollView>
 			<Toast />
 		</View>
 	);
 }
+// isLoading={buttonLoading}

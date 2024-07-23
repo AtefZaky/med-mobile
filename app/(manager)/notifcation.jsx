@@ -1,24 +1,52 @@
 import { View, Text } from "react-native";
-import React from "react";
-import { Header, MassegeContainer } from "../../components";
+import React, { useEffect, useState } from "react";
+import { Header, MassegeContainer, Loader } from "../../components";
 import { ScrollView } from "react-native-virtualized-view";
 import { Notifcation } from "../../components";
-import { da } from "date-fns/locale";
+import Toast from "react-native-toast-message";
+import api from "../../utils/api";
 const notifcation = () => {
-	const data = {
-		message:
-			"تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية  تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية  تنبيةتنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية تنبية  تنبيةتنبي تنبية تنبية  تنبيةتنبي تنبية تنبية  تنبيةتنبية تنبية تنبية تنبية تنبية",
-		piriority: "1",
-		phone: "01000",
-		Department: "قسم الطرومبات",
-		date: "17:30 2024-04-24 ",
-	};
+	const [data, setData] = useState([]);
+	const [loader, setLoader] = useState(true);
+	useEffect(() => {
+		const getNotfications = async () => {
+			try {
+				const data = await api.get("/notifications");
+				setData(data.data.notifications);
+			} catch (error) {
+				console.log(error);
+			} finally {
+				setLoader(false);
+			}
+		};
+		getNotfications();
+	}, []);
 	return (
-		<View className="bg-white min-h-screen">
+		<View className=" min-h-[100%] bg-white">
+			<Toast></Toast>
 			<Header title={"التنبيهات"} />
 			<View className="px-4 py-4">
 				<ScrollView>
-					<Notifcation data={data}></Notifcation>
+					{loader ? (
+						<Loader isLoading={loader}></Loader>
+					) : (
+						<>
+							{data.length == 0 ? (
+								<View className="h-full w-full flex justify-center items-center">
+									<Text className="font-tbold text-base text-black">
+										لا توجد تنبيهات الان{" "}
+									</Text>
+								</View>
+							) : (
+								data.map((item, index) => (
+									<Notifcation
+										key={index}
+										data={item}
+									/>
+								))
+							)}
+						</>
+					)}
 				</ScrollView>
 			</View>
 		</View>

@@ -18,6 +18,7 @@ export default function DailyExmanationForm({
 		ch_done: "",
 		notes: "",
 	});
+	const [buttonLoading, setButtonLoading] = useState(false);
 
 	return (
 		<>
@@ -58,13 +59,13 @@ export default function DailyExmanationForm({
 
 			<View className="pb-6 px-3">
 				<MainButton
-					isLoading={isLoading}
+					isLoading={buttonLoading}
 					icon={icons.ArrowUpRight}
 					iconStyles={"mr-4"}
 					containerStyles={"mt-4  "}
 					title={"حفظ"}
 					handlePress={() => {
-						submitData(formdata);
+						submitData(formdata, setButtonLoading);
 					}}></MainButton>
 			</View>
 		</>
