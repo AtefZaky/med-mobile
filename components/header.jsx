@@ -35,7 +35,7 @@ const Header = ({ title, hasLeftComponent = false, onDrawerPress }) => {
 			<View style={styles.header}>
 				<Text
 					style={styles.title}
-					className="font-tregular">
+					className="font-tmedium">
 					{title}
 				</Text>
 				{!hasLeftComponent ? (
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 14,
-		fontWeight: "bold",
+
 		color: "#fff",
 		marginRight: 16,
 	},

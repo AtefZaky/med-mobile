@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, Text } from "react-native";
 
 import { ScrollView } from "react-native-virtualized-view";
 
@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import ReportFailureForm from "../../components/ReportFailureForm";
 import { Header, Loader } from "../../components";
 import React, { useEffect, useState } from "react";
-
+import { KeyboardAvoidingView, Platform } from "react-native";
 import api from "../../utils/api";
 
 const ReportFailure = () => {
@@ -17,9 +17,9 @@ const ReportFailure = () => {
 	const navigation = useNavigation();
 
 	const getAssets = async () => {
-		const { data } = await api.get("/assets");
+		const { data } = await api.get("/departments");
 		if (data.success) {
-			const transformedData = data.machines.map((item) => ({
+			const transformedData = data.Assets.map((item) => ({
 				value: item.AssetName,
 				key: item.AssetID,
 			}));
@@ -33,10 +33,12 @@ const ReportFailure = () => {
 				visibilityTime: 1500,
 				text1Style: {
 					textAlign: "right",
+					fontFamily: "Tajawal-Bold",
 					fontSize: 16,
 				},
 				text2Style: {
 					textAlign: "right",
+					fontFamily: "Tajawal-Regular",
 					fontSize: 14,
 				},
 			});
@@ -44,7 +46,7 @@ const ReportFailure = () => {
 	};
 
 	const getAssetStatus = async () => {
-		const { data } = await api.get("failure/status/menu");
+		const { data } = await api.get("assets/status/menu");
 
 		if (data.success) {
 			const transformedData = data.items.map((item) => ({
@@ -62,10 +64,12 @@ const ReportFailure = () => {
 				visibilityTime: 1500,
 				text1Style: {
 					textAlign: "right",
+					fontFamily: "Tajawal-Bold",
 					fontSize: 16,
 				},
 				text2Style: {
 					textAlign: "right",
+					fontFamily: "Tajawal-Regular",
 					fontSize: 14,
 				},
 			});
@@ -76,7 +80,8 @@ const ReportFailure = () => {
 			!formdata.AssetID ||
 			!formdata.StatusID ||
 			!formdata.FailureAction ||
-			!formdata.StatusDate
+			!formdata.StatusDate ||
+			!formdata.FailureDescription
 		) {
 			return Toast.show({
 				type: "error",
@@ -86,9 +91,13 @@ const ReportFailure = () => {
 				visibilityTime: 1500,
 				text1Style: {
 					textAlign: "right",
+					fontFamily: "Tajawal-Bold",
+					fontSize: 16,
 				},
 				text2Style: {
 					textAlign: "right",
+					fontFamily: "Tajawal-Regular",
+					fontSize: 14,
 				},
 			});
 		}
@@ -104,9 +113,13 @@ const ReportFailure = () => {
 					visibilityTime: 1500,
 					text1Style: {
 						textAlign: "right",
+						fontFamily: "Tajawal-Bold",
+						fontSize: 16,
 					},
 					text2Style: {
 						textAlign: "right",
+						fontFamily: "Tajawal-Regular",
+						fontSize: 14,
 					},
 				});
 				setTimeout(() => {
@@ -122,9 +135,13 @@ const ReportFailure = () => {
 					visibilityTime: 1500,
 					text1Style: {
 						textAlign: "right",
+						fontFamily: "Tajawal-Bold",
+						fontSize: 16,
 					},
 					text2Style: {
 						textAlign: "right",
+						fontFamily: "Tajawal-Regular",
+						fontSize: 14,
 					},
 				});
 			}
@@ -137,9 +154,13 @@ const ReportFailure = () => {
 				visibilityTime: 1500,
 				text1Style: {
 					textAlign: "right",
+					fontFamily: "Tajawal-Bold",
+					fontSize: 16,
 				},
 				text2Style: {
 					textAlign: "right",
+					fontFamily: "Tajawal-Regular",
+					fontSize: 14,
 				},
 			});
 			setSubmitting(false);
@@ -148,30 +169,39 @@ const ReportFailure = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			getAssets();
-			getAssetStatus();
+			await getAssets();
+			await getAssetStatus();
 			setloader(false);
 		};
 		fetchData();
 	}, []);
 
 	return (
-		<View>
+		<View className="bg-white min-h-[103vh]">
 			<View>
-				<Header title={"الابلاغ عن الاعطال"} />
+				<Header title={"بلاغ عن عطل جديد"} />
 			</View>
 
-			{loader || !options.length || !assetsStatus.length ? (
+			{loader ? (
 				<Loader isLoading={loader}></Loader>
+			) : !options.length || !assetsStatus.length ? (
+				<View className="flex justify-center  items-center min-h-[73vh ] ">
+					<Text className="font-tbold text-lg mt-4"> لا توجد بينات</Text>
+				</View>
 			) : (
-				<ScrollView>
-					<ReportFailureForm
-						options={options}
-						assetsStatus={assetsStatus}
-						submitData={submitData}
-					/>
-				</ScrollView>
+				<KeyboardAvoidingView
+					behavior={Platform.OS === "ios" ? "padding" : "height"}
+					keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}>
+					<ScrollView className="max-h-[87vh]">
+						<ReportFailureForm
+							options={options}
+							assetsStatus={assetsStatus}
+							submitData={submitData}
+						/>
+					</ScrollView>
+				</KeyboardAvoidingView>
 			)}
+
 			<Toast />
 		</View>
 	);

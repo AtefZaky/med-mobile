@@ -1,12 +1,12 @@
 import { StyleSheet, View, Text } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { SelectList } from "react-native-dropdown-select-list";
 
 export default function Dropdown({ data, onChange, placeholder, title }) {
-	function getValueById(array, id) {
-		const item = array.find((element) => element.key === id);
-		return item ? item.value : null; // Return null or a default value if the item is not found
-	}
+	// function getValueById(array, id) {
+	// 	const item = array.find((element) => element.key === id);
+	// 	return item ? item.value : null; // Return null or a default value if the item is not found
+	// }
 	const changeDropDown = (key) => {
 		onChange(key);
 	};

@@ -27,7 +27,6 @@ const useAuth = () => {
 						UserTypeID: UserTypeID,
 						UserDepartmentID: UserDepartmentID,
 					});
-					console.log(user);
 				} else {
 					setIsAuthenticated(false);
 				}

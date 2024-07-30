@@ -12,10 +12,9 @@ import { useGlobalContext } from "../context/GlobalProvider";
 import { icons } from "../constants";
 import api, { logOut } from "../utils/api";
 import { router } from "expo-router";
-import { set } from "date-fns";
 
 const CustomMenu = ({ modalVisible, setModalVisible }) => {
-	const { user, setUser, isLogged, setIsLogged } = useGlobalContext();
+	const { user, setUser, setIsLogged } = useGlobalContext();
 	const handleLogOut = async () => {
 		await api.get("/auth/signout");
 		await logOut();

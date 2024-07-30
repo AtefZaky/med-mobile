@@ -26,7 +26,12 @@ import yellowFlag from "../assets/images/RedFlag.png";
 import RedFlag from "../assets/images/RedFlag.png";
 import grayFlag from "../assets/images/grayFlag.png";
 import blueFlag from "../assets/images/blueFlag.png";
+import deleteIcon from "../assets/images/delete.png";
+import mapPin from "../assets/images/MapPin.png";
+import HandShake from "../assets/images/Handshake.png";
 export default {
+	mapPin,
+	HandShake,
 	grayFlag,
 	blueFlag,
 	RedFlag,
@@ -51,9 +56,9 @@ export default {
 	eyeIcon,
 	lock,
 	pencil,
-
 	ArrowUpRight,
 	eyeSlash,
 	LogoLef,
 	warning,
+	deleteIcon,
 };

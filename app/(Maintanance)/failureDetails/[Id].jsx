@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, KeyboardAvoidingView, Platform } from "react-native";
 import React, { useEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native-virtualized-view";
@@ -14,17 +14,18 @@ import Toast from "react-native-toast-message";
 
 const failureDetails = () => {
 	const { Id } = useLocalSearchParams();
-	const [FailureData, setFailureData] = useState([]);
+	const [FailureData, setFailureData] = useState({});
 	const [loader, setLoader] = useState(true);
 	const [assetsStatus, setAssetsStatus] = useState([]);
+	const [error, setError] = useState(null);
+	console.log(FailureData);
 	const getFailureData = async () => {
 		try {
 			const res = await api.get(`failure/${Id}`);
 
 			setFailureData(res.data.report[0]);
-
-			setLoader(false);
 		} catch (error) {
+			setError("لا يمكن الاتصال بالخادم الان");
 			Toast.show({
 				type: "error",
 				text1: error.message,
@@ -41,19 +42,38 @@ const failureDetails = () => {
 		}
 	};
 	const getAssetStatus = async () => {
-		const { data } = await api.get("failure/status/menu");
+		try {
+			const { data } = await api.get("failure/status/menu");
 
-		if (data.success) {
-			const transformedData = data.items.map((item) => ({
-				value: item.StatusName,
-				key: item.StatusID,
-			}));
-			setAssetsStatus(transformedData);
-		} else {
+			if (data.success) {
+				const transformedData = data.items.map((item) => ({
+					value: item.StatusName,
+					key: item.StatusID,
+				}));
+				setAssetsStatus(transformedData);
+			} else {
+				Toast.show({
+					type: "error",
+					text1: data.message || "خطأ",
+					text2: "حدث خطأ اثناء  الاتصال بالخادم",
+					autoHide: true,
+					visibilityTime: 1500,
+					text1Style: {
+						textAlign: "right",
+						fontSize: 16,
+					},
+					text2Style: {
+						textAlign: "right",
+						fontSize: 14,
+					},
+				});
+			}
+		} catch (error) {
+			setError("حدث خطأ اثناء  الاتصال بالخادم");
 			Toast.show({
 				type: "error",
-				text1: data.message || "خطأ",
-				text2: "حدث خطأ اثناء تسجيل البلاغ",
+				text1: error.message || "خطأ",
+				text2: "حدث خطأ اثناء  الاتصال بالخادم",
 				autoHide: true,
 				visibilityTime: 1500,
 				text1Style: {
@@ -134,61 +154,92 @@ const failureDetails = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			getAssetStatus();
-			getFailureData();
+			await getAssetStatus();
+			await getFailureData();
+			setLoader(false);
 		};
 		fetchData();
 	}, []);
 	return (
-		<View>
+		<View className="bg-white min-h-[103vh]">
 			<Header title={"تفاصيل العطل"} />
 			<Toast />
-			<ScrollView>
-				{/* <View> */}
-				<View>
-					{loader ? (
-						<Loader isLoading={loader}></Loader>
-					) : (
-						<View>
-							<View>
-								<View className="p-4">
-									<View className="bg-[#E4E7EC] flex gap-y-2 mt-4 rounded-md max-h-[140px] py-2">
-										<FailureDetailsHeaderItem
-											data={{ title: "المعدة", value: FailureData.AssetName }}
-										/>
-										<FailureDetailsHeaderItem
-											data={{
-												title: "الحالة",
-												value:
-													FailureData.AssetStatus == 1 ? "يعمل" : "لا يعمل",
-											}}
-										/>
-										<FailureDetailsHeaderItem
-											data={{
-												title: "التاريخ",
-												value:
-													FailureData?.FailureDate?.split("T")[0] ||
-													"لا توجد معلومات",
-											}}
-										/>
-										<FailureDetailsHeaderItem
-											data={{ title: "العطل", value: FailureData.FailureID }}
-										/>
-									</View>
 
-									<View className="mt-[19px] "></View>
-								</View>
+			<View>
+				{loader ? (
+					<Loader
+						minus={140}
+						isLoading={loader}></Loader>
+				) : (
+					<>
+						{error ||
+						Object.keys(FailureData).length == 0 ||
+						!assetsStatus.length ? (
+							<View className="flex w-full h-full items-center mt-4 ">
+								<Text className="text-lg  text-black font-tbold">
+									{error ? error : "لا توجد بينات الان"}
+								</Text>
 							</View>
-						</View>
-					)}
+						) : (
+							<>
+								<KeyboardAvoidingView
+									behavior={Platform.OS === "ios" ? "padding" : "height"}
+									keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}>
+									<ScrollView className="max-h-[100vh]">
+										<View>
+											<View>
+												<View>
+													<View className="p-4">
+														<View className="bg-[#E4E7EC] flex gap-y-2 mt-4  rounded-md max-h-[140px] py-2 pb-4">
+															<FailureDetailsHeaderItem
+																data={{
+																	title: "المعدة",
+																	value: FailureData.AssetName,
+																}}
+															/>
+															<FailureDetailsHeaderItem
+																data={{
+																	title: "الحالة",
+																	value:
+																		FailureData.AssetStatus == 1
+																			? "يعمل"
+																			: "لا يعمل",
+																}}
+															/>
+															<FailureDetailsHeaderItem
+																data={{
+																	title: "التاريخ",
+																	value:
+																		FailureData?.FailureDate?.split("T")[0] ||
+																		"لا توجد معلومات",
+																}}
+															/>
+															<FailureDetailsHeaderItem
+																data={{
+																	title: "العطل",
+																	value: FailureData.FailureDescription,
+																}}
+															/>
+														</View>
 
-					<FailureForm
-						id={Id}
-						submit={submit}
-						assetsStatus={assetsStatus}
-					/>
-				</View>
-			</ScrollView>
+														<View className="mt-[19px] "></View>
+													</View>
+												</View>
+											</View>
+
+											<FailureForm
+												id={Id}
+												submit={submit}
+												assetsStatus={assetsStatus}
+											/>
+										</View>
+									</ScrollView>
+								</KeyboardAvoidingView>
+							</>
+						)}
+					</>
+				)}
+			</View>
 		</View>
 	);
 };

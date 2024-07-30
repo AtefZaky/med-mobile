@@ -1,3 +1,4 @@
+import moment from "moment";
 export function formatDate(date, sepertae) {
 	const year = date.getFullYear();
 	const month = date.getMonth() + 1; // Months are zero-based, so add 1
@@ -46,8 +47,9 @@ export function getTimeDifference(startDate, endDate) {
 
 	return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 }
-export function getFormattedLocalDate() {
-	const date = new Date();
+export function getFormattedLocalDate(datee) {
+	const date = datee ? new Date(datee) : new Date();
+
 	const year = date.getFullYear();
 	const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
 	const day = String(date.getDate()).padStart(2, "0");
@@ -57,4 +59,13 @@ export function getFormattedLocalDate() {
 	const milliseconds = String(date.getMilliseconds()).padStart(3, "0");
 
 	return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+}
+
+export const cairoTimeConverter = (date) => {
+	return moment(date).tz("Africa/Cairo").format("YYYY-MM-DD HH:mm:ss");
+};
+
+export function getCurrentHour() {
+	const date = new Date();
+	return date.getHours();
 }

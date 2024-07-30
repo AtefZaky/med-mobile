@@ -41,13 +41,13 @@ export default function itemDetails() {
 			) : (
 				<>
 					{error || data.length == 0 ? (
-						<View className="flex justify-center items-center h-[90vh]">
+						<View className="flex  items-center mt-4 h-[90vh]">
 							<Text className="font-tbold text-center text-lg">
 								{error || "لا توجد بينات"}
 							</Text>
 						</View>
 					) : (
-						<ScrollView>
+						<ScrollView className="h-[73vh]">
 							<Table
 								data={data}
 								inventoryItemDetails={true}

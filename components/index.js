@@ -6,8 +6,6 @@ import Header from "./header";
 import PopUp from "./popUp";
 import Table from "./Table";
 import ChatContent from "./chatContent";
-import ChatBot from "./chatBot";
-import Select from "./Select";
 import Dropdown from "./DropDown";
 import FailureDetailsHeaderItem from "./FailureDetailsHeaderItem";
 import DailyPrecentageRow from "./DailyPrecentageRow";
@@ -31,12 +29,10 @@ export {
 	MainButton,
 	FormField,
 	LogoBar,
-	ChatBot,
 	Header,
 	PopUp,
 	Table,
 	ChatContent,
-	Select,
 	Dropdown,
 	DailyPrecentageRow,
 	FailureDetailsHeaderItem,

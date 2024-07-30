@@ -1,13 +1,11 @@
 import { Redirect, Stack, useRouter } from "expo-router";
-import { useEffect } from "react";
-import { Loader } from "../../components";
+
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { roles } from "../../constants";
 
 const AuthLayout = () => {
 	const { user } = useGlobalContext();
-	const router = useRouter();
 
 	if (user) {
 		if (user.type === roles.operator) {

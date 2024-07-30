@@ -1,12 +1,6 @@
-import {
-	StyleSheet,
-	View,
-	ActivityIndicator,
-	Dimensions,
-	Platform,
-} from "react-native";
+import { View, ActivityIndicator, Dimensions } from "react-native";
 
-const Loader = ({ isLoading }) => {
+const Loader = ({ isLoading, minus }) => {
 	const screenHeight = Dimensions.get("screen").height;
 
 	if (!isLoading) return null;
@@ -15,7 +9,7 @@ const Loader = ({ isLoading }) => {
 		<View
 			className="absolute flex justify-center items-center w-full h-full bg-white z-10"
 			style={{
-				height: screenHeight,
+				height: screenHeight - (minus ? minus : 0),
 			}}>
 			<ActivityIndicator
 				size={80}
@@ -25,19 +19,5 @@ const Loader = ({ isLoading }) => {
 		</View>
 	);
 };
-
-// const styles = StyleSheet.create({
-//     loaderContainer: {
-//         position: "absolute",
-//         justifyContent: "center",
-//         alignItems: "center",
-//         width: "full",
-//         height: "full",
-//         backgroundColor: "white",
-//         zIndex: "10"
-//     }
-// }
-
-// );
 
 export default Loader;

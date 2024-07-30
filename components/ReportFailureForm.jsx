@@ -1,18 +1,21 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import { useState } from "react";
 import { Dropdown, FormField, DatePickerInput, MainButton } from "./index";
 import { useGlobalContext } from "../context/GlobalProvider";
-import api from "../utils/api";
 import { icons } from "../constants";
-import { getFormattedLocalDate } from "../utils/dateFormater";
+import {
+	getFormattedLocalDate,
+	cairoTimeConverter,
+} from "../utils/dateFormater";
 const ReportFailureForm = ({ submitData, options, assetsStatus }) => {
 	const { user } = useGlobalContext();
 	const [formdata, setFormData] = useState({
 		DepartmentID: user.DepartmentID,
-		StatusDate: `${getFormattedLocalDate()}`,
+		StatusDate: `${getFormattedLocalDate(cairoTimeConverter(new Date()))}`,
 		AssetID: "",
 		FailureAction: "",
+		FailureDescription: "",
 		StatusID: "",
 	});
 	const [submitting, setSubmitting] = useState(false);
@@ -47,6 +50,16 @@ const ReportFailureForm = ({ submitData, options, assetsStatus }) => {
 						});
 					}}></Dropdown>
 			</View>
+
+			<View className="p-4">
+				<FormField
+					value={formdata.FailureDescription}
+					handleChangeText={(value) => {
+						setFormData({ ...formdata, FailureDescription: value });
+					}}
+					title={"تفاصيل العطل"}
+					placeholder={"ادخل التفاصيل"}></FormField>
+			</View>
 			<View className="p-4">
 				<FormField
 					value={formdata.FailureAction}
@@ -56,7 +69,7 @@ const ReportFailureForm = ({ submitData, options, assetsStatus }) => {
 					title={"الاجراء المتخذ قبل الابلاغ"}
 					placeholder={"ادخل الاجراء"}></FormField>
 			</View>
-			<View className="mt-14 p-4">
+			<View className="mt-8 p-4">
 				<MainButton
 					icon={icons.ArrowUp}
 					iconStyles={"mr-4"}

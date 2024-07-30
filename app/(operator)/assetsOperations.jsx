@@ -1,16 +1,13 @@
-import { Text, View, Dimensions } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, View } from "react-native";
 import Toast from "react-native-toast-message";
-
-import React, { Component, useEffect, useState } from "react";
-import { useGlobalContext } from "../../context/GlobalProvider";
+import React, { useEffect, useState } from "react";
 import { Header, Loader, Table } from "../../components";
 import { formatDate } from "../../utils/dateFormater";
 import api from "../../utils/api";
 import { ScrollView } from "react-native-virtualized-view";
-
+import { cairoTimeConverter } from "../../utils/dateFormater";
+import { Counter } from "../../utils/counterFunctions";
 const AssetsOperations = () => {
-	const { user } = useGlobalContext();
 	const [loader, setLoader] = useState(true);
 	const [data, setData] = useState([]);
 	const assetsOperationHeader = [
@@ -23,8 +20,9 @@ const AssetsOperations = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const result = await getData();
-				setData(result.data);
+				const data = await getData();
+				setData(data.data.machines);
+				console.log(data.data.machines);
 				setLoader(false);
 			} catch (error) {
 				console.error("Error fetching data: ", error);
@@ -41,9 +39,7 @@ const AssetsOperations = () => {
 	const handleStart = async (id) => {
 		try {
 			const date = new Date();
-
-			const currentDate = formatDate(date);
-
+			const currentDate = formatDate(new Date(cairoTimeConverter(date)));
 			api.put(`/assets/${id}`, {
 				StatusID: 1,
 				StatusDate: currentDate,
@@ -54,12 +50,11 @@ const AssetsOperations = () => {
 			return false;
 		}
 	};
+
 	const handleEnd = async (id) => {
 		try {
 			const date = new Date();
-
-			const currentDate = formatDate(date);
-
+			const currentDate = formatDate(new Date(cairoTimeConverter(date)));
 			api.put(`/assets/${id}`, {
 				StatusID: 2,
 				StatusDate: currentDate,
@@ -71,55 +66,51 @@ const AssetsOperations = () => {
 		}
 	};
 
-	const date = new Date();
-
 	const formatDatee = (date) => {
 		const day = date.getDate();
 		const month = date.getMonth() + 1; // Months are zero-indexed
 		const year = date.getFullYear();
 
-		// Ensure day and month are two digits
+		// Ensure day and month are two digitsW
 		const formattedDay = day < 10 ? `0${day}` : day;
 		const formattedMonth = month < 10 ? `0${month}` : month;
 
 		return `${formattedDay}-${formattedMonth}-${year}`;
 	};
-	const formatedDate = formatDatee(date);
+
 	return (
-		<>
+		<View className="bg-white min-h-[103vh]">
+			<Toast />
+			<Header title="تشغيل و ايقاف الوحدات" />
+			<View className="flex justify-center p-6	">
+				<Text className="font-tmedium text-base text-center">
+					{formatDatee(new Date())}
+				</Text>
+			</View>
 			{!loader ? (
-				<>
-					{data ? (
-						<ScrollView style={{ flexGrow: 1 }}>
-							<Header title="تشغيل و ايقاف الوحدات" />
-							<View className="flex justify-center p-6	">
-								<Text className="font-tmedium text-base text-center">
-									{formatedDate}
-								</Text>
-							</View>
-							<View className="w-full flex ">
-								<Table
-									assetsOperation={true}
-									header={assetsOperationHeader}
-									data={data.machines}
-									onStartMachine={handleStart}
-									onCloseMachine={handleEnd}
-								/>
-							</View>
-							<Toast />
+				<View>
+					{data.length ? (
+						<ScrollView className=" max-h-[80vh]">
+							<Table
+								assetsOperation={true}
+								header={assetsOperationHeader}
+								data={data}
+								onStartMachine={handleStart}
+								onCloseMachine={handleEnd}
+							/>
 						</ScrollView>
 					) : (
-						<View className="flex justify-center p-4">
-							<Text className="font-tregular text-base text-center">
+						<View className="flex justify-center p-4 mt-4">
+							<Text className="font-tbold text-lg text-center">
 								لا يوجد معدات
 							</Text>
 						</View>
 					)}
-				</>
+				</View>
 			) : (
 				<Loader isLoading={loader}></Loader>
 			)}
-		</>
+		</View>
 	);
 };
 

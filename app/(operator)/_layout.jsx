@@ -1,11 +1,10 @@
 import { Redirect, Stack } from "expo-router";
-
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { roles } from "../../constants";
 
 const AuthLayout = () => {
-	const { loading, isLogged, user } = useGlobalContext();
+	const { user } = useGlobalContext();
 	if (user) {
 		if (user.type === roles.operator) {
 			<Redirect href="/home" />;
@@ -50,6 +49,12 @@ const AuthLayout = () => {
 
 					<Stack.Screen
 						name="reportFailure"
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="OperationalReports"
 						options={{
 							headerShown: false,
 						}}

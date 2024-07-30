@@ -1,11 +1,9 @@
-import { Text, View, ScrollView, TouchableOpacity } from "react-native";
+import { View, ScrollView } from "react-native";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Header, MainButton } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import { DrawerLayoutAndroid, Image } from "react-native";
-import { useRef } from "react";
 import { icons } from "../../constants";
 import CustomMenu from "../../components/CustomMenu";
 import UserInfo from "../../components/UserInfo";

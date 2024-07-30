@@ -66,13 +66,18 @@ const saveTokens = async (
 	username,
 	lastActive,
 	UserTypeID,
-	UserDepartmentID
+	UserDepartmentID,
+	UserDepartmentName
 ) => {
 	await SecureStore.setItemAsync("accessToken", accessToken);
 	await SecureStore.setItemAsync("refreshToken", refreshToken);
 	await SecureStore.setItemAsync("username", JSON.stringify(username));
 	await SecureStore.setItemAsync("lastActive", JSON.stringify(lastActive));
 	await SecureStore.setItemAsync("UserTypeID", JSON.stringify(UserTypeID));
+	await SecureStore.setItemAsync(
+		"UserDepartmentName",
+		JSON.stringify(UserDepartmentName)
+	);
 	await SecureStore.setItemAsync(
 		"UserDepartmentID",
 		JSON.stringify(UserDepartmentID)
@@ -89,7 +94,13 @@ export const login = async (email, password) => {
 		});
 
 		const { accessToken, refreshToken, user, success } = response.data;
-		const { username, lastActive, UserTypeID, UserDepartmentID } = user;
+		const {
+			username,
+			lastActive,
+			UserTypeID,
+			UserDepartmentID,
+			UserDepartmentName,
+		} = user;
 
 		if (success) {
 			await saveTokens(
@@ -98,9 +109,10 @@ export const login = async (email, password) => {
 				username,
 				lastActive,
 				UserTypeID,
-				UserDepartmentID
+				UserDepartmentID,
+				UserDepartmentName
 			);
-			console.log("Login successful:", username);
+
 			return {
 				accessToken,
 				refreshToken,
@@ -108,6 +120,7 @@ export const login = async (email, password) => {
 				lastActive,
 				UserTypeID,
 				UserDepartmentID,
+				UserDepartmentName,
 			};
 		} else {
 			console.error("Login failed:", response.data);

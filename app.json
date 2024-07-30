@@ -1,5 +1,4 @@
 {
-
 	"expo": {
 		"name": "med",
 		"slug": "med",
@@ -11,17 +10,17 @@
 		"splash": {
 			"image": "./assets/images/splash.png",
 			"resizeMode": "contain",
-			"backgroundColor": "#ffffff",
 			"padding": 20
 		},
+		"assetBundlePatterns": ["assets/images/*", "!assets/images/splash.png"],
 		"ios": {
 			"supportsTablet": true
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/images/icon.png",
-				"backgroundColor": "#ffffff"
-			}
+				"foregroundImage": "./assets/images/icon.png"
+			},
+			"package": "com.med"
 		},
 		"web": {
 			"bundler": "metro",

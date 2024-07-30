@@ -1,4 +1,4 @@
-import { Text, View, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
@@ -11,7 +11,7 @@ const Home = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 
 	return (
-		<View>
+		<View className="bg-white min-h-[103vh]">
 			<Header
 				hasLeftComponent={true}
 				onDrawerPress={() => {
@@ -43,9 +43,9 @@ const Home = () => {
 						handlePress={() => navigation.navigate("dailyOperationsInfo")}
 					/>
 					<MainButton
-						title="الابلاغ عن العطال"
+						title="الإبلاغ عن الأعطال"
 						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("reportFailure")}
+						handlePress={() => navigation.navigate("OperationalReports")}
 					/>
 				</View>
 				<Toast />

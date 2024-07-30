@@ -9,6 +9,7 @@ import GlobalProvider from "../context/GlobalProvider";
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
+	//load the font to the app
 	const [fontsLoaded, error] = useFonts({
 		"Tajawal-Bold": require("../assets/fonts/Tajawal-Bold.ttf"),
 		"Tajawal-Light": require("../assets/fonts/Tajawal-Light.ttf"),
@@ -33,6 +34,7 @@ const RootLayout = () => {
 	}
 
 	return (
+		// the global provider is the context provider for the app provide user data  look at the context folder
 		<GlobalProvider>
 			<Stack>
 				<Stack.Screen
@@ -48,9 +50,7 @@ const RootLayout = () => {
 					options={{ headerShown: false }}
 				/>
 				<Stack.Screen
-
 					name="(manager)"
-
 					options={{ headerShown: false }}
 				/>
 			</Stack>

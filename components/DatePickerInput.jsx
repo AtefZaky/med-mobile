@@ -10,7 +10,6 @@ import { icons } from "../constants";
 import { Image } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment-timezone";
-const DarkBlue = "#001e3c";
 
 const DatePickerInput = ({ setDate }) => {
 	const [selectedDate, setSelectedDate] = useState(new Date());
@@ -26,6 +25,7 @@ const DatePickerInput = ({ setDate }) => {
 			const date1 = new Date(date);
 
 			setSelectedDate(date);
+
 			const cairoTime = moment(date)
 				.tz("Africa/Cairo")
 				.format("YYYY-MM-DD HH:mm:ss");

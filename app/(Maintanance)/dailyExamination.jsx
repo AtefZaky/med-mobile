@@ -1,39 +1,70 @@
 import { Header, Loader, DailyExmanationForm } from "../../components";
 import React, { useEffect, useState } from "react";
-import { useGlobalContext } from "../../context/GlobalProvider";
+
 import api from "../../utils/api";
-import { useNavigation } from "@react-navigation/native";
-import { View, ScrollView } from "react-native";
+
+import {
+	View,
+	Text,
+	ScrollView,
+	KeyboardAvoidingView,
+	Platform,
+} from "react-native";
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
 
 export default function dailyExamination() {
-	const { user } = useGlobalContext();
 	const [loader, setloader] = useState(true);
 
 	const [options, setOptions] = useState([]);
-	const [buttonLoading, setButtonLoading] = useState(false);
-	const navigation = useNavigation();
 
 	const getAssets = async () => {
-		const { data } = await api.get("/assets");
-		if (data.success) {
-			const transformedData = data.machines.map((item) => ({
-				value: item.AssetName,
-				key: item.AssetID,
-			}));
-			setOptions(transformedData);
-			setloader(false);
-		} else {
+		try {
+			const { data } = await api.get("/departments");
+			if (data.success) {
+				const transformedData = data.Assets.map((item) => ({
+					value: item.AssetName,
+					key: item.AssetID,
+				}));
+				setOptions(transformedData);
+			} else {
+				Toast.show({
+					type: "خطاء",
+					text1: "حدث خطأ ما",
+					autoHide: true,
+					visibilityTime: 1500,
+					text1Style: {
+						textAlign: "right",
+						fontFamily: "Tajawal-Bold",
+						fontSize: 16,
+					},
+					text2Style: {
+						textAlign: "right",
+						fontFamily: "Tajawal-Regular",
+						fontSize: 14,
+					},
+				});
+			}
+		} catch (error) {
+			console.log(error);
 			Toast.show({
-				type: "خطاء",
-				text1: "حدث خطأ ما",
+				type: "error",
+				text1: "حدث خطأ بالخادم",
 				autoHide: true,
 				visibilityTime: 1500,
 				text1Style: {
 					textAlign: "right",
+					fontFamily: "Tajawal-Bold",
+					fontSize: 16,
+				},
+				text2Style: {
+					textAlign: "right",
+					fontFamily: "Tajawal-Regular",
+					fontSize: 14,
 				},
 			});
+		} finally {
+			setloader(false);
 		}
 	};
 	useEffect(() => {
@@ -55,9 +86,13 @@ export default function dailyExamination() {
 				visibilityTime: 3000,
 				text1Style: {
 					textAlign: "right",
+					fontFamily: "Tajawal-Bold",
+					fontSize: 16,
 				},
 				text2Style: {
 					textAlign: "right",
+					fontFamily: "Tajawal-Regular",
+					fontSize: 14,
 				},
 			});
 			return; // Prevent form submission if fields are empty
@@ -74,6 +109,13 @@ export default function dailyExamination() {
 				visibilityTime: 1500,
 				text1Style: {
 					textAlign: "right",
+					fontFamily: "Tajawal-Bold",
+					fontSize: 16,
+				},
+				text2Style: {
+					textAlign: "right",
+					fontFamily: "Tajawal-Regular",
+					fontSize: 14,
 				},
 			});
 			setTimeout(() => {
@@ -91,6 +133,13 @@ export default function dailyExamination() {
 					visibilityTime: 1500,
 					text1Style: {
 						textAlign: "right",
+						fontFamily: "Tajawal-Bold",
+						fontSize: 16,
+					},
+					text2Style: {
+						textAlign: "right",
+						fontFamily: "Tajawal-Regular",
+						fontSize: 14,
 					},
 				});
 			} else if (error.request) {
@@ -102,6 +151,13 @@ export default function dailyExamination() {
 					visibilityTime: 1500,
 					text1Style: {
 						textAlign: "right",
+						fontFamily: "Tajawal-Bold",
+						fontSize: 16,
+					},
+					text2Style: {
+						textAlign: "right",
+						fontFamily: "Tajawal-Regular",
+						fontSize: 14,
 					},
 				});
 			} else {
@@ -113,6 +169,13 @@ export default function dailyExamination() {
 					visibilityTime: 1500,
 					text1Style: {
 						textAlign: "right",
+						fontFamily: "Tajawal-Bold",
+						fontSize: 16,
+					},
+					text2Style: {
+						textAlign: "right",
+						fontFamily: "Tajawal-Regular",
+						fontSize: 14,
 					},
 				});
 			}
@@ -120,18 +183,36 @@ export default function dailyExamination() {
 	};
 
 	return (
-		<View>
+		<View className="bg-white min-h-[103vh]">
 			<Header title={"بيانات الفحص اليومي"}></Header>
 
-			<ScrollView className="h-[90vh] pb-5">
+			<View>
 				{loader ? (
-					<Loader isLoading={loader}></Loader>
+					<Loader
+						minus={160}
+						isLoading={loader}></Loader>
 				) : (
-					<DailyExmanationForm
-						submitData={submitData}
-						options={options}></DailyExmanationForm>
+					<>
+						<ScrollView className="h-[85vh] pb-5">
+							<KeyboardAvoidingView
+								behavior={Platform.OS === "ios" ? "padding" : "height"}
+								keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 40}>
+								{options.length > 0 ? (
+									<DailyExmanationForm
+										submitData={submitData}
+										options={options}></DailyExmanationForm>
+								) : (
+									<View className="flex w-full h-full justify-center items-center">
+										<Text className="text-center font-tbold text-lg mt-4">
+											لا توجد بيانات
+										</Text>
+									</View>
+								)}
+							</KeyboardAvoidingView>
+						</ScrollView>
+					</>
 				)}
-			</ScrollView>
+			</View>
 			<Toast />
 		</View>
 	);

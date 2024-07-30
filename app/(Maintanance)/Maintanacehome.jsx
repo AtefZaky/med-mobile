@@ -12,7 +12,7 @@ const Maintanacehome = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 
 	return (
-		<View>
+		<View className="bg-white min-h-[103vh] ">
 			<Header
 				hasLeftComponent={true}
 				onDrawerPress={() => {

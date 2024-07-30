@@ -1,19 +1,22 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import { useState } from "react";
 import FormField from "./FormField";
 import MainButton from "./MainButton";
 import Dropdown from "./DropDown";
 import DatePickerInput from "./DatePickerInput";
-import { getFormattedLocalDate } from "../utils/dateFormater";
+import {
+	getFormattedLocalDate,
+	cairoTimeConverter,
+} from "../utils/dateFormater";
 import { icons } from "../constants";
 export default function DailyExmanationForm({
 	options,
-	isLoading,
+
 	submitData,
 }) {
 	const [formdata, setFormData] = useState({
-		ch_date: `${getFormattedLocalDate()}`,
+		ch_date: `${getFormattedLocalDate(cairoTimeConverter(new Date()))}`,
 		AssetID: "",
 		ch_done: "",
 		notes: "",

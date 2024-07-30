@@ -5,7 +5,7 @@ import {
 	Platform,
 	ScrollView,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import api from "../../utils/api";
 import {
 	Loader,
@@ -15,8 +15,10 @@ import {
 } from "../../components";
 import Toast from "react-native-toast-message";
 import SubmitFormAiChat from "../../components/SubmitFormAiChat";
+
 export default function maintanaceHelper() {
 	const [options, setOptions] = useState([]);
+
 	const [loader, setloader] = useState(true);
 	const [chatStartUP, setChatStartUp] = useState({
 		failureDescription: "",
@@ -29,16 +31,39 @@ export default function maintanaceHelper() {
 	const [History, setHistory] = useState([]);
 
 	const getAssets = async () => {
-		const { data } = await api.get("/assets");
-		if (data.success) {
-			const transformedData = data.machines.map((item) => ({
-				value: item.AssetName,
-				key: item.AssetID,
-			}));
-			setOptions(transformedData);
+		try {
+			const { data } = await api.get("/departments");
+
+			if (data.success) {
+				const transformedData = data.Assets.map((item) => ({
+					value: item.AssetName,
+					key: item.AssetID,
+				}));
+
+				setOptions(transformedData);
+			} else {
+				Toast.show({
+					type: "error",
+					text1: data.data.message || " فشل في الاتصال",
+					autoHide: true,
+					visibilityTime: 3000,
+					text1Style: {
+						textAlign: "right",
+					},
+				});
+			}
+		} catch (err) {
+			Toast.show({
+				type: "error",
+				text1: " فشل الاتصال",
+				autoHide: true,
+				visibilityTime: 3000,
+				text1Style: {
+					textAlign: "right",
+				},
+			});
+		} finally {
 			setloader(false);
-		} else {
-			console.log("error");
 		}
 	};
 	const startChat = async () => {
@@ -62,8 +87,6 @@ export default function maintanaceHelper() {
 			};
 			const res = await api.post("ai", start);
 			setChatStartUp({ ...chatStartUP, chating: true });
-			console.log(res.data.history);
-			res.data.history.shift();
 
 			setHistory(res.data.history);
 		} catch (err) {
@@ -125,56 +148,84 @@ export default function maintanaceHelper() {
 	useEffect(() => {
 		getAssets();
 	}, []);
-
+	const scrollViewRef = useRef(null);
+	function scrollViewSizeChanged(height) {
+		// y since we want to scroll vertically, use x and the width-value if you want to scroll horizontally
+		scrollViewRef.current?.scrollTo({ y: height, animated: true });
+	}
 	return (
-		<View>
+		<View className="bg-white min-h-[103vh]">
 			<Header title={"المساعدة في الصيانة"}></Header>
-
-			{loader || !options.length ? (
-				<Loader isLoading={loader}></Loader>
-			) : (
-				<>
-					{!chatStartUP.chating ? (
-						<ChatBotStartUp
-							startChatBot={startChat}
-							setAssets={(v) => {
-								setChatStartUp({ ...chatStartUP, AssetID: v });
-							}}
-							setfailureDescription={(v) => {
-								setChatStartUp({ ...chatStartUP, failureDescription: v });
-							}}
-							failureDescription={chatStartUP.failureDescription}
-							dropdownOptions={options}
-						/>
-					) : (
-						<>
-							{loader ? (
-								<Loader isLoading={loader}></Loader>
-							) : (
-								<KeyboardAvoidingView
-									behavior={Platform.OS === "ios" ? "padding" : "height"}
-									keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 64}>
-									<ScrollView className="h-[76vh] p-4">
-										{History.map((item, index) => {
-											return (
-												<MassegeContainer
-													{...item}
-													key={index}
-												/>
-											);
-										}) || <Text>لا يوجد رسائل</Text>}
-									</ScrollView>
-
-									<SubmitFormAiChat
-										buttonDisabled={buttonDisabled}
-										sendMassege={sendMassege}
+			<View>
+				{loader ? (
+					<Loader
+						minus={140}
+						isLoading={loader}></Loader>
+				) : (
+					<>
+						{!options.length ? (
+							<>
+								<View className="flex w-full h-full items-center mt-4 ">
+									<Text className="text-lg  text-black font-tbold">
+										لا توجد بينات
+									</Text>
+								</View>
+							</>
+						) : (
+							<>
+								{!chatStartUP.chating ? (
+									<ChatBotStartUp
+										startChatBot={startChat}
+										setAssets={(v) => {
+											setChatStartUp({ ...chatStartUP, AssetID: v });
+										}}
+										setfailureDescription={(v) => {
+											setChatStartUp({ ...chatStartUP, failureDescription: v });
+										}}
+										failureDescription={chatStartUP.failureDescription}
+										dropdownOptions={options}
 									/>
-								</KeyboardAvoidingView>
-							)}
-						</>
-					)}
-				</>
-			)}
+								) : (
+									<>
+										{loader ? (
+											<Loader isLoading={loader}></Loader>
+										) : (
+											<KeyboardAvoidingView
+												behavior={Platform.OS === "ios" ? "padding" : "height"}
+												keyboardVerticalOffset={
+													Platform.OS === "ios" ? 64 : 140
+												}>
+												<ScrollView
+													onContentSizeChange={(width, height) => {
+														scrollViewRef.current?.scrollToEnd({
+															animated: true,
+														});
+													}}
+													ref={scrollViewRef}
+													className="h-[77vh] p-4 ">
+													{History.slice(2).map((item, index) => {
+														return (
+															<MassegeContainer
+																{...item}
+																key={index}
+															/>
+														);
+													}) || <Text>لا يوجد رسائل</Text>}
+												</ScrollView>
+
+												<SubmitFormAiChat
+													buttonDisabled={buttonDisabled}
+													sendMassege={sendMassege}
+												/>
+											</KeyboardAvoidingView>
+										)}
+									</>
+								)}
+							</>
+						)}
+					</>
+				)}
+			</View>
 			<Toast />
 		</View>
 	);

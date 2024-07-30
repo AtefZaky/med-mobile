@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, ScrollView, Image } from "react-native";
+import React from "react";
+import { View, Text, Image } from "react-native";
 import { icons } from "../constants";
 import { formatDate } from "../utils/dateFormater";
 const Notify = ({ data }) => {

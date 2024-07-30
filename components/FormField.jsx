@@ -16,7 +16,9 @@ const FormField = ({
 	blurFunction,
 	disableChat,
 	FocusFunction,
+	inputIconUser,
 	numeric = false,
+	inputStyle,
 	...props
 }) => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +26,7 @@ const FormField = ({
 	return (
 		<View className={`space-y-2 ${otherStyles}`}>
 			{haveTitle && (
-				<View className={` flex flex-row justify-end`}>
+				<View className={`flex flex-row justify-end`}>
 					<Text className=" text-dark font-tbold text-right">{title}</Text>
 
 					{icon ? (
@@ -60,9 +62,23 @@ const FormField = ({
 						/>
 					</TouchableOpacity>
 				)}
+				{inputIconUser && (
+					<TouchableOpacity
+						className="rounded-md justify-center items-center "
+						onPress={() => handlePress()}
+						disabled={disableChat}>
+						<Image
+							source={inputIconUser}
+							className="w-6 h-6"
+							resizeMode="contain"
+						/>
+					</TouchableOpacity>
+				)}
 				<TextInput
 					multiline={title !== "كلمة المرور"}
-					className="flex-1 text-base text-dark font-tregular text-right"
+					className={`flex-1 text-base text-dark font-tregular text-right leading-5
+						 ${inputStyle ? inputStyle : ""}
+						`}
 					value={value}
 					placeholder={placeholder}
 					placeholderTextColor="#2B2B2B80"

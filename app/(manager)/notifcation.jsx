@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Header, MassegeContainer, Loader } from "../../components";
+import { Header, Loader } from "../../components";
 import { ScrollView } from "react-native-virtualized-view";
 import { Notifcation } from "../../components";
 import Toast from "react-native-toast-message";

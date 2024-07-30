@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import Dropdown from "./DropDown";
 import FormField from "./FormField";
@@ -25,6 +25,7 @@ export default function ChatBotStartUp({
 
 			<View>
 				<FormField
+					inputStyle={"leading-7"}
 					value={failureDescription}
 					handleChangeText={(value) => {
 						setfailureDescription(value);

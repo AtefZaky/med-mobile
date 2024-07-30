@@ -5,7 +5,6 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 	Image,
-	SafeAreaView,
 } from "react-native";
 
 const DarkBlue = "#0047ab"; // Assuming this is the color you want to use

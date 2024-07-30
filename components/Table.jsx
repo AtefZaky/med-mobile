@@ -1,18 +1,13 @@
-import React, { useState } from "react";
-import {
-	ScrollView,
-	FlatList,
-	StyleSheet,
-	TouchableOpacity,
-	Text,
-	View,
-} from "react-native";
+import React from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import ReportComponent from "../components/ReportComponent";
 import TableRow from "./tableRow";
 import DailyPrecentageRow from "./DailyPrecentageRow";
 import DailyOperation from "./DailyOperation";
 import InventoryItemComponent from "./InventoryItemComponent";
 import ItemDetailsComponent from "./ItemDetailsComponent";
+import OperationalFailureRow from "./OperationalFailureRow";
+import { da } from "date-fns/locale";
 const Table = ({
 	Inventoy,
 	inventoryItemDetails,
@@ -21,13 +16,12 @@ const Table = ({
 	data,
 	onStartMachine,
 	onCloseMachine,
-	inputRecord,
 	dailyPrecentageData,
 	assetsOperation,
 	dailyOperationalData,
-	addingDailyPrecentageFunction,
 	reports,
 	handlePress,
+	OperatioalReports,
 }) => {
 	const renderContent = (item) => {
 		if (assetsOperation) {
@@ -49,7 +43,12 @@ const Table = ({
 				/>
 			);
 		} else if (dailyPrecentageData) {
-			return <DailyPrecentageRow data={item} />;
+			return (
+				<DailyPrecentageRow
+					onpress={handlePress}
+					data={item}
+				/>
+			);
 		} else if (dailyOperationalData) {
 			return (
 				<DailyOperation
@@ -66,6 +65,8 @@ const Table = ({
 			);
 		} else if (inventoryItemDetails) {
 			return <ItemDetailsComponent data={item} />;
+		} else if (OperatioalReports) {
+			return <OperationalFailureRow data={item} />;
 		} else {
 			return null; // or some default component
 		}
@@ -79,7 +80,7 @@ const Table = ({
 						className="flex flex-1"
 						key={index}
 						style={styles.headerItem}>
-						<Text className="font-tregular text-center leading-[18px]">
+						<Text className="font-tregular text-black text-center leading-[18px] text-base">
 							{item}
 						</Text>
 					</View>

@@ -5,17 +5,33 @@ import { ScrollView } from "react-native-virtualized-view";
 import api from "../../utils/api";
 import { router } from "expo-router";
 import { icons } from "../../constants";
+import Toast from "react-native-toast-message";
 export default function reports() {
 	const [loader, setLoader] = useState(true);
 	const [data, setData] = useState([]);
-
+	const [error, setError] = useState(null);
 	const fetchData = async () => {
 		try {
 			const response = await api.get("/failure");
 			setData([...response.data.reports]);
-			setLoader(false);
+			console.log(response.data.reports);
 		} catch (error) {
-			console.error("Error fetching data: ", error);
+			setError(error);
+			Toast.show({
+				type: "error",
+				text1: error.message,
+				text2: "هناك  مشكلة في الاتصال",
+				autoHide: true,
+				visibilityTime: 1500,
+				text1Style: {
+					textAlign: "right",
+				},
+				text2Style: {
+					textAlign: "right",
+				},
+			});
+		} finally {
+			setLoader(false);
 		}
 	};
 	useEffect(() => {
@@ -25,20 +41,37 @@ export default function reports() {
 	const issueHeader = ["الحالة", "التاريخ", "المعدة", "الاعطال"];
 
 	return (
-		<View className="flex-1">
+		<View className="bg-white min-h-[103vh] flex-1">
 			<Header title={"البلاغات"}></Header>
 			<View className="flex-1">
 				{loader ? (
-					<Loader isLoading={loader}></Loader>
+					<Loader
+						minus={140}
+						isLoading={loader}></Loader>
 				) : (
-					<ScrollView contentContainerStyle={{ flexGrow: 1, height: "70vh" }}>
-						<Table
-							reports={true}
-							data={data}
-							header={issueHeader}
-							routingfunction={(id) => router.push(`failureDetails/${id}`)}
-						/>
-					</ScrollView>
+					<>
+						{data.length ? (
+							<>
+								<ScrollView
+									contentContainerStyle={{ flexGrow: 1, height: "70vh" }}>
+									<Table
+										reports={true}
+										data={data}
+										header={issueHeader}
+										routingfunction={(id) =>
+											router.push(`failureDetails/${id}`)
+										}
+									/>
+								</ScrollView>
+							</>
+						) : (
+							<View className="flex  items-center min-h-[73vh ] ">
+								<Text className="font-tbold text-lg text-black mt-4">
+									{error ? "هناك  مشكلة في الاتصال" : "لاتوجد بلاغات"}
+								</Text>
+							</View>
+						)}
+					</>
 				)}
 			</View>
 

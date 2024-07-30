@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import { useState } from "react";
 import Dropdown from "./DropDown";
@@ -6,12 +6,15 @@ import FormField from "./FormField";
 import MainButton from "./MainButton";
 import DatePickerInput from "./DatePickerInput";
 import { icons } from "../constants";
-import { getFormattedLocalDate } from "../utils/dateFormater";
+import {
+	getFormattedLocalDate,
+	cairoTimeConverter,
+} from "../utils/dateFormater";
 export default function FailureForm({ id, submit, assetsStatus }) {
 	const [submitting, setSubmitting] = useState(false);
 	const [formData, setFormData] = useState({
 		AssetID: id,
-		FixDate: `${getFormattedLocalDate()}`,
+		FixDate: `${getFormattedLocalDate(cairoTimeConverter(new Date()))}`,
 		FailureAction: "",
 		FailureReason: "",
 		StatusID: "",
@@ -60,7 +63,7 @@ export default function FailureForm({ id, submit, assetsStatus }) {
 					<FormField
 						numeric={true}
 						title={"التكلفة"}
-						placeholder={"ادخل التكلفى"}
+						placeholder={"ادخل التكلفة"}
 						value={formData.Cost}
 						handleChangeText={(value) => {
 							setFormData({ ...formData, Cost: value });
