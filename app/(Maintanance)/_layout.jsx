@@ -16,6 +16,7 @@ const AuthLayout = () => {
 			<Redirect href="/ManagerHome" />;
 		}
 	} else {
+		console.log('redirected');
 		<Redirect href="/" />;
 	}
 
