@@ -4,13 +4,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView } from "react-native";
 import Toast from "react-native-toast-message";
 import { icons, roles } from "../constants";
-import { MainButton, FormField, LogoBar } from "../components";
+import { MainButton, FormField, LogoBar, Loader } from "../components";
 import { useGlobalContext } from "../context/GlobalProvider";
 import { login } from "../utils/api";
 
 const Welcome = () => {
 	const { setUser, setIsLogged, isLogged, user } = useGlobalContext();
 	const [isSubmitting, setSubmitting] = useState(false);
+	const [loader, setLoader] = useState(false);
 	const [form, setForm] = useState({
 		username: "",
 		password: "",
@@ -94,7 +95,7 @@ const Welcome = () => {
 	};
 
 	useEffect(() => {
-		if (isLogged) {
+		if (isLogged && user) {
 			if (user.type === roles.operator) {
 				router.replace("/home");
 			} else if (user.type === roles.maintenar) {
@@ -103,11 +104,17 @@ const Welcome = () => {
 				router.replace("/ManagerHome");
 			}
 		}
-	}, []);
+	}, [isLogged, user, router]);
 
 	return (
 		<SafeAreaView className="bg-white h-full">
 			<ScrollView>
+				{loader ? (
+					<Loader
+						// minus={160}
+						isLoading={loader}></Loader>
+				) : (
+					<>
 				<LogoBar />
 				<View className="h-full px-4 my-6 mt-20">
 					<View>
@@ -149,6 +156,8 @@ const Welcome = () => {
 					/>
 				</View>
 				<Toast />
+				</>
+			)}
 			</ScrollView>
 		</SafeAreaView>
 	);
