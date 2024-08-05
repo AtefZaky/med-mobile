@@ -54,6 +54,7 @@ api.interceptors.response.use(
 				return api(originalRequest);
 			} catch (error) {
 				console.error("Error refreshing access token:", error);
+				await logOut()
 			}
 		}
 		return Promise.reject(error);
