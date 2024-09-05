@@ -1,299 +1,268 @@
-import { View, Text, KeyboardAvoidingView, Platform } from "react-native";
-import React, { useEffect, useState } from "react";
-import { router, useLocalSearchParams } from "expo-router";
-import { ScrollView } from "react-native-virtualized-view";
-
-import api from "../../../utils/api";
+import { View, Text, Dimensions } from "react-native";
+import React, { useState, useEffect } from "react";
 import {
-	Header,
+	ErrorMassege,
 	FailureDetailsHeaderItem,
-	Loader,
-	FailureForm,
+	MainButton,
+	MainLayout,
+	ScrollComponent,
+	PopUpConfirmation,
 } from "../../../components";
-import Toast from "react-native-toast-message";
-
-const failureDetails = () => {
-	const { Id } = useLocalSearchParams();
-	const [FailureData, setFailureData] = useState({});
+import { icons } from "../../../constants";
+import { router, useLocalSearchParams } from "expo-router";
+import api from "../../../utils/api";
+import { Image } from "expo-image";
+const FailureDetails = () => {
+	const { id } = useLocalSearchParams();
 	const [loader, setLoader] = useState(true);
-	const [assetsStatus, setAssetsStatus] = useState([]);
-	const [error, setError] = useState(null);
-	console.log(FailureData);
-	const getFailureData = async () => {
-		try {
-			const res = await api.get(`failure/${Id}`);
+	const [filterdData, setFilterdData] = useState([]);
+	const [data, setData] = useState([]);
+	const [confirmationLoader, setConfirmationLoader] = useState(false);
+	const [deletLoader, setDeletLoader] = useState(false);
+	const [generateScheduleLoader, setGenerateScheduleLoader] = useState(false);
+	const [toast, setToast] = useState({
+		type: "",
+		text1: "",
+		text2: "",
+		counter: 0,
+	});
+	const [modalVisible, setModalVisible] = useState(false);
 
-			setFailureData(res.data.report[0]);
+	const getFailureDetails = async () => {
+		try {
+			const res = await api.get(`failure/${id}`);
+			setFilterdData(transformObject(res.data.data[0]));
+			setData(res.data.data[0]);
 		} catch (error) {
-			setError("لا يمكن الاتصال بالخادم الان");
-			Toast.show({
+			setToast({
+				counter: toast.counter + 1,
 				type: "error",
-				text1: error.message,
-				text2: "تم رفع البينات",
-				autoHide: true,
-				visibilityTime: 1500,
-				text1Style: {
-					textAlign: "right",
-				},
-				text2Style: {
-					textAlign: "right",
-				},
+
+				text2: error.response.data.message
+					? error.response.data.message
+					: false,
 			});
+		} finally {
+			setLoader(false);
 		}
 	};
-	const getAssetStatus = async () => {
+	function transformObject(data) {
+		return [
+			{ title: "تاريخ العطل", value: data.FailureDate?.split("T")[0] },
+			{ title: "المعدة ", value: data.AssetName },
+			{ title: "التكلفة ", value: data.FixCost },
+			{ title: "الملاحظات", value: data.Remarks },
+		];
+	}
+	const deleFailure = async () => {
+		setDeletLoader(true);
 		try {
-			const { data } = await api.get("failure/status/menu");
-
-			if (data.success) {
-				const transformedData = data.items.map((item) => ({
-					value: item.StatusName,
-					key: item.StatusID,
-				}));
-				setAssetsStatus(transformedData);
-			} else {
-				Toast.show({
-					type: "error",
-					text1: data.message || "خطأ",
-					text2: "حدث خطأ اثناء  الاتصال بالخادم",
-					autoHide: true,
-					visibilityTime: 1500,
-					text1Style: {
-						textAlign: "right",
-						fontSize: 16,
-					},
-					text2Style: {
-						textAlign: "right",
-						fontSize: 14,
-					},
-				});
-			}
-		} catch (error) {
-			setError("حدث خطأ اثناء  الاتصال بالخادم");
-			Toast.show({
-				type: "error",
-				text1: error.message || "خطأ",
-				text2: "حدث خطأ اثناء  الاتصال بالخادم",
-				autoHide: true,
-				visibilityTime: 1500,
-				text1Style: {
-					textAlign: "right",
-					fontSize: 16,
-				},
-				text2Style: {
-					textAlign: "right",
-					fontSize: 14,
-				},
-			});
-		}
-	};
-
-	const submit = async (formData, setSubmitting) => {
-		if (
-			formData.AssetID === "" ||
-			formData.FixDate === "" ||
-			formData.FailureAction === "" ||
-			formData.FailureReason === "" ||
-			formData.Cost === "" ||
-			formData.Notes === "" ||
-			formData.StatusID === ""
-		) {
-			Toast.show({
-				type: "error",
-				text1: "خطأ",
-				text2: "من فضلك ادخل البيانات المطلوبه",
-				autoHide: true,
-				visibilityTime: 3000,
-				text1Style: {
-					textAlign: "right",
-				},
-				text2Style: {
-					textAlign: "right",
-				},
-			});
-			return; // Prevent form submission if fields are empty
-		}
-
-		setSubmitting(true);
-
-		try {
-			const result = await api.post(`failure/repair/${Id}`, formData);
-			Toast.show({
+			await api.delete(`failure/${id}`);
+			setToast({
 				type: "success",
-				text1: "عملية ناجحه",
-				text2: "تم رفع البينات",
-				autoHide: true,
-				visibilityTime: 1500,
-				text1Style: {
-					textAlign: "right",
-				},
-				text2Style: {
-					textAlign: "right",
-				},
+				text2: "تم الحذف بنجاح",
+				counter: toast.counter + 1,
+				modal: true,
 			});
+
 			setTimeout(() => {
-				router.replace("Maintanacehome");
+				router.navigate("Failures");
 			}, 1500);
 		} catch (error) {
-			Toast.show({
+			setToast({
 				type: "error",
-				text1: "خطأ",
-				text2: error.message,
-				autoHide: true,
-				visibilityTime: 3000,
-				text1Style: {
-					textAlign: "right",
-				},
-				text2Style: {
-					textAlign: "right",
-				},
+				text2: error.response.data.message
+					? error.response.data.message
+					: false,
+				counter: toast.counter + 1,
+				modal: true,
 			});
-			setSubmitting(false);
+		} finally {
+			setDeletLoader(false);
 		}
 	};
+	const FailureConfrirmation = async () => {
+		try {
+			setConfirmationLoader(true);
+			await api.patch(`failure/${id}`, {
+				StatusID: 4,
+			});
+			setToast({
+				type: "success",
+				text2: "تم تأكيد العطل بنجاح",
+				counter: toast.counter + 1,
+			});
+			setTimeout(() => {
+				router.navigate("Failures");
+			}, 1500);
+		} catch (error) {
+			setToast({
+				type: "error",
+				text2: error.response.data.message
+					? error.response.data.message
+					: false,
 
+				counter: toast.counter + 1,
+			});
+		} finally {
+			setConfirmationLoader(false);
+		}
+	};
+	console.log(data);
+	const screenWidth = Math.round(Dimensions.get("window").width) - 32;
+	console.log(`w-[${screenWidth - 32}px]`);
+	const createSchedule = async () => {
+		try {
+			setGenerateScheduleLoader(true);
+			const res = await api.post(`failure/${id}`);
+			setToast({
+				type: "success",
+				counter: toast.counter + 1,
+
+				text2: "تم انشاء البلاغ بنجاح",
+			});
+
+			setTimeout(() => {
+				router.navigate("Failures");
+			}, 1500);
+		} catch (error) {
+			setToast({
+				type: "error",
+				text2: error.response.data.message
+					? error.response.data.message
+					: false,
+				counter: toast.counter + 1,
+			});
+		} finally {
+			setGenerateScheduleLoader(false);
+		}
+	};
 	useEffect(() => {
-		const fetchData = async () => {
-			await getAssetStatus();
-			await getFailureData();
-			setLoader(false);
-		};
-		fetchData();
+		getFailureDetails();
 	}, []);
+
 	return (
-		<View className="bg-white min-h-[103vh]">
-			<Header title={"تفاصيل العطل"} />
-			<Toast />
-
-			<View>
-				{loader ? (
-					<Loader
-						minus={140}
-						isLoading={loader}></Loader>
-				) : (
+		<MainLayout
+			loading={loader}
+			toast={toast}
+			title={"تفاصيل العطل"}>
+			<PopUpConfirmation
+				toast={toast}
+				modalVisible={modalVisible}
+				setModalVisible={setModalVisible}
+				confirmFunction={deleFailure}></PopUpConfirmation>
+			<>
+				{filterdData.length ? (
 					<>
-						{error ||
-						Object.keys(FailureData).length == 0 ||
-						!assetsStatus.length ? (
-							<View className="flex w-full h-full items-center mt-4 ">
-								<Text className="text-lg  text-black font-tbold">
-									{error ? error : "لا توجد بينات الان"}
-								</Text>
+						<ScrollComponent
+							parentContainerStyle={"min-h-[85vh]"}
+							refreshingFunction={getFailureDetails}
+							isLoading={loader}>
+							<View className="p-4">
+								<View className="p-4 bg-[#E4E7EC] rounded-md">
+									{filterdData.map((item, index) => {
+										return (
+											<FailureDetailsHeaderItem
+												key={index}
+												data={item}></FailureDetailsHeaderItem>
+										);
+									})}
+								</View>
 							</View>
-						) : (
-							<>
-								<KeyboardAvoidingView
-									behavior={Platform.OS === "ios" ? "padding" : "height"}
-									keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}>
-									<ScrollView className="max-h-[100vh]">
-										<View>
-											<View>
-												<View>
-													<View className="p-4">
-														<View className="bg-[#E4E7EC] flex gap-y-2 mt-4  rounded-md max-h-[140px] py-2 pb-4">
-															<FailureDetailsHeaderItem
-																data={{
-																	title: "المعدة",
-																	value: FailureData.AssetName,
-																}}
-															/>
-															<FailureDetailsHeaderItem
-																data={{
-																	title: "الحالة",
-																	value:
-																		FailureData.AssetStatus == 1
-																			? "يعمل"
-																			: "لا يعمل",
-																}}
-															/>
-															<FailureDetailsHeaderItem
-																data={{
-																	title: "التاريخ",
-																	value:
-																		FailureData?.FailureDate?.split("T")[0] ||
-																		"لا توجد معلومات",
-																}}
-															/>
-															<FailureDetailsHeaderItem
-																data={{
-																	title: "العطل",
-																	value: FailureData.FailureDescription,
-																}}
-															/>
-														</View>
-
-														<View className="mt-[19px] "></View>
-													</View>
-												</View>
-											</View>
-
-											<FailureForm
-												id={Id}
-												submit={submit}
-												assetsStatus={assetsStatus}
-											/>
+							<View className="w-full p-4 ">
+								{!data.ImageUrl ? (
+									<>
+										<View className="bg-[#E4E7EC] w-full min-h-[15vh] rounded-md flex items-center justify-center ">
+											<Text className="font-tbold text-lg">
+												لا توجد صورة لهذا العطل
+											</Text>
 										</View>
-									</ScrollView>
-								</KeyboardAvoidingView>
-							</>
-						)}
+									</>
+								) : (
+									<View className="w-full min-h-[20vh]  rounded-md flex items-center justify-center ">
+										<Image
+											style={{ width: screenWidth, height: 300 }}
+											source={{
+												width: screenWidth - 32,
+												height: 400,
+												uri: data.ImageUrl,
+												scale: 1,
+											}}
+											contentFit="cover"
+											className="rounded-md"
+										/>
+									</View>
+								)}
+							</View>
+							<View className={`p-4 pt-0 ${data.IsGenerated ? "hidden" : ""}`}>
+								<MainButton
+									handlePress={() => {
+										createSchedule();
+									}}
+									title={"انشاء عمرة"}
+									isLoading={generateScheduleLoader}
+									textStyles={"text-[#227099]"}
+									disabled={deletLoader || confirmationLoader}
+									containerStyles={"bg-white border border-[#227099] mt-4 "}
+									icon={icons.BluePencil}></MainButton>
+
+								<MainButton
+									icon={icons.Wrench}
+									title={"اصلاح العطل "}
+									containerStyles={"mt-4"}
+									disabled={deletLoader || confirmationLoader}
+									handlePress={() => {
+										router.navigate("FixFailure/" + id);
+									}}></MainButton>
+
+								{data.StatusID !== 4 && (
+									<>
+										<MainButton
+											icon={icons.pencil}
+											title={"تعديل "}
+											containerStyles={"mt-4"}
+											disabled={deletLoader || confirmationLoader}
+											handlePress={() => {
+												router.push({
+													pathname: "AddFailure",
+													params: { id: JSON.stringify(id) },
+												});
+											}}></MainButton>
+
+										<View className="flex mt-4 flex-row">
+											<MainButton
+												icon={icons.ArrowUpRight}
+												title={"تأكيد "}
+												containerStyles={" w-[48%] min-h-[50px]  mr-2"}
+												isLoading={confirmationLoader}
+												disabled={deletLoader}
+												handlePress={() => {
+													FailureConfrirmation();
+												}}></MainButton>
+											<MainButton
+												icon={icons.Trash}
+												title={"حذف "}
+												isLoading={deletLoader}
+												disabled={confirmationLoader}
+												textStyles={"text-[#227099]"}
+												containerStyles={
+													"bg-white border border-[#227099]  min-h-[50px]  w-[48%]"
+												}
+												handlePress={() => {
+													setModalVisible(true);
+												}}></MainButton>
+										</View>
+									</>
+								)}
+							</View>
+						</ScrollComponent>
 					</>
+				) : (
+					<ErrorMassege err={"لا توجد بيانات"}></ErrorMassege>
 				)}
-			</View>
-		</View>
+			</>
+		</MainLayout>
 	);
 };
 
-export default failureDetails;
-
-{
-	/* <View>
-	<View className="flex flex-row  items-center">
-		<View className="flex items-center flex-row gap-2">
-			<Text className="font-tregular w-[114] block">المعدة</Text>
-		</View>
-		<View>
-			<Text className="font-tmedium"> {FailureData.AssetName}</Text>
-		</View>
-	</View>
-	<View className="flex felx-row items-center justify-between">
-		<View>
-			<Text className="font-tregular w-[114]">الحالة</Text>
-		</View>
-
-		<View>
-			<Text className="font-tmedium">
-				{FailureData.AssetStatus == 1 ? "يعمل" : "لا يعمل"}{" "}
-			</Text>
-		</View>
-	</View>
-	<View className="flex felx-row items-center">
-		<View>
-			<Text
-				className="font-tregular w-[114]
-			">
-				{" "}
-				التاريخ
-			</Text>
-		</View>
-		<View>
-			<Text className="font-tmedium">
-				{FailureData?.FailureDate?.split("T")[0] ||
-					"لا توجد معلومات"}
-			</Text>
-		</View>
-	</View>
-	<View className="flex felx-row items-center">
-		<View>
-			<Text
-				className="font-tregular w-[114]
-			">
-				العطل
-			</Text>
-		</View>
-		<View>
-			<Text className="font-tmedium"> {FailureData.FailureID}</Text>
-		</View>
-	</View>
-</View> */
-}
+export default FailureDetails;

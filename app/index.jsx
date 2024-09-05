@@ -8,15 +8,18 @@ import { MainButton, FormField, LogoBar, Loader } from "../components";
 import { useGlobalContext } from "../context/GlobalProvider";
 import { login } from "../utils/api";
 
+//import "@react-native-firebase/app";
+//import messaging from "@react-native-firebase/messaging";
+
 const Welcome = () => {
-	const { setUser, setIsLogged, isLogged, user } = useGlobalContext();
+	const { setUser, setIsLogged, isLogged, user, loading } = useGlobalContext();
 	const [isSubmitting, setSubmitting] = useState(false);
-	const [loader, setLoader] = useState(false);
+
 	const [form, setForm] = useState({
 		username: "",
 		password: "",
 	});
-	const router = useRouter(); // To programmatically navigate
+	const router = useRouter();
 
 	const submit = async () => {
 		if (form.username === "" || form.password === "") {
@@ -33,21 +36,35 @@ const Welcome = () => {
 					textAlign: "right",
 				},
 			});
-			return; // Prevent form submission if fields are empty
+			return;
 		}
 
 		setSubmitting(true);
 
 		try {
-			const result = await login(form.username, form.password);
-			console.log(result);
-			setUser({
-				username: result.username,
-				lastActive: result.lastActive,
-				type: result.UserTypeID,
-				DepartmentID: result.UserDepartmentID,
-				UserDepartmentName: result.UserDepartmentName,
-			});
+			// Request FCM permission and get token
+			// const authStatus = await messaging().requestPermission();
+			// const enabled =
+			// 	authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+			// 	authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+			// let fcmToken = null;
+			// if (enabled) {
+			// 	fcmToken = await messaging().getToken();
+			// }
+
+			// // Proceed with login regardless of FCM token status
+			const result = await login(form.username, form.password); //fcmToken
+			if (result) {
+				setUser({
+					username: result?.username,
+					lastActive: result?.lastActive,
+					type: result?.UserTypeID,
+					DepartmentID: result?.UserDepartmentID,
+					UserDepartmentName: result?.UserDepartmentName,
+				});
+			}
+
 			setIsLogged(true);
 
 			Toast.show({
@@ -64,24 +81,28 @@ const Welcome = () => {
 				},
 			});
 
-			setTimeout(() => {
-				if (result.UserTypeID === roles.operator) {
-					setSubmitting(false);
+			switch (result.UserTypeID) {
+				case roles.operator:
 					router.replace("/home");
-				} else if (result.UserTypeID === roles.maintenar) {
-					setSubmitting(false);
+					break;
+				case roles.maintenar:
 					router.replace("/Maintanacehome");
-				} else if (result.UserTypeID === roles.manager) {
-					setSubmitting(false);
+					break;
+				case roles.manager:
 					router.replace("/ManagerHome");
-				}
-			}, 1500);
+					break;
+				case roles.inventory:
+					router.replace("/InventoyUserHome");
+					break;
+				default:
+					router.replace("/"); // Fallback route if role is undefined
+					break;
+			}
 		} catch (error) {
-			setSubmitting(false);
 			Toast.show({
 				type: "error",
-				text1: "خطأ",
-				text2: error.message,
+				text1: "فشلت العملية",
+				text2: "تأكد من اسم المستخدم وكلمة المرور",
 				autoHide: true,
 				visibilityTime: 3000,
 				text1Style: {
@@ -91,73 +112,79 @@ const Welcome = () => {
 					textAlign: "right",
 				},
 			});
+		} finally {
+			setSubmitting(false);
 		}
 	};
 
 	useEffect(() => {
 		if (isLogged && user) {
-			if (user.type === roles.operator) {
-				router.replace("/home");
-			} else if (user.type === roles.maintenar) {
-				router.replace("/Maintanacehome");
-			} else if (user.type === roles.manager) {
-				router.replace("/ManagerHome");
+			switch (user.type) {
+				case roles.operator:
+					router.replace("/home");
+					break;
+				case roles.maintenar:
+					router.replace("/Maintanacehome");
+					break;
+				case roles.manager:
+					router.replace("/ManagerHome");
+					break;
+				case roles.inventory:
+					router.replace("/InventoyUserHome");
+					break;
+				default:
+					router.replace("/");
+					break;
 			}
 		}
-	}, [isLogged, user, router]);
+	}, [isLogged, user]);
 
 	return (
 		<SafeAreaView className="bg-white h-full">
 			<ScrollView>
-				{loader ? (
-					<Loader
-						// minus={160}
-						isLoading={loader}></Loader>
+				{loading ? (
+					<Loader isLoading={loading} />
 				) : (
 					<>
-				<LogoBar />
-				<View className="h-full px-4 my-6 mt-20">
-					<View>
-						<Text className="text-dark text-center text-2xl font-tbold mb-10">
-							تسجيل الدخول
-						</Text>
-					</View>
-					<FormField
-						inputStyle={"p-4"}
-						title="اسم المستخدم"
-						value={form.username}
-						handleChangeText={(e) => setForm({ ...form, username: e })}
-						otherStyles="mt-7"
-						keyboardType="email-address"
-						icon={icons.User}
-						placeholder="اسم المستخدم"
-						inputIconUser={form.username && icons.deleteIcon}
-						handlePress={(e) =>
-							setForm({ ...form, username: "", password: "" })
-						}
-					/>
-
-					<FormField
-						inputStyle={"p-4"}
-						title="كلمة المرور"
-						value={form.password}
-						handleChangeText={(e) => setForm({ ...form, password: e })}
-						otherStyles="mt-7"
-						icon={icons.lock}
-						placeholder="ادخل كلمة المرور"
-					/>
-
-					<MainButton
-						title="تسجيل الدخول"
-						handlePress={submit}
-						containerStyles="mt-14"
-						isLoading={isSubmitting}
-						icon={icons.Signin}
-					/>
-				</View>
-				<Toast />
-				</>
-			)}
+						<LogoBar />
+						<View className="h-full px-4 my-6 mt-20">
+							<Text className="text-dark text-center text-2xl font-tbold mb-10">
+								تسجيل الدخول
+							</Text>
+							<FormField
+								inputStyle={"p-4"}
+								title="اسم المستخدم"
+								value={form.username}
+								handleChangeText={(e) => setForm({ ...form, username: e })}
+								otherStyles="mt-7"
+								keyboardType="email-address"
+								icon={icons.User}
+								placeholder="اسم المستخدم"
+								inputIconUser={form.username && icons.deleteIcon}
+								handlePress={() =>
+									setForm({ ...form, username: "", password: "" })
+								}
+							/>
+							<FormField
+								inputStyle={"p-4"}
+								title="كلمة المرور"
+								value={form.password}
+								handleChangeText={(e) => setForm({ ...form, password: e })}
+								otherStyles="mt-7"
+								icon={icons.lock}
+								placeholder="ادخل كلمة المرور"
+							/>
+							<MainButton
+								title="تسجيل الدخول"
+								handlePress={submit}
+								containerStyles="mt-14"
+								isLoading={isSubmitting}
+								icon={icons.Signin}
+							/>
+						</View>
+						<Toast />
+					</>
+				)}
 			</ScrollView>
 		</SafeAreaView>
 	);

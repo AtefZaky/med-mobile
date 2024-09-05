@@ -1,56 +1,70 @@
 import { View } from "react-native";
-import { ScrollView } from "react-native-virtualized-view";
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { Header, MainButton } from "../../components";
-import { useState } from "react";
-import { CustomMenu } from "../../components";
-import UserInfo from "../../components/UserInfo";
 
+import React from "react";
+import {
+	MainButton,
+	CustomMenu,
+	UserInfo,
+	MainLayout,
+	ScrollComponent,
+} from "../../components";
+import { useState } from "react";
+import { router } from "expo-router";
 const Maintanacehome = () => {
-	const navigation = useNavigation();
 	const [modalVisible, setModalVisible] = useState(false);
 
 	return (
-		<View className="bg-white min-h-[103vh] ">
-			<Header
-				hasLeftComponent={true}
-				onDrawerPress={() => {
-					setModalVisible(true);
-				}}
-			/>
+		<MainLayout
+			hasLeftComponent={true}
+			onDrawerPress={() => {
+				setModalVisible(true);
+			}}>
 			<CustomMenu
 				setModalVisible={(v) => {
 					setModalVisible(v);
 				}}
 				modalVisible={modalVisible}></CustomMenu>
-			<UserInfo />
-			<ScrollView>
+			<ScrollComponent
+				parentContainerStyle={"min-h-[84vh]"}
+				contentContainerStyle={{ paddingBottom: 16 }}>
+				<UserInfo />
+
 				<View className="flex px-4 ">
 					<MainButton
 						title="بينات الفحص اليومي"
 						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("dailyExamination")}
-					/>
-
-					<MainButton
-						title="المساعدة في الصيانة"
-						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("maintanaceHelper")}
+						handlePress={() => router.navigate("DailyExaminationList")}
 					/>
 					<MainButton
 						title="البلاغات"
 						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("reports")}
+						handlePress={() => router.navigate("Notify")}
+					/>
+
+					<MainButton
+						title="الاعطال "
+						containerStyles="mt-7"
+						handlePress={() => router.navigate("Failures")}
+					/>
+					<MainButton
+						title="المساعدة في الصيانة"
+						containerStyles="mt-7"
+						handlePress={() => router.navigate("maintanaceHelper")}
 					/>
 					<MainButton
 						title="الاصناف المخزنية"
 						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("InventoyItems")}
+						handlePress={() => router.navigate("InventoyItems")}
+					/>
+
+					<MainButton
+						title="العمرات "
+						containerStyles="mt-7"
+						handlePress={() => router.navigate("Schedule")}
 					/>
 				</View>
-			</ScrollView>
-		</View>
+			</ScrollComponent>
+		</MainLayout>
 	);
 };
 export default Maintanacehome;

@@ -1,13 +1,10 @@
 import { View, ScrollView } from "react-native";
 import Toast from "react-native-toast-message";
-import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Header, MainButton } from "../../components";
+import { Header, MainButton, UserInfo, CustomMenu } from "../../components";
+import { router } from "expo-router";
 
-import { CustomMenu } from "../../components";
-import UserInfo from "../../components/UserInfo";
 const Home = () => {
-	const navigation = useNavigation();
 	const [modalVisible, setModalVisible] = useState(false);
 
 	return (
@@ -29,23 +26,23 @@ const Home = () => {
 					<MainButton
 						title="تشغيل و ايقاف الوحدات"
 						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("assetsOperations")}
+						handlePress={() => router.navigate("assetsOperations")}
 					/>
 					<MainButton
 						title="المناسيب اليومية"
 						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("dailyPercentage")}
+						handlePress={() => router.navigate("dailyPercentage")}
 					/>
 
 					<MainButton
 						title="بيانات التشغيل اليومية"
 						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("dailyOperationsInfo")}
+						handlePress={() => router.navigate("DailyOperation")}
 					/>
 					<MainButton
 						title="الإبلاغ عن الأعطال"
 						containerStyles="mt-7"
-						handlePress={() => navigation.navigate("OperationalReports")}
+						handlePress={() => router.navigate("Notify")}
 					/>
 				</View>
 				<Toast />

@@ -4,19 +4,18 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { roles } from "../../constants";
 
-const AuthLayout = () => {
+const MaintanaceStack = () => {
 	const { user } = useGlobalContext();
 
 	if (user) {
 		if (user.type === roles.operator) {
 			<Redirect href="/home" />;
-		} else if (user.type === roles.maintenar) {
-			<Redirect href="/Maintanacehome" />;
 		} else if (user.type === roles.manager) {
 			<Redirect href="/ManagerHome" />;
+		} else if (user.type === roles.inventory) {
+			<Redirect href="/InventoyUserHome" />;
 		}
 	} else {
-		console.log('redirected');
 		<Redirect href="/" />;
 	}
 
@@ -32,30 +31,19 @@ const AuthLayout = () => {
 					/>
 
 					<Stack.Screen
-						name="dailyExamination"
+						name="AddDailyExamination"
 						options={{
 							headerShown: false,
 						}}
 					/>
 
 					<Stack.Screen
-						name="failureDetails/[Id]"
+						name="Notify/[id]"
 						options={{
 							headerShown: false,
 						}}
 					/>
-					<Stack.Screen
-						name="InventoyItems"
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name="itemDetails/[id]"
-						options={{
-							headerShown: false,
-						}}
-					/>
+
 					<Stack.Screen
 						name="maintanaceHelper"
 						options={{
@@ -63,16 +51,50 @@ const AuthLayout = () => {
 						}}
 					/>
 					<Stack.Screen
-						name="reports"
+						name="Notify"
 						options={{
 							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
-						name="MaintenanceReportFailure"
+						name="AddNotify"
 						options={{
 							headerShown: false,
 						}}
+					/>
+					<Stack.Screen
+						name="DailyExaminationList"
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="DailyExamintationDetails/[id]"
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="Failures"
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="AddFailure"
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="FailureDetails/[id]"
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="FixFailure/[id]"
+						options={{ headerShown: false }}
 					/>
 				</Stack>
 			</SafeAreaView>
@@ -80,4 +102,4 @@ const AuthLayout = () => {
 	);
 };
 
-export default AuthLayout;
+export default MaintanaceStack;

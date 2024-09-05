@@ -2,7 +2,7 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
 // Define your API base URL
-// const API_BASE_URL = "http://192.168.1.24:5000/api";
+// const API_BASE_URL = "http://192.168.1.21:8501/api";
 
 const API_BASE_URL = "http://isis-eg.com:8501/api";
 
@@ -20,7 +20,7 @@ api.interceptors.request.use(
 				config.headers.Authorization = `Bearer ${accessToken}`;
 			}
 		} catch (error) {
-			console.error("Error getting access token:", error);
+			console.log("Error getting access token:", error);
 		}
 		return config;
 	},
@@ -32,8 +32,8 @@ api.interceptors.response.use(
 	(response) => response,
 	async (error) => {
 		const originalRequest = error.config;
-		console.log(error);
-		if (error.response.status === 401 && !originalRequest._retry) {
+
+		if (error.response?.status === 401 && !originalRequest._retry) {
 			originalRequest._retry = true;
 			try {
 				// Get the refresh token from SecureStore
@@ -53,8 +53,7 @@ api.interceptors.response.use(
 				originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 				return api(originalRequest);
 			} catch (error) {
-				console.error("Error refreshing access token:", error);
-				await logOut()
+				await logOut();
 			}
 		}
 		return Promise.reject(error);
@@ -87,11 +86,12 @@ const saveTokens = async (
 
 // Usage in your login function
 
-export const login = async (email, password) => {
+export const login = async (email, password, fcmToken) => {
 	try {
 		const response = await api.post(`/auth/signin`, {
 			emailOrUsername: email,
 			password,
+			fcmToken: fcmToken,
 		});
 
 		const { accessToken, refreshToken, user, success } = response.data;
@@ -123,13 +123,10 @@ export const login = async (email, password) => {
 				UserDepartmentID,
 				UserDepartmentName,
 			};
-		} else {
-			console.error("Login failed:", response.data);
-			throw new Error("Login failed");
 		}
 	} catch (error) {
-		console.error("Login error:", error.message);
-		throw error;
+		console.log("Login error:", error.response.data.message);
+		return null;
 	}
 };
 
@@ -142,7 +139,7 @@ export const logOut = async () => {
 		await SecureStore.deleteItemAsync("UserTypeID");
 		await SecureStore.deleteItemAsync("UserDepartmentID");
 	} catch (error) {
-		throw error;
+		console.log("error:", error.response.data.message);
 	}
 };
 

@@ -29,7 +29,27 @@ import blueFlag from "../assets/images/blueFlag.png";
 import deleteIcon from "../assets/images/delete.png";
 import mapPin from "../assets/images/MapPin.png";
 import HandShake from "../assets/images/Handshake.png";
+import BluePencil from "../assets/images/BluePencil.png";
+import Trash from "../assets/images/Trash.png";
+import BlueArrowUpRight from "../assets/images/BlueArrowUpRight.png";
+import plus from "../assets/images/plus.png";
+import RedTrash from "../assets/images/RedTrash.png";
+import Minus from "../assets/images/Minus.png";
+import Wrench from "../assets/images/Wrench.png";
+import Camera from "../assets/images/Camera.png";
+import Image from "../assets/images/Image.png";
+import ClipboardText from "../assets/images/ClipboardText.png";
 export default {
+	ClipboardText,
+	Image,
+	Camera,
+	Wrench,
+	BlueArrowUpRight,
+	plus,
+	Minus,
+	RedTrash,
+	Trash,
+	BluePencil,
 	mapPin,
 	HandShake,
 	grayFlag,

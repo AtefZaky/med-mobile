@@ -8,17 +8,21 @@ import {
 import React, { useState, useRef, useEffect } from "react";
 import api from "../../utils/api";
 import {
-	Loader,
-	Header,
 	MassegeContainer,
 	ChatBotStartUp,
+	SubmitFormAiChat,
+	MainLayout,
 } from "../../components";
 import Toast from "react-native-toast-message";
-import SubmitFormAiChat from "../../components/SubmitFormAiChat";
-
+import { toastMessege } from "../../constants";
 export default function maintanaceHelper() {
 	const [options, setOptions] = useState([]);
-
+	const [toast, setToast] = useState({
+		type: "",
+		text1: "",
+		text2: "",
+		counter: 0,
+	});
 	const [loader, setloader] = useState(true);
 	const [chatStartUP, setChatStartUp] = useState({
 		failureDescription: "",
@@ -33,50 +37,32 @@ export default function maintanaceHelper() {
 	const getAssets = async () => {
 		try {
 			const { data } = await api.get("/departments");
-
-			if (data.success) {
-				const transformedData = data.Assets.map((item) => ({
-					value: item.AssetName,
-					key: item.AssetID,
-				}));
-
-				setOptions(transformedData);
-			} else {
-				Toast.show({
-					type: "error",
-					text1: data.data.message || " فشل في الاتصال",
-					autoHide: true,
-					visibilityTime: 3000,
-					text1Style: {
-						textAlign: "right",
-					},
-				});
-			}
-		} catch (err) {
-			Toast.show({
+			const transformedData = data.Assets.map((item) => ({
+				value: item.AssetName,
+				key: item.AssetID,
+			}));
+			setOptions(transformedData);
+		} catch (error) {
+			setToast({
+				counter: toast.counter + 1,
 				type: "error",
-				text1: " فشل الاتصال",
-				autoHide: true,
-				visibilityTime: 3000,
-				text1Style: {
-					textAlign: "right",
-				},
+				text2: error.response.data.message
+					? error.response.data.message
+					: false,
 			});
 		} finally {
 			setloader(false);
 		}
 	};
+
 	const startChat = async () => {
 		if (!chatStartUP.AssetID || !chatStartUP.failureDescription) {
-			return Toast.show({
+			setToast({
+				counter: toast.counter + 1,
 				type: "error",
-				text1: "الرجاء ملء البينات",
-				autoHide: true,
-				visibilityTime: 3000,
-				text1Style: {
-					textAlign: "right",
-				},
+				text2: toastMessege.dataFill,
 			});
+			return;
 		}
 		setloader(true);
 		try {
@@ -90,14 +76,10 @@ export default function maintanaceHelper() {
 
 			setHistory(res.data.history);
 		} catch (err) {
-			Toast.show({
+			setToast({
+				counter: toast.counter + 1,
 				type: "error",
-				text1: " فشل الاتصال",
-				autoHide: true,
-				visibilityTime: 3000,
-				text1Style: {
-					textAlign: "right",
-				},
+				text2: err.response.data.message ? err.response.data.message : false,
 			});
 		} finally {
 			setloader(false);
@@ -106,14 +88,10 @@ export default function maintanaceHelper() {
 
 	const sendMassege = async (query) => {
 		if (!query) {
-			Toast.show({
+			setToast({
+				counter: toast.counter + 1,
 				type: "error",
-				text1: "الرجاء ملء البينات",
-				autoHide: true,
-				visibilityTime: 3000,
-				text1Style: {
-					textAlign: "right",
-				},
+				text2: toastMessege.dataFill,
 			});
 			return false;
 		} else {
@@ -129,14 +107,10 @@ export default function maintanaceHelper() {
 				setButtonDisabled(false);
 				return true;
 			} catch (err) {
-				Toast.show({
+				setToast({
+					counter: toast.counter + 1,
 					type: "error",
-					text1: " فشل الاتصال",
-					autoHide: true,
-					visibilityTime: 3000,
-					text1Style: {
-						textAlign: "right",
-					},
+					text2: err.message ? err.message : false,
 				});
 				setButtonDisabled(false);
 
@@ -154,79 +128,66 @@ export default function maintanaceHelper() {
 		scrollViewRef.current?.scrollTo({ y: height, animated: true });
 	}
 	return (
-		<View className="bg-white min-h-[103vh]">
-			<Header title={"المساعدة في الصيانة"}></Header>
-			<View>
-				{loader ? (
-					<Loader
-						minus={140}
-						isLoading={loader}></Loader>
+		<MainLayout
+			loading={loader}
+			toast={toast}
+			title={"المساعدة في الصيانة"}>
+			<>
+				{!options.length ? (
+					<>
+						<View className="flex w-full h-full items-center mt-4 ">
+							<Text className="text-lg  text-black font-tbold">
+								لا توجد بينات
+							</Text>
+						</View>
+					</>
 				) : (
 					<>
-						{!options.length ? (
-							<>
-								<View className="flex w-full h-full items-center mt-4 ">
-									<Text className="text-lg  text-black font-tbold">
-										لا توجد بينات
-									</Text>
-								</View>
-							</>
+						{!chatStartUP.chating ? (
+							<ChatBotStartUp
+								startChatBot={startChat}
+								setAssets={(v) => {
+									setChatStartUp({ ...chatStartUP, AssetID: v });
+								}}
+								setfailureDescription={(v) => {
+									setChatStartUp({ ...chatStartUP, failureDescription: v });
+								}}
+								failureDescription={chatStartUP.failureDescription}
+								dropdownOptions={options}
+							/>
 						) : (
 							<>
-								{!chatStartUP.chating ? (
-									<ChatBotStartUp
-										startChatBot={startChat}
-										setAssets={(v) => {
-											setChatStartUp({ ...chatStartUP, AssetID: v });
+								<KeyboardAvoidingView
+									behavior={Platform.OS === "ios" ? "padding" : "height"}
+									keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 140}>
+									<ScrollView
+										onContentSizeChange={(width, height) => {
+											scrollViewRef.current?.scrollToEnd({
+												animated: true,
+											});
 										}}
-										setfailureDescription={(v) => {
-											setChatStartUp({ ...chatStartUP, failureDescription: v });
-										}}
-										failureDescription={chatStartUP.failureDescription}
-										dropdownOptions={options}
-									/>
-								) : (
-									<>
-										{loader ? (
-											<Loader isLoading={loader}></Loader>
-										) : (
-											<KeyboardAvoidingView
-												behavior={Platform.OS === "ios" ? "padding" : "height"}
-												keyboardVerticalOffset={
-													Platform.OS === "ios" ? 64 : 140
-												}>
-												<ScrollView
-													onContentSizeChange={(width, height) => {
-														scrollViewRef.current?.scrollToEnd({
-															animated: true,
-														});
-													}}
-													ref={scrollViewRef}
-													className="h-[77vh] p-4 ">
-													{History.slice(2).map((item, index) => {
-														return (
-															<MassegeContainer
-																{...item}
-																key={index}
-															/>
-														);
-													}) || <Text>لا يوجد رسائل</Text>}
-												</ScrollView>
-
-												<SubmitFormAiChat
-													buttonDisabled={buttonDisabled}
-													sendMassege={sendMassege}
+										ref={scrollViewRef}
+										className="h-[77vh] p-4 ">
+										{History.slice(2).map((item, index) => {
+											return (
+												<MassegeContainer
+													{...item}
+													key={index}
 												/>
-											</KeyboardAvoidingView>
-										)}
-									</>
-								)}
+											);
+										}) || <Text>لا يوجد رسائل</Text>}
+									</ScrollView>
+
+									<SubmitFormAiChat
+										buttonDisabled={buttonDisabled}
+										sendMassege={sendMassege}
+									/>
+								</KeyboardAvoidingView>
 							</>
 						)}
 					</>
 				)}
-			</View>
-			<Toast />
-		</View>
+			</>
+		</MainLayout>
 	);
 }

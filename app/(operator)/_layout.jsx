@@ -3,20 +3,20 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { roles } from "../../constants";
 
-const AuthLayout = () => {
+const operatorStack = () => {
 	const { user } = useGlobalContext();
+
 	if (user) {
-		if (user.type === roles.operator) {
-			<Redirect href="/home" />;
-		} else if (user.type === roles.maintenar) {
+		if (user.type === roles.maintenar) {
 			<Redirect href="/Maintanacehome" />;
 		} else if (user.type === roles.manager) {
 			<Redirect href="/ManagerHome" />;
+		} else if (user.type === roles.inventory) {
+			<Redirect href="/InventoyUserHome" />;
 		}
 	} else {
 		<Redirect href="/" />;
 	}
-
 	return (
 		<>
 			<SafeAreaView className="bg-white h-full">
@@ -41,23 +41,33 @@ const AuthLayout = () => {
 						}}
 					/>
 					<Stack.Screen
-						name="dailyOperationsInfo"
+						name="DailyOperation"
 						options={{
 							headerShown: false,
 						}}
 					/>
 
 					<Stack.Screen
-						name="reportFailure"
+						name="AddNotify"
 						options={{
 							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
-						name="OperationalReports"
+						name="Notify"
 						options={{
 							headerShown: false,
 						}}
+					/>
+					<Stack.Screen
+						name="Notify/[id]"
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="DailyOperationAsset/[id]"
+						options={{ headerShown: false }}
 					/>
 				</Stack>
 			</SafeAreaView>
@@ -65,4 +75,4 @@ const AuthLayout = () => {
 	);
 };
 
-export default AuthLayout;
+export default operatorStack;

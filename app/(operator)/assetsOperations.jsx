@@ -1,15 +1,28 @@
 import { Text, View } from "react-native";
 import Toast from "react-native-toast-message";
-import React, { useEffect, useState } from "react";
-import { Header, Loader, Table } from "../../components";
+import React, { useCallback, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import {
+	ErrorMassege,
+	MainLayout,
+	ScrollComponent,
+	Table,
+} from "../../components";
 import { formatDate } from "../../utils/dateFormater";
 import api from "../../utils/api";
-import { ScrollView } from "react-native-virtualized-view";
+
 import { cairoTimeConverter } from "../../utils/dateFormater";
-import { Counter } from "../../utils/counterFunctions";
+
 const AssetsOperations = () => {
 	const [loader, setLoader] = useState(true);
 	const [data, setData] = useState([]);
+	const [error, setError] = useState(null);
+	const [toast, setToast] = useState({
+		type: "",
+		text1: "",
+		text2: "",
+		counter: 0,
+	});
 	const assetsOperationHeader = [
 		"عدد ساعات التشغيل من  بدء التشغيل",
 		"ايقاف",
@@ -17,23 +30,25 @@ const AssetsOperations = () => {
 		"اسم المعدة",
 	];
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const data = await getData();
-				setData(data.data.machines);
-				console.log(data.data.machines);
-				setLoader(false);
-			} catch (error) {
-				console.error("Error fetching data: ", error);
-			}
-		};
-		fetchData();
-	}, []);
-
 	const getData = async () => {
 		const response = await api.get("/assets");
 		return response;
+	};
+	const fetchData = async () => {
+		try {
+			const data = await getData();
+			setData(data.data.machines);
+
+			setLoader(false);
+		} catch (error) {
+			setToast({
+				type: "error",
+				text2: error.response.data.message
+					? error.response.data.message
+					: false,
+				counter: toast.counter + 1,
+			});
+		}
 	};
 
 	const handleStart = async (id) => {
@@ -46,7 +61,13 @@ const AssetsOperations = () => {
 			});
 			return true;
 		} catch (error) {
-			console.log(error);
+			setToast({
+				type: "error",
+				text2: error.response.data.message
+					? error.response.data.message
+					: false,
+				counter: toast.counter + 1,
+			});
 			return false;
 		}
 	};
@@ -61,7 +82,14 @@ const AssetsOperations = () => {
 			});
 			return true;
 		} catch (error) {
-			console.log(error);
+			setToast({
+				type: "error",
+				text2: error.response.data.message
+					? error.response.data.message
+					: false,
+
+				counter: 0,
+			});
 			return false;
 		}
 	};
@@ -77,40 +105,41 @@ const AssetsOperations = () => {
 
 		return `${formattedDay}-${formattedMonth}-${year}`;
 	};
+	useFocusEffect(
+		useCallback(() => {
+			fetchData();
+			return () => {
+				console.log("This route is now unfocused.");
+			};
+		}, [])
+	);
 
 	return (
-		<View className="bg-white min-h-[103vh]">
-			<Toast />
-			<Header title="تشغيل و ايقاف الوحدات" />
-			<View className="flex justify-center p-6	">
+		<MainLayout
+			toast={toast}
+			title={"تشغيل و ايقاف الوحدات"}
+			loading={loader}>
+			<View className="flex justify-center p-6">
 				<Text className="font-tmedium text-base text-center">
 					{formatDatee(new Date())}
 				</Text>
 			</View>
-			{!loader ? (
-				<View>
-					{data.length ? (
-						<ScrollView className=" max-h-[80vh]">
-							<Table
-								assetsOperation={true}
-								header={assetsOperationHeader}
-								data={data}
-								onStartMachine={handleStart}
-								onCloseMachine={handleEnd}
-							/>
-						</ScrollView>
-					) : (
-						<View className="flex justify-center p-4 mt-4">
-							<Text className="font-tbold text-lg text-center">
-								لا يوجد معدات
-							</Text>
-						</View>
-					)}
-				</View>
+			{data.length ? (
+				<ScrollComponent
+					isLoading={loader}
+					refreshingFunction={getData}>
+					<Table
+						assetsOperation={true}
+						header={assetsOperationHeader}
+						data={data}
+						onStartMachine={handleStart}
+						onCloseMachine={handleEnd}
+					/>
+				</ScrollComponent>
 			) : (
-				<Loader isLoading={loader}></Loader>
+				<ErrorMassege err={"لا يوجد معدات"} />
 			)}
-		</View>
+		</MainLayout>
 	);
 };
 
