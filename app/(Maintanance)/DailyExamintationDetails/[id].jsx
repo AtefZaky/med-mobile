@@ -130,7 +130,7 @@ const DailyExamintationDetails = () => {
 		<MainLayout
 			loading={loader}
 			toast={Toast}
-			title="تفاصيل بينات الفحص اليومي">
+			title="تفاصيل بيانات الفحص اليومي">
 			<PopUpConfirmation
 				toast={Toast}
 				modalVisible={modalVisible}

@@ -8,12 +8,6 @@ const GlobalProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 
-	const changeDepartment = (DepartmentID) => {
-		setUser({
-			...user,
-			selectedDepartmentID: DepartmentID,
-		});
-	};
 	useEffect(() => {
 		const checkAuth = async () => {
 			try {
@@ -30,14 +24,10 @@ const GlobalProvider = ({ children }) => {
 				const UserDepartmentName = JSON.parse(
 					await SecureStore.getItemAsync("UserDepartmentName")
 				);
-				const DepartmentList = JSON.parse(
-					await SecureStore.getItemAsync("DepartmentList")
-				);
 
 				if (username) {
 					setIsLogged(true);
 					setUser({
-						DepartmentList: DepartmentList,
 						username: username,
 						lastActive: lastActive,
 						type: UserTypeID,
@@ -58,13 +48,11 @@ const GlobalProvider = ({ children }) => {
 		checkAuth();
 	}, []);
 
-	console.log(user);
 	return (
 		<GlobalContext.Provider
 			value={{
 				isLogged,
 				setIsLogged,
-				changeDepartment,
 				setLoading,
 				user,
 				setUser,

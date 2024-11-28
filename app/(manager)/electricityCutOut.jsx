@@ -72,7 +72,7 @@ const electricityCutOut = () => {
 						data={data}
 					/>
 				) : (
-					<ErrorMassege err="لا توجد بينات" />
+					<ErrorMassege err="لا توجد بيانات" />
 				)}
 			</ScrollComponent>
 			<View className="px-4 py-4 mb-[45px]">

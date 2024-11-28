@@ -31,7 +31,7 @@ const Maintanacehome = () => {
 
 				<View className="flex px-4 ">
 					<MainButton
-						title="بينات الفحص اليومي"
+						title="بيانات الفحص اليومي"
 						containerStyles="mt-7"
 						handlePress={() => router.navigate("DailyExaminationList")}
 					/>

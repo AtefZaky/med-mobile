@@ -160,7 +160,7 @@ function NotifyDetails() {
 
 				{!filterdData.length ? (
 					<>
-						<ErrorMassege err={"لا توجد بينات لهذا البلاغ"}></ErrorMassege>
+						<ErrorMassege err={"لا توجد بيانات لهذا البلاغ"}></ErrorMassege>
 					</>
 				) : (
 					<View>

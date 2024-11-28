@@ -99,7 +99,7 @@ const Schedule = () => {
 						/>
 					</>
 				) : (
-					<ErrorMassege err={"لا توجد بينات"}></ErrorMassege>
+					<ErrorMassege err={"لا توجد بيانات"}></ErrorMassege>
 				)}
 			</ScrollComponent>
 			<View className="p-4">

@@ -134,7 +134,7 @@ const Assesment = () => {
 		<MainLayout
 			loading={loading}
 			toast={toast}
-			title={AssesmentType == 1 ? "مقايسة تقديرية" : "اعمال فعلية "}>
+			title={AssesmentType == 0 ? "مقايسة تقديرية" : "اعمال فعلية "}>
 			<PopUpConfirmation
 				confirmFunction={() => {
 					deleteAssesment(ScheduleItemID);

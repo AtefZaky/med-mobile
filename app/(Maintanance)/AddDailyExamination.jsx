@@ -162,7 +162,7 @@ export default function dailyExamination() {
 	return (
 		<MainLayout
 			loading={loader}
-			title={"اضافة بينات الفحص اليومي"}
+			title={"اضافة بيانات الفحص اليومي"}
 			toast={toast}>
 			<ScrollComponent
 				contentContainerStyle={{ display: "flex", gap: 16, padding: 16 }}

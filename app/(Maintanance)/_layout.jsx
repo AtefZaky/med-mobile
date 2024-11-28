@@ -15,6 +15,9 @@ const MaintanaceStack = () => {
 		} else if (user.type === roles.inventory) {
 			<Redirect href="/InventoyUserHome" />;
 		}
+		if (user.type === roles.medManager) {
+			<Redirect href="/MedManagerHome" />;
+		}
 	} else {
 		<Redirect href="/" />;
 	}

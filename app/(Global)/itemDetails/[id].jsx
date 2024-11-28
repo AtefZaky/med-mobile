@@ -51,7 +51,7 @@ export default function itemDetails() {
 			title={ItemName}>
 			<>
 				{error || data.length == 0 ? (
-					<ErrorMassege err={error || "لا توجد بينات"}></ErrorMassege>
+					<ErrorMassege err={error || "لا توجد بيانات"}></ErrorMassege>
 				) : (
 					<ScrollComponent
 						refreshingFunction={getItemData}

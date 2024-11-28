@@ -1,4 +1,4 @@
-// import api from "./api";
+import api from "./api";
 
 // const getAssets = async () => {
 //     const { data } = await api.get("/departments");
@@ -68,3 +68,17 @@
 //     getAssets,
 //     getAssetStatus,
 // }
+
+export const getDropdownData = async (url, Key, Value) => {
+	try {
+		const { data } = await api.get(url);
+		const transformedData = data.data.map((item) => ({
+			key: item[Key],
+			value: item[Value],
+		}));
+
+		return transformedData;
+	} catch (error) {
+		throw error;
+	}
+};

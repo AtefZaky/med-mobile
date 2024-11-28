@@ -7,13 +7,14 @@ import { icons, roles } from "../constants";
 import { MainButton, FormField, LogoBar, Loader } from "../components";
 import { useGlobalContext } from "../context/GlobalProvider";
 import { login } from "../utils/api";
-
-//import "@react-native-firebase/app";
-//import messaging from "@react-native-firebase/messaging";
-
+import { I18nManager } from "react-native";
+import "@react-native-firebase/app";
+import messaging from "@react-native-firebase/messaging";
 const Welcome = () => {
 	const { setUser, setIsLogged, isLogged, user, loading } = useGlobalContext();
 	const [isSubmitting, setSubmitting] = useState(false);
+	I18nManager.forceRTL(false);
+	I18nManager.allowRTL(false);
 
 	const [form, setForm] = useState({
 		username: "",
@@ -39,22 +40,22 @@ const Welcome = () => {
 			return;
 		}
 
-		setSubmitting(true);
-
 		try {
 			// Request FCM permission and get token
-			// const authStatus = await messaging().requestPermission();
-			// const enabled =
-			// 	authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-			// 	authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-			// let fcmToken = null;
-			// if (enabled) {
-			// 	fcmToken = await messaging().getToken();
-			// }
+			setSubmitting(true);
+			const authStatus = await messaging().requestPermission();
+			const enabled =
+				authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+				authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+			let fcmToken = null;
+			if (enabled) {
+				fcmToken = await messaging().getToken();
+			}
 
 			// // Proceed with login regardless of FCM token status
-			const result = await login(form.username, form.password); //fcmToken
+			const result = await login(form.username, form.password, fcmToken); //
 			if (result) {
 				setUser({
 					username: result?.username,
@@ -94,8 +95,12 @@ const Welcome = () => {
 				case roles.inventory:
 					router.replace("/InventoyUserHome");
 					break;
+
+				case roles.medManager:
+					router.replace("/MedManagerHome");
+					break;
 				default:
-					router.replace("/"); // Fallback route if role is undefined
+					// Fallback route if role is undefined
 					break;
 			}
 		} catch (error) {
@@ -132,6 +137,10 @@ const Welcome = () => {
 				case roles.inventory:
 					router.replace("/InventoyUserHome");
 					break;
+				case roles.medManager:
+					router.replace("/MedManagerHome");
+					break;
+
 				default:
 					router.replace("/");
 					break;

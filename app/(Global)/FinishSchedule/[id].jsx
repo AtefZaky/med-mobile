@@ -42,7 +42,9 @@ const FinishSchedule = () => {
 		selectedspareParts,
 		setSelectedspareParts
 	) => {
-		if (selectedDrppdownOption === "") return;
+		console.log(selectedDrppdownOption);
+
+		if (selectedDrppdownOption?.length == 0) return;
 
 		const flag = selectedspareParts.some(
 			(item) => item.ItemID === selectedDrppdownOption

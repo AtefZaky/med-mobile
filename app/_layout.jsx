@@ -1,13 +1,11 @@
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
-
 import { SplashScreen, Stack } from "expo-router";
-
 import GlobalProvider from "../context/GlobalProvider";
-//import "@react-native-firebase/app";
-//import messaging from "@react-native-firebase/messaging";
+import "@react-native-firebase/app";
+import messaging from "@react-native-firebase/messaging";
 import { useNavigation } from "@react-navigation/native";
-//import notifee, { AndroidImportance } from "@notifee/react-native";
+import notifee, { AndroidImportance } from "@notifee/react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -16,59 +14,59 @@ const RootStack = () => {
 	//load the font to the app
 	const navigation = useNavigation();
 
-	// useEffect(() => {
-	// 	const unsubscribeForeground = messaging().onMessage(
-	// 		async (remoteMessage) => {
-	// 			// Display a custom notification using Notifee
-	// 			const channelId = await notifee.createChannel({
-	// 				id: "default",
-	// 				name: "Default Channel",
-	// 				android: {
-	// 					importance: AndroidImportance.HIGH,
-	// 				},
-	// 			});
+	useEffect(() => {
+		const unsubscribeForeground = messaging().onMessage(
+			async (remoteMessage) => {
+				// Display a custom notification using Notifee
+				const channelId = await notifee.createChannel({
+					id: "default",
+					name: "Default Channel",
+					android: {
+						importance: AndroidImportance.HIGH,
+					},
+				});
 
-	// 			await notifee.displayNotification({
-	// 				title: remoteMessage.notification?.title,
-	// 				body: remoteMessage.notification?.body,
-	// 				android: {
-	// 					channelId: channelId,
-	// 				},
-	// 			});
-	// 		}
-	// 	);
+				await notifee.displayNotification({
+					title: remoteMessage.notification?.title,
+					body: remoteMessage.notification?.body,
+					android: {
+						channelId: channelId,
+					},
+				});
+			}
+		);
 
-	// 	return unsubscribeForeground;
-	// }, []);
+		return unsubscribeForeground;
+	}, []);
 
-	// useEffect(() => {
-	// 	messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-	// 		console.log("Message handled in the background!", remoteMessage);
+	useEffect(() => {
+		messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+			console.log("Message handled in the background!", remoteMessage);
 
-	// 		// Handle navigation based on notification data
-	// 		const { type, ...data } = remoteMessage.data;
-	// 		if (type === "specificType") {
-	// 			navigation.navigate("TargetScreen", { data });
-	// 		}
-	// 	});
+			// Handle navigation based on notification data
+			const { type, ...data } = remoteMessage.data;
+			if (type === "specificType") {
+				navigation.navigate("TargetScreen", { data });
+			}
+		});
 
-	// 	messaging()
-	// 		.getInitialNotification()
-	// 		.then((remoteMessage) => {
-	// 			if (remoteMessage) {
-	// 				console.log(
-	// 					"Notification caused app to open from quit state:",
-	// 					remoteMessage
-	// 				);
+		messaging()
+			.getInitialNotification()
+			.then((remoteMessage) => {
+				if (remoteMessage) {
+					console.log(
+						"Notification caused app to open from quit state:",
+						remoteMessage
+					);
 
-	// 				// Handle deep linking based on the message content
-	// 				const { type, ...data } = remoteMessage.data;
-	// 				if (type === "specificType") {
-	// 					navigation.navigate("TargetScreen", { data });
-	// 				}
-	// 			}
-	// 		});
-	// }, [navigation]);
+					// Handle deep linking based on the message content
+					const { type, ...data } = remoteMessage.data;
+					if (type === "specificType") {
+						navigation.navigate("TargetScreen", { data });
+					}
+				}
+			});
+	}, [navigation]);
 
 	const [fontsLoaded, error] = useFonts({
 		"Tajawal-Bold": require("../assets/fonts/Tajawal-Bold.ttf"),
@@ -119,6 +117,10 @@ const RootStack = () => {
 				/>
 				<Stack.Screen
 					name="(inventoryUser)"
+					options={{ headerShown: false }}
+				/>
+				<Stack.Screen
+					name="(MedManager)"
 					options={{ headerShown: false }}
 				/>
 			</Stack>

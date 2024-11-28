@@ -134,7 +134,7 @@ const DailyOperationAsset = () => {
 		<MainLayout
 			toast={toast}
 			loading={loading}
-			title={"ادخال بينات التشغيل اليومية"}>
+			title={"ادخال بيانات التشغيل اليومية"}>
 			<ScrollComponent parentContainerStyle={"h-[85vh]"}>
 				{Object.keys(data).length > 0 ? (
 					<>

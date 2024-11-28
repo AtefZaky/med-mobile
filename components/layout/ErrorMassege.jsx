@@ -1,11 +1,11 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const ErrorMassege = ({ err }) => {
+const ErrorMassege = ({ err, containerStyle }) => {
 	return (
-		<View className="flex  items-center mt-4 h-[90vh]">
+		<View className={`flex  items-center mt-4 h-[90vh] ${containerStyle}`}>
 			<Text className="font-tbold text-center text-lg">
-				{err ? err : "لا توجد بينات"}
+				{err ? err : "لا توجد بيانات"}
 			</Text>
 		</View>
 	);

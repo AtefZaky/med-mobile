@@ -39,7 +39,11 @@ import Wrench from "../assets/images/Wrench.png";
 import Camera from "../assets/images/Camera.png";
 import Image from "../assets/images/Image.png";
 import ClipboardText from "../assets/images/ClipboardText.png";
+import legendIcon from "../assets/images/legendIcon.png";
+import x from "../assets/images/X.png";
 export default {
+	x,
+	legendIcon,
 	ClipboardText,
 	Image,
 	Camera,

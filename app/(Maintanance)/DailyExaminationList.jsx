@@ -45,7 +45,7 @@ const DailyExaminationList = () => {
 		<MainLayout
 			toast={Toast}
 			loading={loader}
-			title={"بينات الفحص اليومي"}>
+			title={"بيانات الفحص اليومي"}>
 			<>
 				{data.length ? (
 					<>

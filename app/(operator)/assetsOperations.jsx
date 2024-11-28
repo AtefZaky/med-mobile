@@ -38,7 +38,6 @@ const AssetsOperations = () => {
 		try {
 			const data = await getData();
 			setData(data.data.machines);
-
 			setLoader(false);
 		} catch (error) {
 			setToast({

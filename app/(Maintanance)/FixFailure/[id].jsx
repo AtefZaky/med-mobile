@@ -156,7 +156,7 @@ const FixFailure = () => {
 			});
 			setToast({
 				type: "success",
-				text2: "تم ارسال البينات",
+				text2: "تم ارسال البيانات",
 				counter: toast.counter + 1,
 			});
 			setTimeout(() => {

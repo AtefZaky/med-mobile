@@ -70,7 +70,7 @@ export default function InventoyItem() {
 			/>
 			<>
 				{Error ? (
-					<ErrorMassege err={"لا توجد بينات"}></ErrorMassege>
+					<ErrorMassege err={"لا توجد بيانات"}></ErrorMassege>
 				) : (
 					<ScrollComponent
 						isLoading={Loading}

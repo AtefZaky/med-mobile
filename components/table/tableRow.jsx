@@ -11,18 +11,18 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 		endDate: item.EndIn,
 	});
 
-	const [active, setActive] = useState();
+	const [active, setActive] = useState(false);
 	const [loader, setLoader] = useState({ open: false, close: false });
 
 	useEffect(() => {
 		if (!active) {
-			if (item.StatusID <= 3) {
+			if (item.StatusID < 3) {
 				if (new Date(item.StartIn) > new Date(item.EndIn)) {
 					setActive(1);
 				} else if (new Date(item.StartIn) < new Date(item.EndIn)) {
 					setActive(2);
 				}
-			} else if (item.StatusID > 3) {
+			} else if (item.StatusID >= 3) {
 				setActive(item.StatusID);
 			}
 		}
@@ -44,6 +44,8 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 			? "لا يوجد"
 			: active == 7
 			? "خارج الخدمة"
+			: active == 3
+			? "بلاغ"
 			: "";
 	const StatusColor =
 		active == 4
@@ -59,7 +61,7 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 	return (
 		<View className="flex flex-row justify-between  p-3 items-center border-b-[1px] border-[#E4E7EC]">
 			<View className="flex flex-1">
-				{active > 3 ? (
+				{active >= 3 ? (
 					<View className=" flex items-center justify-center">
 						<View
 							style={{ borderColor: `#${StatusColor}` }}
@@ -71,6 +73,8 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 									: active == 6
 									? "808080"
 									: active == 7
+									? "000000"
+									: active == 3
 									? "000000"
 									: ""
 							}] rounded-lg    relative`}>
@@ -105,7 +109,7 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 			</View>
 			<View className="flex flex-1 text-base">
 				<TouchableOpacity
-					disabled={active == 2 || active > 3}
+					disabled={active == 2 || active >= 3}
 					onPress={async () => {
 						setLoader({ ...loader, close: true });
 						const res = await onCloseMachine(item.AssetID);
@@ -118,7 +122,7 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 						}
 					}}
 					className={`${
-						active == 2 || active > 3
+						active == 2 || active >= 3
 							? "text-[#F15555] bg-[#F9EAEB]"
 							: "bg-[#F15555] text-white "
 					} py-2 rounded-md text-center items-center w-[82%]`}>
@@ -133,7 +137,7 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 						<Text
 							className={`text-center font-tmedium text-base
                     ${
-											active == 2 || active > 3
+											active == 2 || active >= 3
 												? " text-[#F15555]"
 												: " text-white "
 										}`}>
@@ -145,11 +149,11 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 			<View className="flex flex-1 items-center text-base">
 				<TouchableOpacity
 					className={`${
-						active == 1 || active > 3
+						active == 1 || active >= 3
 							? "text-[#019444] bg-[#E8F0EE]"
 							: "bg-[#019444] text-white "
 					}  py-2 rounded-md w-[82%]    text-center text-base`}
-					disabled={active == 1 || active > 3}
+					disabled={active == 1 || active >= 3}
 					onPress={async () => {
 						setLoader({ ...loader, open: true });
 						const res = await onStartMachine(item.AssetID);
@@ -173,7 +177,7 @@ const TableRow = ({ item, onStartMachine, onCloseMachine }) => {
 					) : (
 						<Text
 							className={`font-tmedium text-center text-base ${
-								active == 1 || active > 3 ? "text-[#019444]" : " text-white"
+								active == 1 || active >= 3 ? "text-[#019444]" : " text-white"
 							}`}>
 							بدء
 						</Text>

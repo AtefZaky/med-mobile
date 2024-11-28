@@ -137,7 +137,7 @@ export default function maintanaceHelper() {
 					<>
 						<View className="flex w-full h-full items-center mt-4 ">
 							<Text className="text-lg  text-black font-tbold">
-								لا توجد بينات
+								لا توجد بيانات
 							</Text>
 						</View>
 					</>

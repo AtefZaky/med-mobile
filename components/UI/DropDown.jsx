@@ -6,6 +6,7 @@ export default function Dropdown({
 	data,
 	onChange,
 	placeholder,
+	DropdownHeghit = 56,
 	title,
 	defaultOption,
 	parentStyle,
@@ -41,7 +42,7 @@ export default function Dropdown({
 							borderColor: "#1C5B7D",
 							opacity: 1,
 							borderWidth: 0.5,
-							height: 56,
+							height: DropdownHeghit,
 						}}
 						fontFamily="Tajawal-Medium"
 						dropdownStyles={{

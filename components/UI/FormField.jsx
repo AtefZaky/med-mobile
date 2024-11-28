@@ -19,7 +19,9 @@ const FormField = ({
 	inputIconUser,
 	numeric = false,
 	editable = true,
+	inputPress = () => {},
 	inputStyle,
+	iconStyle,
 	...props
 }) => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -54,9 +56,10 @@ const FormField = ({
 						/>
 					</TouchableOpacity>
 				)}
+
 				{inputIcon && (
 					<TouchableOpacity
-						className="bg-[#227099] w-8 h-8 rounded-md justify-center items-center "
+						className={`bg-[#227099] w-8 h-8 rounded-md justify-center items-center ${iconStyle}`}
 						onPress={() => handlePress()}
 						disabled={disableChat}>
 						<Image

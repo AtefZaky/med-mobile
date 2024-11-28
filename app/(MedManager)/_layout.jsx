@@ -4,7 +4,7 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { roles } from "../../constants";
 
-const InventoryUserStack = () => {
+const MedManager = () => {
 	const { user } = useGlobalContext();
 
 	if (user) {
@@ -12,11 +12,12 @@ const InventoryUserStack = () => {
 			<Redirect href="/home" />;
 		} else if (user.type === roles.maintenar) {
 			<Redirect href="/Maintanacehome" />;
-		} else if (user.type === roles.manager) {
-			<Redirect href="/ManagerHome" />;
 		}
-		if (user.type === roles.medManager) {
-			<Redirect href="/MedManagerHome" />;
+		if (user.type === roles.inventory) {
+			<Redirect href="/InventoyUserHome" />;
+		}
+		if (user.type === roles.manager) {
+			<Redirect href="/ManagerHome" />;
 		}
 	} else {
 		<Redirect href="/" />;
@@ -27,16 +28,20 @@ const InventoryUserStack = () => {
 			<SafeAreaView className="bg-white h-full">
 				<Stack>
 					<Stack.Screen
-						name="Inventory"
-						options={{
-							headerShown: false,
-						}}
+						name="MedManagerHome"
+						options={{ headerShown: false }}
 					/>
 					<Stack.Screen
-						name="InventoyUserHome"
-						options={{
-							headerShown: false,
-						}}
+						name="MedExpenses"
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
+						name="MedActualSatae"
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
+						name="MedMangernotifcation"
+						options={{ headerShown: false }}
 					/>
 				</Stack>
 			</SafeAreaView>
@@ -44,4 +49,4 @@ const InventoryUserStack = () => {
 	);
 };
 
-export default InventoryUserStack;
+export default MedManager;
